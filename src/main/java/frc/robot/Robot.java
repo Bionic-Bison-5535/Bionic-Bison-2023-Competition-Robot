@@ -7,7 +7,7 @@ import frc.robot.systems.*;
 
 public class Robot extends TimedRobot {
 
-  private final Weswerve swerveCtrl = new Weswerve(30, 31, 32, 33, 20, 21, 22, 23, 10, 11, 12, 13, 70, 100, 148, -2);
+  	private final Weswerve swerveCtrl = new Weswerve(30, 31, 32, 33, 20, 21, 22, 23, 10, 11, 12, 13, 70, 100, 148, -2);
 	private final Controls input = new Controls(0);
 	private final Navx navx = new Navx();
 	
@@ -150,7 +150,7 @@ public class Robot extends TimedRobot {
 			swerveCtrl.speed = swerveCtrl.default_speed + 0.8*(1-swerveCtrl.default_speed)*input.in.getRawAxis(3);
 			swerveCtrl.swerve(deadband(input.in.getRawAxis(0), 0.1), -deadband(input.in.getRawAxis(1), 0.1), rotation, front);
 		}
-    swerveCtrl.update();
+    	swerveCtrl.update();
 		dash();
 	}
 
