@@ -171,7 +171,7 @@ public class Weswerve {
 					d = Math.abs(Math.sqrt((x*x)-(x*dist2*cosine(-theta-125.7908228))+(0.5))/x);
 				}
 			}
-			setVelocities(a*(y+0.4*rotationalInput)*speed, -b*(y+0.4*rotationalInput)*speed, -c*(y+0.4*rotationalInput)*speed, -d*(y+0.4*rotationalInput)*speed);
+			setVelocities(a*(y+0.4*Math.abs(rotationalInput))*speed, -b*(y+0.4*Math.abs(rotationalInput))*speed, -c*(y+0.4*Math.abs(rotationalInput))*speed, -d*(y+0.4*Math.abs(rotationalInput))*speed);
 		}
 	}
 
