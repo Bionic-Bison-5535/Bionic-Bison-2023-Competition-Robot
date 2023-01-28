@@ -123,9 +123,9 @@ public class Robot extends TimedRobot {
     */
 		SmartDashboard.putNumber("dir", dir);
 		if (headless) {
+			front = navx.coterminalYaw();
 			if (input.BACK.get()) { headless = false; front = 0; navx.zeroYaw(); dir = 0; }
 			if (input.LEFT.get()) { navx.zeroYaw(); rotation = 0; dir = 0; }
-			front = navx.coterminalYaw();
 		} else {
 			if (input.START.get()) { headless = true; navx.zeroYaw(); dir = 0; rotation = 0; }
 			if (input.in.getPOV() != -1) {
@@ -134,7 +134,7 @@ public class Robot extends TimedRobot {
 				swerveCtrl.setAngles(front, front, front, front);
 			}
 		}
-    rotation = input.in.getRawAxis(4);
+    	rotation = input.in.getRawAxis(4);
 		if (input.RIGHT.get()) {
 			swerveCtrl.speed = 0.057;
 			if (navx.balance() < -1.2) {
