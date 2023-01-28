@@ -146,6 +146,7 @@ public class Weswerve {
 				c = 1;
 				d = 1;
 				x = 0;
+				setVelocities(a*y*speed, -b*y*speed, -c*y*speed, -d*y*speed);
 			} else {
 				if (Math.abs(x) < 0.4) {
 					setAngles(-54.20917723, 54.20917723, -71.56750291, 71.56750291);
@@ -153,6 +154,7 @@ public class Weswerve {
 					b = -2.1;
 					c = -2.1;
 					d = 2.1;
+					setVelocities(a*(y+0.4*(rotationalInput))*speed, -b*(y+0.4*(rotationalInput))*speed, -c*(y+0.4*(rotationalInput))*speed, -d*(y+0.4*(rotationalInput))*speed);
 				} else {
 					if (x < 0) {
 						angle0 = -i_tan((dist1*sine(-theta+108.4324971)),(2*x-dist1*cosine(-theta+108.4324971)))+theta+180;
@@ -169,9 +171,9 @@ public class Weswerve {
 					b = Math.abs(Math.sqrt((x*x)-(x*dist1*cosine(-theta+71.56750291))+(0.5))/x);
 					c = Math.abs(Math.sqrt((x*x)-(x*dist2*cosine(-theta-54.20917723))+(0.5))/x);
 					d = Math.abs(Math.sqrt((x*x)-(x*dist2*cosine(-theta-125.7908228))+(0.5))/x);
+					setVelocities(a*(y+0.4*Math.abs(rotationalInput))*speed, -b*(y+0.4*Math.abs(rotationalInput))*speed, -c*(y+0.4*Math.abs(rotationalInput))*speed, -d*(y+0.4*Math.abs(rotationalInput))*speed);
 				}
 			}
-			setVelocities(a*(y+0.4*Math.abs(rotationalInput))*speed, -b*(y+0.4*Math.abs(rotationalInput))*speed, -c*(y+0.4*Math.abs(rotationalInput))*speed, -d*(y+0.4*Math.abs(rotationalInput))*speed);
 		}
 	}
 
