@@ -8,7 +8,8 @@ import frc.robot.systems.*;
 public class Robot extends TimedRobot {
 
   	private final Weswerve swerveCtrl = new Weswerve(30, 31, 32, 33, 20, 21, 22, 23, 10, 11, 12, 13, 70, 100, 148, 358);
-	private final Controls input = new Controls(0);
+	private final Controls primary = new Controls(0, 0.05);
+	private final Controls secondary = new Controls(0, 0.05);
 	private final Navx navx = new Navx();
 	
 	Timer timer;
@@ -19,14 +20,6 @@ public class Robot extends TimedRobot {
 	public double dir_accuracy = 1;
 	public double rotation = 0;
 	public double resist = true;
-
-	public double deadband(double num_input, double db) {
-		if (Math.abs(num_input) < db) {
-			return 0;
-		} else {
-			return num_input;
-		}
-	}
 	
 	public void dashInit() {
 		SmartDashboard.putNumber("A Offset", swerveCtrl.A_offset);
@@ -106,31 +99,31 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		
 		if (resist) {
-			dir += 2.7 * (input.in.getRawAxis(4));
+			dir += 2.7 * (primary.stick(4));
 			if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
 				rotation = -0.04*(navx.yaw()-dir);
 			} else {
 				rotation = 0;
 			}
 		} else {
-			rotation = input.in.getRawAxis(4);
+			rotation = primary.stick(4);
 		}
 		
 		
 		if (headless) {
 			front = navx.coterminalYaw();
-			if (input.BACK.get()) { headless = false; front = 0; navx.zeroYaw(); dir = 0; }
-			if (input.LEFT.get()) { navx.zeroYaw(); rotation = 0; dir = 0; }
+			if (primary.BACK.get()) { headless = false; front = 0; navx.zeroYaw(); dir = 0; }
+			if (primary.LEFT.get()) { navx.zeroYaw(); rotation = 0; dir = 0; }
 		} else {
-			if (input.START.get()) { headless = true; navx.zeroYaw(); dir = 0; rotation = 0; }
-			if (input.in.getPOV() != -1) {
-				front = -input.in.getPOV();
+			if (primary.START.get()) { headless = true; navx.zeroYaw(); dir = 0; rotation = 0; }
+			if (primary.in.getPOV() != -1) {
+				front = -primary.in.getPOV();
 				SmartDashboard.putNumber("FRONT", front);
 				swerveCtrl.setAngles(front, front, front, front);
 			}
 		}
     		
-		if (input.RIGHT.get()) { // Autobalance
+		if (primary.RIGHT.get()) { // Autobalance
 			swerveCtrl.speed = 0.057;
 			if (navx.balance() < -1.2) {
 				swerveCtrl.swerve(0, 1-0.05*navx.balance(), 0, 0);
@@ -142,8 +135,8 @@ public class Robot extends TimedRobot {
 				swerveCtrl.swerve(0, 0, 0, 0);
 			}
 		} else {
-			swerveCtrl.speed = swerveCtrl.default_speed + 0.8*(1-swerveCtrl.default_speed)*input.in.getRawAxis(3);
-			swerveCtrl.swerve(deadband(input.in.getRawAxis(0), 0.1), -deadband(input.in.getRawAxis(1), 0.1), rotation, front);
+			swerveCtrl.speed = swerveCtrl.default_speed + 0.8*(1-swerveCtrl.default_speed)*primary.stick(3);
+			swerveCtrl.swerve(primary.stick(0), -primary.stick(1), rotation, front);
 		}
 		
     		swerveCtrl.update();
