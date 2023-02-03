@@ -133,11 +133,11 @@ public class Weswerve {
 	}
 
 	public void swerve(double verticalInput, double horizontalInput, double rotationalInput, double frontAngle) { // Main function - Does all swerve math
-		if (verticalInput == 0 && horizontalInput == 0 && rotationalInput == 0) {
+		if (horizontalInput == 0 && verticalInput == 0 && rotationalInput == 0) {
 			setVelocities(0, 0, 0, 0);
 		} else {
-			theta = i_tan(-verticalInput,horizontalInput)+frontAngle;
-			y = Math.sqrt(verticalInput*verticalInput+horizontalInput*horizontalInput);
+			theta = i_tan(-horizontalInput,verticalInput)+frontAngle;
+			y = Math.sqrt(horizontalInput*horizontalInput+verticalInput*verticalInput);
 			x = (speed*y)/(steeringAmplifier*rotationalInput);
 			if (rotationalInput == 0) {
 				setAngles(theta, theta, theta, theta);
