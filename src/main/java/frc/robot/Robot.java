@@ -13,7 +13,8 @@ public class Robot extends TimedRobot {
 	private final Controls primary = new Controls(0, 0.05);
 	private final Controls secondary = new Controls(0, 0.05);
 	private final Navx navx = new Navx();
-	private final GetObject collector = new GetObject(1, 2, swerveCtrl);
+	private final GetObject collector = new GetObject(1, 2, swerveCtrl, arm);
+	private final Autobalance balancer = new Autobalance(arm, swerveCtrl, navx);
 	
 	Timer timer;
 
