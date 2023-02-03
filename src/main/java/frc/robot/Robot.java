@@ -136,10 +136,10 @@ public class Robot extends TimedRobot {
 			}
 		} else {
 			swerveCtrl.speed = swerveCtrl.default_speed + 0.8*(1-swerveCtrl.default_speed)*primary.stick(3);
-			swerveCtrl.swerve(primary.stick(0), -primary.stick(1), rotation, front);
+			swerveCtrl.swerve(-primary.stick(1), primary.stick(0), rotation, front);
 		}
 		
-    		swerveCtrl.update();
+    	swerveCtrl.update();
 	}
 
 
