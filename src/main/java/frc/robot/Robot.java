@@ -103,7 +103,7 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		
 		if (resist) {
-			dir += 2.7 * (primary.stick(4));
+			dir += 3 * primary.stick(4);
 			if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
 				rotation = -0.04*(navx.yaw()-dir);
 			} else {
@@ -158,12 +158,12 @@ public class Robot extends TimedRobot {
 	
 	
 	@Override
-	public void testInit() {
-		swerveCtrl.setAngles(0, 0, 0, 0);
-	}
+	public void testInit() {}
 
 
 	@Override
-	public void testPeriodic() {}
+	public void testPeriodic() {
+		swerveCtrl.resetMotors();
+	}
 
 }
