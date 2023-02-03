@@ -4,13 +4,16 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.systems.*;
+import frc.robot.smart_features.*;
 
 public class Robot extends TimedRobot {
 
   	private final Weswerve swerveCtrl = new Weswerve(30, 31, 32, 33, 20, 21, 22, 23, 10, 11, 12, 13, 70, 100, 148, 358);
+	private final Arm arm = new Arm(50, 51);
 	private final Controls primary = new Controls(0, 0.05);
 	private final Controls secondary = new Controls(0, 0.05);
 	private final Navx navx = new Navx();
+	private final GetObject collector = new GetObject(1, 2, swerveCtrl);
 	
 	Timer timer;
 
