@@ -7,6 +7,7 @@ public class Limelight {
     
     private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 	private int pipeline = 0;
+	private invalidArea = 0.04;
 
 	public Limelight(int Pipline) {
 		if (Pipline >= 0 && Pipline < 10) {
@@ -27,6 +28,15 @@ public class Limelight {
     public double area() {
 		table.getEntry("pipeline").setNumber(pipeline);
 		return table.getEntry("ta").getDouble(0);
+	}
+
+	public boolean valid() {
+		table.getEntry("pipeline").setNumber(pipeline);
+		if (table.getEntry("ta").getDouble(0) > invalidArea) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public boolean inRange(double value, double setting, double errorRange) {
