@@ -1,19 +1,25 @@
 package frc.robot.systems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class Arm {
 
-    private CANSparkMax expansion, upDown;
-    private RelativeEncoder expansionCoder, upDownCoder;
+    private TalonSRX expansion, upDown;
 
     public Arm(int expansion_canID, int upDown_canID) {
-        expansion = new CANSparkMax(expansion_canID, MotorType.kBrushless);
-        upDown = new CANSparkMax(upDown_canID, MotorType.kBrushless);
-        expansionCoder = expansion.getEncoder();
-        upDownCoder = upDown.getEncoder();
+        expansion = new TalonSRX(expansion_canID);
+        upDown = new TalonSRX(upDown_canID);
     }
+
+    public void rawExpansion(double Vel) {
+        expansion.set(ControlMode.PercentOutput, Vel);
+    }
+
+    public void rawUpDown(double Vel) {
+        upDown.set(ControlMode.PercentOutput, Vel);
+    }
+
+    
 
 }

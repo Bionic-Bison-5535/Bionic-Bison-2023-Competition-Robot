@@ -23,7 +23,7 @@ public class Robot extends TimedRobot {
 	public double dir = 0;
 	public double dir_accuracy = 1;
 	public double rotation = 0;
-	public double resist = true;
+	public boolean resist = true;
 	
 	public void dashInit() {
 		SmartDashboard.putNumber("A Offset", swerveCtrl.A_offset);

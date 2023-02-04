@@ -7,7 +7,7 @@ public class Controls {
 
     public Joystick in;
     public JoystickButton A, B, X, Y, LEFT, RIGHT, BACK, START, LEFT_STICK, RIGHT_STICK;
-    public inputStickDeadband;
+    public double inputStickDeadband;
 
     public Controls(int inputNumber, double setInputStickDeadband) {
         in = new Joystick(inputNumber);
@@ -32,7 +32,7 @@ public class Controls {
 		}
 	}
 
-    public void stick(int axisNumber) {
+    public double stick(int axisNumber) {
         return deadband(in.getRawAxis(axisNumber), inputStickDeadband);
     }
 
