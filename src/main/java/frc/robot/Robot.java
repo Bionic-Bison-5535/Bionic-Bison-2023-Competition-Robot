@@ -9,7 +9,7 @@ import frc.robot.smart_features.*;
 public class Robot extends TimedRobot {
 
   	private final Weswerve swerveCtrl = new Weswerve(30, 31, 32, 33, 20, 21, 22, 23, 10, 11, 12, 13, 70, 100, 148, 358);
-	private final Arm arm = new Arm(50, 51);
+	private final Arm arm = new Arm(50, 51, 0, 0);
 	private final Controls primary = new Controls(0, 0.05);
 	private final Controls secondary = new Controls(0, 0.05);
 	private final Navx navx = new Navx();
@@ -33,6 +33,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Speed MAX", swerveCtrl.default_speed);
 		SmartDashboard.putNumber("Steer MAX", swerveCtrl.steeringAmplifier);
 		SmartDashboard.putNumber("FRONT", front);
+		SmartDashboard.putNumber("upDown", 0);
+		SmartDashboard.putNumber("expansion", 0);
 	}
 
 	public void dash() {
@@ -88,9 +90,7 @@ public class Robot extends TimedRobot {
 
 
 	@Override
-	public void autonomousPeriodic() {
-		swerveCtrl.update();
-	}
+	public void autonomousPeriodic() {}
 
 
 	@Override
@@ -103,15 +103,19 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		
 		if (resist) {
-			dir += 3 * primary.stick(4);
+			dir += 3 * (primary.stick(3)-primary.stick(2));
 			if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
 				rotation = -0.04*(navx.yaw()-dir);
 			} else {
 				rotation = 0;
 			}
 		} else {
-			rotation = primary.stick(4);
+			rotation = (primary.stick(3)-primary.stick(2));
 		}
+
+
+		arm.setExpansion(SmartDashboard.getNumber("expansion", 0));
+		arm.setUpDown(SmartDashboard.getNumber("upDown", 0));
 		
 		
 		if (headless) {
