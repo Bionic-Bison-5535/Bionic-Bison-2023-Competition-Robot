@@ -1,6 +1,6 @@
-/*  WESWERVE for Trapezoid Swerve Robot with TalonSRX & CANCoder
-	Program written by Wesley McGinn {wesleymcginnegation1@gmail.com}
-	Version 3.0 Beta
+/*  WESWERVE for Trapezoid Swerve Robot with TalonSRX Motors & CANCoder Angle Detection
+	Program written by Wesley McGinn {wesleymcginnegation1@gmail.com} for Team 5535 (The Bionic Bison, New Buffalo Michigan)
+	Version 3.2 Beta
 */
 
 package frc.robot.systems;
@@ -12,25 +12,25 @@ import com.ctre.phoenix.sensors.CANCoder;
 
 public class Weswerve {
 
-    public final TalonSRX frontLeftSteer, frontRightSteer, backRightSteer, backLeftSteer, frontLeftDrive, frontRightDrive, backRightDrive, backLeftDrive;
+    private final TalonSRX frontLeftSteer, frontRightSteer, backRightSteer, backLeftSteer, frontLeftDrive, frontRightDrive, backRightDrive, backLeftDrive;
     public final CANCoder frontLeft, frontRight, backRight, backLeft;
-    public double angle0, angle1, angle2, angle3; // Wheel angles in counterclockwise degrees from above view, angle0 being front-left and following variables going clockwise around robot
-	public boolean negation0, negation1, negation2, negation3; // Wheel velocity negation
-	private double newAngle; // Angle in computation (when using smartAngle)
-	private boolean negation; // Negation in computation (when using smartAngle)
-	public boolean SmartAngle = true; // Whether or not to find the nearest angle when rotating a wheel
-	public double theta = 0; // Direction for robot to move in
-	public double default_speed = 0.9; // Default Velocity Amplifier
-	public double speed = default_speed; // Velocity Amplifier
-	public double steeringAmplifier = 0.5; // Steering Amplifier
-	private final double wheelAngleErrorRange = 1.2; // How many degrees off each wheel is allowed to be without correcting itself
-	private final double dist1 = 19.879/32.25;
-	private final double dist2 = 16.997/32.25;
-	public double x; // Distance from center of robot to point that robot travels around
-	public double y; // Speed of robot based on left stick
-	public double a, b, c, d; // Proportions of speed for each wheel (starting at front-left and going clockwise around robot)
-	public boolean move = true; // Whether the robot is permitted to move at all (false = no angle changes or velocity)
-	public double A_offset, B_offset, C_offset, D_offset; // Clockwise offset of each wheel's CANcoder angle reading while each wheel is at 45 degrees
+    public double angle0, angle1, angle2, angle3;
+	public boolean negation0, negation1, negation2, negation3;
+	private double newAngle;
+	private boolean negation;
+	public boolean SmartAngle = true;
+	public double theta = 0;
+	public double default_speed = 0.9;
+	public double speed = default_speed;
+	public double steeringAmplifier = 0.5;
+	private final double wheelAngleErrorRange = 1.2;
+	private final double dist1 = 0.6164031008;
+	private final double dist2 = 0.5270387597;
+	public double x;
+	public double y;
+	public double a, b, c, d;
+	public boolean move = true;
+	public double A_offset, B_offset, C_offset, D_offset;
 
 	public Weswerve(int front_left_steer_canID, int front_right_steer_canID, int back_right_steer_canID, int back_left_steer_canID, int front_left_drive_canID, int front_right_drive_canID, int back_right_drive_canID, int back_left_drive_canID, int front_left_canCoder_canID, int front_right_canCoder_canID, int back_right_canCoder_canID, int back_left_canCoder_canID, int front_left_angle_offset, int front_right_angle_offset, int back_right_angle_offset, int back_left_angle_offset) {
 		// Steering Motors:
@@ -93,7 +93,7 @@ public class Weswerve {
 		}
 	}
 
-	public boolean motorToAngle(TalonSRX Output, CANCoder Input, double angle, boolean smartAngle) { // Called periodically by update() function - adjusts wheel-rotating motor speeds to get to desired angle
+	public boolean motorToAngle(TalonSRX Output, CANCoder Input, double angle, boolean smartAngle) { // Called periodically by update() function - adjusts wheel-rotating motor speeds to get to desired angle - if smart angle enabled, returns whether or not the wheel should have a negated velocity (true=negate) - if smart angle disabled, returns whether or not the wheel has reached te desired angle
 		newAngle = angle;
 		negation = false;
 		if (smartAngle) {
@@ -167,10 +167,10 @@ public class Weswerve {
 			} else {
 				if (Math.abs(x) < 0.4) {
 					setAngles(-54.20917723, 54.20917723, -71.56750291, 71.56750291);
-					a = 2.1;
-					b = -2.1;
-					c = -2.1;
-					d = 2.1;
+					a = 2;
+					b = -2;
+					c = -2;
+					d = 2;
 					setVelocities(a*(y+0.4*(rotationalInput))*speed, -b*(y+0.4*(rotationalInput))*speed, -c*(y+0.4*(rotationalInput))*speed, -d*(y+0.4*(rotationalInput))*speed);
 				} else {
 					if (x < 0) {
