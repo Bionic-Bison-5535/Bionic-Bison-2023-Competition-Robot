@@ -53,6 +53,23 @@ public class Weswerve {
 		B_offset = front_right_angle_offset;
 		C_offset = back_right_angle_offset;
 		D_offset = back_left_angle_offset;
+		// Motor Configuration:
+		frontLeftSteer.configOpenloopRamp(0);
+		frontRightSteer.configOpenloopRamp(0);
+		backRightSteer.configOpenloopRamp(0);
+		backLeftSteer.configOpenloopRamp(0);
+		frontLeftDrive.configOpenloopRamp(0.5);
+		frontRightDrive.configOpenloopRamp(0.5);
+		backRightDrive.configOpenloopRamp(0.5);
+		backLeftDrive.configOpenloopRamp(0.5);
+		frontLeftSteer.setInverted(false);
+		frontRightSteer.setInverted(false);
+		backRightSteer.setInverted(false);
+		backLeftSteer.setInverted(false);
+		frontLeftDrive.setInverted(false);
+		frontRightDrive.setInverted(false);
+		backRightDrive.setInverted(false);
+		backLeftDrive.setInverted(false);
 	}
 
 	public void setAngles(double Angle0, double Angle1, double Angle2, double Angle3) { // Sets angles of all wheels
