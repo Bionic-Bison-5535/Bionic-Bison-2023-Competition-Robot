@@ -18,6 +18,14 @@ public class Arm {
     public double retractedExpansionLength = 30;
     public double circumferenceOfExpansionWheel = 10;
 
+    public double pos_0_x = 50; // Collect or Score in Row 1
+    public double pos_0_y = 50;
+    public double pos_1_x = 50; // Score in Row 2
+    public double pos_1_y = 50;
+    public double pos_2_x = 50; // Score in Row 3
+    public double pos_2_y = 50;
+    public double pos_3_x = 50; // Holding Mode
+    public double pos_3_y = 50;
 
     public Arm(int expansion_canID, int upDown_canID, double expansionStart, double upDownStart) {
         expansion = new TalonSRX(expansion_canID);
@@ -67,6 +75,21 @@ public class Arm {
     public void trigIt(double x, double y) {
         setLength(Math.sqrt((x*x)+(y*y)));
         setAngle((180/Math.PI)*Math.atan(y/x));
+    }
+
+    public void pos(int positionNumber) {
+        if (positionNumber == 0) {
+            trigIt(pos_0_x, pos_0_y);
+        }
+        if (positionNumber == 1) {
+            trigIt(pos_1_x, pos_1_y);
+        }
+        if (positionNumber == 2) {
+            trigIt(pos_2_x, pos_2_y);
+        }
+        if (positionNumber == 3) {
+            trigIt(pos_3_x, pos_3_y);
+        }
     }
 
     public void update() {
