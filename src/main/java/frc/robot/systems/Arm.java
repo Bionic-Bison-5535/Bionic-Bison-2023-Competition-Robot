@@ -1,17 +1,29 @@
 package frc.robot.systems;
 
+import java.lang.Math;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class Arm {
 
-    private TalonSRX expansion, upDown;
+    public TalonSRX expansion, upDown;
+
     public double expansionPos, upDownPos;
-    private double expansionMin, expansionMax, upDownMin, upDownMax;
+    public double expansionMin = 0;
+    public double expansionMax = 4096*16;
+    public double upDownMin = -4096*8;
+    public double upDownMax = 4096*8;
+
+    public double rotationsPerAngle30 = 10;
+    public double retractedExpansionLength = 30;
+    public double circumferenceOfExpansionWheel = 10;
+
 
     public Arm(int expansion_canID, int upDown_canID, double expansionStart, double upDownStart) {
         expansion = new TalonSRX(expansion_canID);
         upDown = new TalonSRX(upDown_canID);
+        expansionPos = expansionStart;
+        upDownPos = upDownStart;
         expansion.setSelectedSensorPosition(expansionStart);
         upDown.setSelectedSensorPosition(upDownStart);
         expansion.configOpenloopRamp(0);
@@ -42,6 +54,19 @@ public class Arm {
         upDownPos += 4096*newRotations;
         if (upDownPos < upDownMin) { upDownPos = upDownMin; }
         if (upDownPos > upDownMax) { upDownPos = upDownMax; }
+    }
+
+    public void setAngle(double angle) {
+        setUpDown((rotationsPerAngle30/30)*angle);
+    }
+
+    public void setLength(double length) {
+        setExpansion((length-retractedExpansionLength)/circumferenceOfExpansionWheel);
+    }
+
+    public void trigIt(double x, double y) {
+        setLength(Math.sqrt((x*x)+(y*y)));
+        setAngle((180/Math.PI)*Math.atan(y/x));
     }
 
     public void update() {
