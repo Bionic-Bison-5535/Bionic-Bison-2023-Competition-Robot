@@ -68,6 +68,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("yaw", navx.yaw());
 		SmartDashboard.putNumber("balance", navx.balance());
 		SmartDashboard.putNumber("dir", dir);
+		SmartDashboard.putBoolean("resistance", resist);
 	}
 	
 
