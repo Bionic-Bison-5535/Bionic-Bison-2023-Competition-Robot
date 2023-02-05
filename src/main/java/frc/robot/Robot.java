@@ -10,10 +10,10 @@ public class Robot extends TimedRobot {
 
   	private final Weswerve swerveCtrl = new Weswerve(30, 31, 32, 33, 20, 21, 22, 23, 10, 11, 12, 13, 70, 100, 148, 358);
 	private final Arm arm = new Arm(50, 51, 0, 0);
+	private final Navx navx = new Navx();
 	private final Controls primary = new Controls(0, 0.05);
 	private final Controls secondary = new Controls(0, 0.05);
-	private final Navx navx = new Navx();
-	private final GetObject collector = new GetObject(1, 2, swerveCtrl, arm);
+	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm);
 	private final Autobalance balancer = new Autobalance(arm, swerveCtrl, navx);
 	
 	Timer timer;
@@ -33,8 +33,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Speed MAX", swerveCtrl.default_speed);
 		SmartDashboard.putNumber("Steer MAX", swerveCtrl.steeringAmplifier);
 		SmartDashboard.putNumber("FRONT", front);
-		SmartDashboard.putNumber("upDown", 0);
-		SmartDashboard.putNumber("expansion", 0);
 	}
 
 	public void dash() {
@@ -112,11 +110,6 @@ public class Robot extends TimedRobot {
 		} else {
 			rotation = (primary.stick(3)-primary.stick(2));
 		}
-
-
-		arm.setExpansion(SmartDashboard.getNumber("expansion", 0));
-		arm.setUpDown(SmartDashboard.getNumber("upDown", 0));
-		
 		
 		if (headless) {
 			front = navx.coterminalYaw();
