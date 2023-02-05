@@ -9,6 +9,7 @@ public class Arm {
     public TalonSRX expansion, upDown;
 
     public double expansionPos, upDownPos;
+    public boolean there;
     public double expansionMin = 0;
     public double expansionMax = 4096*16;
     public double upDownMin = -4096*8;
@@ -95,6 +96,11 @@ public class Arm {
     public void update() {
         expansion.set(ControlMode.PercentOutput, (expansionPos-expansion.getSelectedSensorPosition())/4096);
         upDown.set(ControlMode.PercentOutput, (upDownPos-upDown.getSelectedSensorPosition())/4096);
+        if (Math.abs((expansionPos-expansion.getSelectedSensorPosition())/4096) > 0.4) {
+            there = false;
+        } else {
+            there = true;
+        }
     }
 
 }
