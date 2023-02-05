@@ -9,7 +9,7 @@ public class GetObject {
     public Limelight cubeCam, coneCam;
     private Weswerve swerveCtrl;
     private Arm arm;
-    public int stage = 0; // 0 = Ready, 1 = Aligning, 2 = Arm Going Down, 3 = Intake, 4 = Done, 5 = Error,
+    public int stage = 0; // 0 = Ready, 1 = Aligning, 2 = Arm Going Down, 3 = Intake, 4 = Done + Arm Up, 5 = Error / Cancel,
 
     public double cubeAreaToPickUp = 15;
     public double coneAreaToPickUp = 15;
@@ -21,7 +21,7 @@ public class GetObject {
         arm = armAccess;
     }
 
-    public int alignToCube() {
+    public void alignToCube() {
         if (stage == 0) {
             stage = 1;
         }
@@ -38,10 +38,9 @@ public class GetObject {
                 swerveCtrl.swerve(0, 0, 0, 0);
             }
         }
-        return stage;
     }
 
-    public int alignToCone() {
+    public void alignToCone() {
         if (stage == 0) {
             stage = 1;
         }
@@ -58,7 +57,35 @@ public class GetObject {
                 swerveCtrl.swerve(0, 0, 0, 0);
             }
         }
-        return stage;
+    }
+
+    public boolean getGamePiece(int cube0_or_cone1) { // Returns true if done, otherwise must be run periodically
+        if (stage < 2) {
+            if (cube0_or_cone1 == 0) {
+                alignToCube();
+            } else {
+                alignToCone();
+            }
+        }
+        if (stage == 2) {
+            arm.pos(0);
+            if (arm.there) {
+                stage = 3;
+            }
+        }
+        if (stage == 3) {
+            //intake
+            stage = 4;
+        }
+        if (stage == 4) {
+            arm.pos(3);
+        }
+        if (stage < 4) {
+            return false;
+        } else {
+            stage = 0;
+            return true;
+        }
     }
 
 }
