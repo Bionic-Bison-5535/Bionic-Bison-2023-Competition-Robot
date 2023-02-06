@@ -36,4 +36,8 @@ public class Controls {
         return deadband(in.getRawAxis(axisNumber), inputStickDeadband);
     }
 
+    public int pov() {
+        return in.getPOV();
+    }
+
 }
