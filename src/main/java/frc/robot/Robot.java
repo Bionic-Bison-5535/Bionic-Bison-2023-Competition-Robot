@@ -36,16 +36,40 @@ public class Robot extends TimedRobot {
 	 * 2 = Getting Object
 	 * 3 = Preparing to Score / Aligning & Extending
 	*/
-	
-	public void dashInit() {}
 
-	public void dash() {}
+	public void dash() {
+		SmartDashboard.putBoolean("Headless", headless);
+		SmartDashboard.putNumber("Yaw", navx.yaw());
+		SmartDashboard.putNumber("Balance", navx.balance());
+		SmartDashboard.putBoolean("Resistance Enabled", resist);
+		SmartDashboard.putNumber("Mode", now);
+		SmartDashboard.putBoolean("Smart Features Enabled", !rawMode);
+		SmartDashboard.putBoolean("Final Mode!", finalMode);
+		SmartDashboard.putNumber("Expansion Encoder Value", arm.expansionPos);
+		SmartDashboard.putNumber("Angle Encoder Value", arm.upDownPos);
+		SmartDashboard.putBoolean("Arm Reached Position", arm.there);
+		arm.expansionMin = SmartDashboard.getNumber("Expansion Min", arm.expansionMin);
+		arm.expansionMax = SmartDashboard.getNumber("Expansion Max", arm.expansionMax);
+		arm.upDownMin = SmartDashboard.getNumber("Angle Min", arm.upDownMin);
+		arm.upDownMax = SmartDashboard.getNumber("Angle Max", arm.upDownMax);
+		arm.rotationsPerAngle30 = SmartDashboard.getNumber("Rotations per 30-degrees", arm.rotationsPerAngle30);
+		arm.circumferenceOfExpansionWheel = SmartDashboard.getNumber("Expansion Wheel Circumference", arm.circumferenceOfExpansionWheel);
+		arm.retractedExpansionLength = SmartDashboard.getNumber("Retracted Expansion Length", arm.retractedExpansionLength);
+		arm.pos_0_x = SmartDashboard.getNumber("Pos 0 x", arm.pos_0_x);
+		arm.pos_0_y = SmartDashboard.getNumber("Pos 0 y", arm.pos_0_y);
+		arm.pos_1_x = SmartDashboard.getNumber("Pos 1 x", arm.pos_1_x);
+		arm.pos_1_y = SmartDashboard.getNumber("Pos 1 y", arm.pos_1_y);
+		arm.pos_2_x = SmartDashboard.getNumber("Pos 2 x", arm.pos_2_x);
+		arm.pos_2_y = SmartDashboard.getNumber("Pos 2 y", arm.pos_2_y);
+		arm.pos_3_x = SmartDashboard.getNumber("Pos 3 x", arm.pos_3_x);
+		arm.pos_3_y = SmartDashboard.getNumber("Pos 3 y", arm.pos_3_y);
+		swerveCtrl.default_speed = SmartDashboard.getNumber("Robot Speed", swerveCtrl.default_speed);
+		swerveCtrl.steeringAmplifier = SmartDashboard.getNumber("Robot Steering Sharpness", swerveCtrl.steeringAmplifier);
+	}
 	
 
 	@Override
-	public void robotInit() {
-		dashInit();
-	}
+	public void robotInit() {}
 
 
 	@Override
