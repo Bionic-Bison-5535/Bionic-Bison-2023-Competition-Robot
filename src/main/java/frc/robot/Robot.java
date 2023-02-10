@@ -37,6 +37,26 @@ public class Robot extends TimedRobot {
 	 * 3 = Preparing to Score / Aligning & Extending
 	*/
 
+	public void dashInit() {
+		SmartDashboard.putNumber("Expansion Min", arm.expansionMin);
+		SmartDashboard.putNumber("Expansion Max", arm.expansionMax);
+		SmartDashboard.putNumber("Angle Min", arm.upDownMin);
+		SmartDashboard.putNumber("Angle Max", arm.upDownMax);
+		SmartDashboard.putNumber("Rotations per 30-degrees", arm.rotationsPerAngle30);
+		SmartDashboard.putNumber("Expansion Wheel Circumference", arm.circumferenceOfExpansionWheel);
+		SmartDashboard.putNumber("Retracted Expansion Length", arm.retractedExpansionLength);
+		SmartDashboard.putNumber("Pos 0 x", arm.pos_0_x);
+		SmartDashboard.putNumber("Pos 0 y", arm.pos_0_y);
+		SmartDashboard.putNumber("Pos 1 x", arm.pos_1_x);
+		SmartDashboard.putNumber("Pos 1 y", arm.pos_1_y);
+		SmartDashboard.putNumber("Pos 2 x", arm.pos_2_x);
+		SmartDashboard.putNumber("Pos 2 y", arm.pos_2_y);
+		SmartDashboard.putNumber("Pos 3 x", arm.pos_3_x);
+		SmartDashboard.putNumber("Pos 3 y", arm.pos_3_y);
+		SmartDashboard.putNumber("Robot Speed", swerveCtrl.default_speed);
+		SmartDashboard.putNumber("Robot Steering Sharpness", swerveCtrl.steeringAmplifier);
+	}
+
 	public void dash() {
 		SmartDashboard.putBoolean("Headless", headless);
 		SmartDashboard.putNumber("Yaw", navx.yaw());
@@ -69,7 +89,9 @@ public class Robot extends TimedRobot {
 	
 
 	@Override
-	public void robotInit() {}
+	public void robotInit() {
+		dashInit();
+	}
 
 
 	@Override
