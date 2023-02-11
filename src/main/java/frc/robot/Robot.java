@@ -81,6 +81,10 @@ public class Robot extends TimedRobot {
 		swerveCtrl.default_speed = SmartDashboard.getNumber("Robot Speed", swerveCtrl.default_speed);
 		swerveCtrl.steeringAmplifier = SmartDashboard.getNumber("Robot Steering Sharpness", swerveCtrl.steeringAmplifier);
 	}
+
+	double cubed(double inputNumber) {
+		return inputNumber * inputNumber * inputNumber;
+	}
 	
 
 	@Override
@@ -148,10 +152,10 @@ public class Robot extends TimedRobot {
 		// Dynamic Periodics:
 		if (now == 0) {
 			if (rawMode) {
-				swerveCtrl.swerve(-primary.stick(1), primary.stick(0), primary.stick(3)-primary.stick(2), 0);
-				arm.changeExpansion(primary.stick(4));
 				arm.changeUpDown(primary.stick(5));
 			} else {
+				swerveCtrl.swerve(cubed(-primary.stick(1)), cubed(primary.stick(0)), primary.stick(4), 0);
+				arm.changeExpansion((primary.stick(3)-primary.stick(2)));
 				if (finalMode) {
 					swerveCtrl.speed = swerveCtrl.default_speed * 0.47;
 					if (primary.B.get()) {
@@ -191,14 +195,14 @@ public class Robot extends TimedRobot {
 					dir = newAngle;
 				}
 				if (resist) {
-					dir += 4 * (primary.stick(3)-primary.stick(2));
 					if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
 						rotation = -0.02*(navx.yaw()-dir);
+					dir += 4 * primary.stick(4);
 					} else {
 						rotation = 0;
 					}
 				} else {
-					rotation = (primary.stick(3)-primary.stick(2));
+					rotation = primary.stick(4);
 				}
 				if (primary.BACK.get()) {
 					headless = false;
@@ -207,9 +211,9 @@ public class Robot extends TimedRobot {
 					headless = true;
 				}
 				if (headless) {
-					swerveCtrl.swerve(-primary.stick(1), primary.stick(0), rotation, navx.coterminalYaw());
+					swerveCtrl.swerve(cubed(-primary.stick(1)), cubed(primary.stick(0)), rotation, navx.coterminalYaw());
 				} else {
-					swerveCtrl.swerve(-primary.stick(1), primary.stick(0), rotation, 0);
+					swerveCtrl.swerve(cubed(-primary.stick(1)), cubed(primary.stick(0)), rotation, 0);
 				}
 			}
 		}
