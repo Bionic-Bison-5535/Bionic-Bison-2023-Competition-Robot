@@ -155,6 +155,11 @@ public class Robot extends TimedRobot {
 				swerveCtrl.swerve(cubed(-primary.stick(1)), cubed(primary.stick(0)), primary.stick(4), 0);
 				arm.changeExpansion((primary.stick(3)-primary.stick(2)));
 				arm.changeUpDown(-0.3*primary.stick(5));
+				if (primary.X.get()) {
+					arm.expansionPos = arm.expansionMin;
+				}
+				if (primary.Y.get()) {
+					arm.expansionPos = arm.expansionMax;
 				}
 			} else { // NORMAL MODE:
 				if (finalMode) {
