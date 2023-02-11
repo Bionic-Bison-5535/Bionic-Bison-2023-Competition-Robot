@@ -1,12 +1,14 @@
 package frc.robot.systems;
 
 import java.lang.Math;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
 public class Arm {
 
-    public TalonSRX expansion, upDown;
+    public CANSparkMax expansion, upDown;
+    public RelativeEncoder expansionEncoder, upDownEncoder;
 
     public double expansionPos, upDownPos;
     public boolean there;
@@ -29,14 +31,14 @@ public class Arm {
     public double pos_3_y = 50;
 
     public Arm(int expansion_canID, int upDown_canID, double expansionStart, double upDownStart) {
-        expansion = new TalonSRX(expansion_canID);
-        upDown = new TalonSRX(upDown_canID);
+        expansion = new CANSparkMax(expansion_canID, MotorType.kBrushless);
+        upDown = new CANSparkMax(upDown_canID, MotorType.kBrushless);
         expansionPos = expansionStart;
         upDownPos = upDownStart;
-        expansion.setSelectedSensorPosition(expansionStart);
-        upDown.setSelectedSensorPosition(upDownStart);
-        expansion.configOpenloopRamp(0);
-        upDown.configOpenloopRamp(0);
+        expansionEncoder = expansion.getEncoder();
+        upDownEncoder = upDown.getEncoder();
+        expansionEncoder.setPosition(expansionStart);
+        upDownEncoder.setPosition(upDownStart);
         expansion.setInverted(true);
         upDown.setInverted(false);
     }
@@ -94,9 +96,17 @@ public class Arm {
     }
 
     public void update() {
-        expansion.set(ControlMode.PercentOutput, (expansionPos-expansion.getSelectedSensorPosition())/4096);
-        upDown.set(ControlMode.PercentOutput, (upDownPos-upDown.getSelectedSensorPosition())/4096);
-        if (Math.abs((expansionPos-expansion.getSelectedSensorPosition())/4096) > 0.4) {
+        if (Math.abs((expansionPos-expansionEncoder.getPosition())/(12.33)) > 0.4) {
+            expansion.set((expansionPos-expansionEncoder.getPosition())/(12.33));
+        } else {
+            expansion.set(0);
+        }
+        if (Math.abs((upDownPos-upDownEncoder.getPosition())/(12.33)) > 0.4) {
+            upDown.set((upDownPos-upDownEncoder.getPosition())/(12.33));
+        } else {
+            upDown.set(0);
+        }
+        if ((Math.abs((expansionPos-expansionEncoder.getPosition())/(12.33)) > 0.4) && (Math.abs((upDownPos-upDown.getEncoder().getPosition())/(12.33)) > 0.4)) {
             there = false;
         } else {
             there = true;
