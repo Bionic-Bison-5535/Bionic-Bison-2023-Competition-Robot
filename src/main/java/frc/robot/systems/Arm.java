@@ -96,17 +96,17 @@ public class Arm {
     }
 
     public void update() {
-        if (Math.abs((expansionPos-expansionEncoder.getPosition())/(12.33)) > 0.4) {
+        if (Math.abs((expansionPos-expansionEncoder.getPosition())/(12.33)) > 0.05) {
             expansion.set((expansionPos-expansionEncoder.getPosition())/(12.33));
         } else {
             expansion.set(0);
         }
-        if (Math.abs((upDownPos-upDownEncoder.getPosition())/(12.33)) > 0.4) {
+        if (Math.abs((upDownPos-upDownEncoder.getPosition())/(12.33)) > 0.05) {
             upDown.set((upDownPos-upDownEncoder.getPosition())/(12.33));
         } else {
             upDown.set(0);
         }
-        if ((Math.abs((expansionPos-expansionEncoder.getPosition())/(12.33)) > 0.4) && (Math.abs((upDownPos-upDown.getEncoder().getPosition())/(12.33)) > 0.4)) {
+        if ((Math.abs((expansionPos-expansionEncoder.getPosition())/(12.33)) > 0.05) && (Math.abs((upDownPos-upDown.getEncoder().getPosition())/(12.33)) > 0.05)) {
             there = false;
         } else {
             there = true;
