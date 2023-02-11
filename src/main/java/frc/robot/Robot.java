@@ -151,11 +151,12 @@ public class Robot extends TimedRobot {
 
 		// Dynamic Periodics:
 		if (now == 0) {
-			if (rawMode) {
-				arm.changeUpDown(primary.stick(5));
-			} else {
+			if (rawMode) { // RAW MODE:
 				swerveCtrl.swerve(cubed(-primary.stick(1)), cubed(primary.stick(0)), primary.stick(4), 0);
 				arm.changeExpansion((primary.stick(3)-primary.stick(2)));
+				arm.changeUpDown(-0.3*primary.stick(5));
+				}
+			} else { // NORMAL MODE:
 				if (finalMode) {
 					swerveCtrl.speed = swerveCtrl.default_speed * 0.47;
 					if (primary.B.get()) {
