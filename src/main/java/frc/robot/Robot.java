@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Expansion Encoder Value", arm.expansionPos);
 		SmartDashboard.putNumber("Angle Encoder Value", arm.upDownPos);
 		SmartDashboard.putBoolean("Arm Reached Position", arm.there);
+		SmartDashboard.putBoolean("Robot In Motion", navx.accel());
 		arm.expansionMin = SmartDashboard.getNumber("Expansion Min", arm.expansionMin);
 		arm.expansionMax = SmartDashboard.getNumber("Expansion Max", arm.expansionMax);
 		arm.upDownMin = SmartDashboard.getNumber("Angle Min", arm.upDownMin);
