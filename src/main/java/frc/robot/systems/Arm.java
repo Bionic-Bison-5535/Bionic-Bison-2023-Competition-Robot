@@ -13,9 +13,9 @@ public class Arm {
     public double expansionPos, upDownPos;
     public boolean there;
     public double expansionMin = 0;
-    public double expansionMax = 4096*16;
-    public double upDownMin = -4096*8;
-    public double upDownMax = 4096*8;
+    public double expansionMax = 12.33*16;
+    public double upDownMin = -12.33*8;
+    public double upDownMax = 12.33*8;
 
     public double rotationsPerAngle30 = 10;
     public double retractedExpansionLength = 30;
@@ -44,25 +44,25 @@ public class Arm {
     }
 
     public void setExpansion(double Rotations) {
-        expansionPos = 4096*Rotations;
+        expansionPos = 12.33*Rotations;
         if (expansionPos < expansionMin) { expansionPos = expansionMin; }
         if (expansionPos > expansionMax) { expansionPos = expansionMax; }
     }
     
     public void changeExpansion(double newRotations) {
-        expansionPos += 4096*newRotations;
+        expansionPos += 12.33*newRotations;
         if (expansionPos < expansionMin) { expansionPos = expansionMin; }
         if (expansionPos > expansionMax) { expansionPos = expansionMax; }
     }
 
     public void setUpDown(double Rotations) {
-        upDownPos = 4096*Rotations;
+        upDownPos = 12.33*Rotations;
         if (upDownPos < upDownMin) { upDownPos = upDownMin; }
         if (upDownPos > upDownMax) { upDownPos = upDownMax; }
     }
     
     public void changeUpDown(double newRotations) {
-        upDownPos += 4096*newRotations;
+        upDownPos += 12.33*newRotations;
         if (upDownPos < upDownMin) { upDownPos = upDownMin; }
         if (upDownPos > upDownMax) { upDownPos = upDownMax; }
     }
