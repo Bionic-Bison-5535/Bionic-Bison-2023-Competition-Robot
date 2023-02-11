@@ -196,9 +196,9 @@ public class Robot extends TimedRobot {
 					dir = newAngle;
 				}
 				if (resist) {
-					dir += 3 * (primary.stick(3)-primary.stick(2));
+					dir += 4 * (primary.stick(3)-primary.stick(2));
 					if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
-						rotation = -0.04*(navx.yaw()-dir);
+						rotation = -0.02*(navx.yaw()-dir);
 					} else {
 						rotation = 0;
 					}
