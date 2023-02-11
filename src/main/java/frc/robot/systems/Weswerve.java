@@ -1,6 +1,6 @@
 /*  WESWERVE for Trapezoid Swerve Robot with CANCoder Angle Detection and Either Talon SRX or CANSparkMax motor controllers.
 	Program written by Wesley McGinn {wesleymcginn1@gmail.com} for Team 5535 (The Bionic Bison, New Buffalo Michigan)
-	Version 4.0 Beta
+	Version 4.1 Beta
 */
 
 package frc.robot.systems;
@@ -16,8 +16,8 @@ public class Weswerve {
 
 	private boolean usingTalons = true; // Set to false to use CANSparkMaxs, set to true to use TalonSRXs.
 	
-	private final TalonSRX frontLeftSteer, frontRightSteer, backRightSteer, backLeftSteer, frontLeftDrive, frontRightDrive, backRightDrive, backLeftDrive;
-	private final CANSparkMax frontLeftSteer_sm, frontRightSteer_sm, backRightSteer_sm, backLeftSteer_sm, frontLeftDrive_sm, frontRightDrive_sm, backRightDrive_sm, backLeftDrive_sm;
+	private TalonSRX frontLeftSteer, frontRightSteer, backRightSteer, backLeftSteer, frontLeftDrive, frontRightDrive, backRightDrive, backLeftDrive;
+	private CANSparkMax frontLeftSteer_sm, frontRightSteer_sm, backRightSteer_sm, backLeftSteer_sm, frontLeftDrive_sm, frontRightDrive_sm, backRightDrive_sm, backLeftDrive_sm;
 	public final CANCoder frontLeft, frontRight, backRight, backLeft;
 	public double angle0, angle1, angle2, angle3;
 	public boolean negation0, negation1, negation2, negation3;
@@ -114,10 +114,10 @@ public class Weswerve {
 				if (negation2) { backRightDrive.set(ControlMode.PercentOutput, -V2); } else { backRightDrive.set(ControlMode.PercentOutput, V2); }
 				if (negation3) { backLeftDrive.set(ControlMode.PercentOutput, -V3); } else { backLeftDrive.set(ControlMode.PercentOutput, V3); }
 			} else {
-				if (negation0) { frontLeftDrive.set(V0); } else { frontLeftDrive.set(-V0); }
-				if (negation1) { frontRightDrive.set(V1); } else { frontRightDrive.set(-V1); }
-				if (negation2) { backRightDrive.set(V2); } else { backRightDrive.set(-V2); }
-				if (negation3) { backLeftDrive.set(V3); } else { backLeftDrive.set(-V3); }
+				if (negation0) { frontLeftDrive_sm.set(V0); } else { frontLeftDrive_sm.set(-V0); }
+				if (negation1) { frontRightDrive_sm.set(V1); } else { frontRightDrive_sm.set(-V1); }
+				if (negation2) { backRightDrive_sm.set(V2); } else { backRightDrive_sm.set(-V2); }
+				if (negation3) { backLeftDrive_sm.set(V3); } else { backLeftDrive_sm.set(-V3); }
 			}
 		} else {
 			if (usingTalons) {
