@@ -40,4 +40,8 @@ public class Controls {
         return in.getPOV();
     }
 
+    public boolean active() {
+        return (stick(0) != 0 || stick(1) != 0);
+    }
+
 }
