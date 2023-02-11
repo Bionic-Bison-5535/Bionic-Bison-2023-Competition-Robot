@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
 	public boolean resist = true;
 	public boolean rawMode = false;
 	public boolean finalMode = false;
+	private boolean rotationNeeded = false;
 	private int selection;
 	private boolean selectionNegated;
 	private double computedAngle;
@@ -193,22 +194,35 @@ public class Robot extends TimedRobot {
 					} else {
 						dir += 180;
 					}
+					while (primary.LEFT.get()) {}
+					rotationNeeded = true;
 				}
 				if (primary.pov() != -1) {
 					newAngle = (double)primary.pov();
 					while (newAngle > dir+180) { newAngle -= 360; }
 					while (newAngle < dir-180) { newAngle += 360; }
 					dir = newAngle;
+					rotationNeeded = true;
+				}
+				if (primary.stick(4) == 0) {
+					rotationNeeded = true;
 				}
 				if (resist) {
-					if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
-						rotation = -0.02*(navx.yaw()-dir);
 					dir += 4 * primary.stick(4);
+					if (Math.abs(navx.yaw()-dir) > dir_accuracy && (((primary.active()) || (!primary.active() && !navx.accel())) || rotationNeeded)) {
+						rotation = -0.01*(navx.yaw()-dir);
+						if (rotation > 0) {
+							rotation += 0.1;
+						} else {
+							rotation -= 0.1;
+						}
 					} else {
 						rotation = 0;
+						rotationNeeded = false;
 					}
 				} else {
 					rotation = primary.stick(4);
+					rotationNeeded = false;
 				}
 				if (primary.BACK.get()) {
 					headless = false;
