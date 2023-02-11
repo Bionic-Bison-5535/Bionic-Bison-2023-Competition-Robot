@@ -42,9 +42,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Expansion Max", arm.expansionMax);
 		SmartDashboard.putNumber("Angle Min", arm.upDownMin);
 		SmartDashboard.putNumber("Angle Max", arm.upDownMax);
-		SmartDashboard.putNumber("Rotations per 30-degrees", arm.rotationsPerAngle30);
-		SmartDashboard.putNumber("Expansion Wheel Circumference", arm.circumferenceOfExpansionWheel);
-		SmartDashboard.putNumber("Retracted Expansion Length", arm.retractedExpansionLength);
 		SmartDashboard.putNumber("Pos 0 x", arm.pos_0_x);
 		SmartDashboard.putNumber("Pos 0 y", arm.pos_0_y);
 		SmartDashboard.putNumber("Pos 1 x", arm.pos_1_x);
@@ -72,9 +69,6 @@ public class Robot extends TimedRobot {
 		arm.expansionMax = SmartDashboard.getNumber("Expansion Max", arm.expansionMax);
 		arm.upDownMin = SmartDashboard.getNumber("Angle Min", arm.upDownMin);
 		arm.upDownMax = SmartDashboard.getNumber("Angle Max", arm.upDownMax);
-		arm.rotationsPerAngle30 = SmartDashboard.getNumber("Rotations per 30-degrees", arm.rotationsPerAngle30);
-		arm.circumferenceOfExpansionWheel = SmartDashboard.getNumber("Expansion Wheel Circumference", arm.circumferenceOfExpansionWheel);
-		arm.retractedExpansionLength = SmartDashboard.getNumber("Retracted Expansion Length", arm.retractedExpansionLength);
 		arm.pos_0_x = SmartDashboard.getNumber("Pos 0 x", arm.pos_0_x);
 		arm.pos_0_y = SmartDashboard.getNumber("Pos 0 y", arm.pos_0_y);
 		arm.pos_1_x = SmartDashboard.getNumber("Pos 1 x", arm.pos_1_x);
