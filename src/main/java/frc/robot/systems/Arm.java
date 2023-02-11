@@ -17,9 +17,9 @@ public class Arm {
     public double upDownMin = -12.33*8;
     public double upDownMax = 12.33*8;
 
-    public double rotationsPerAngle30 = 10;
-    public double retractedExpansionLength = 30;
-    public double circumferenceOfExpansionWheel = 10;
+    public double rotationsPerAngle30 = 18;
+    public double retractedExpansionLength = 28;
+    public double circumferenceOfExpansionWheel = 7.8125;
 
     public double pos_0_x = 50; // Collect or Score in Row 1
     public double pos_0_y = 50;
