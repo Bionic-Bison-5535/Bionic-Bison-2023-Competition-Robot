@@ -19,12 +19,16 @@ public class Navx {
         return Math.round(100*(NavX.getAngle()-yaw_Offset))/100;
     }
 
+    public double coterminalYaw() {
+        return yaw() % 360;
+    }
+
     public double balance() {
         return NavX.getRoll()-balance_Offset;
     }
 
-    public double coterminalYaw() {
-        return yaw() % 360;
+    public boolean accel() {
+        return (NavX.getVelocityX() != 0);
     }
 
     public void zeroYaw() {
