@@ -32,10 +32,10 @@ public class Robot extends TimedRobot {
 	private int getting;
 	private double newAngle;
 	public int now = 0;
-	/* 0 = Driving
-	 * 1 = Adjusting Wheel
-	 * 2 = Getting Object
-	 * 3 = Preparing to Score / Aligning & Extending
+	/* now = ID of currently running dynamic periodic
+	 * 0 = Driving
+	 * 1 = Getting Object
+	 * 2 = Preparing to Score / Aligning & Extending
 	*/
 
 	public void dashInit() {
@@ -94,6 +94,12 @@ public class Robot extends TimedRobot {
 	double cubed(double inputNumber) {
 		return inputNumber * inputNumber * inputNumber;
 	}
+
+	void action(boolean dynamicPeriodicFunction) {
+		if (dynamicPeriodicFunction == true) {
+			now = 0;
+		}
+	}
 	
 
 	@Override
@@ -148,11 +154,7 @@ public class Robot extends TimedRobot {
 		if (secondary.B.get()) {
 			resist = false;
 		}
-		if (secondary.pov() != -1) {
-			now = 1;
-			selection = secondary.pov();
-			swerveCtrl.setAngles(0, 0, 0, 0);
-			swerveCtrl.setVelocities(0, 0, 0, 0);
+		if (secondary.X.get()) {
 		}
 		if (secondary.Y.get()) {
 			now = 0;
@@ -246,33 +248,10 @@ public class Robot extends TimedRobot {
 			}
 		}
 		if (now == 1) {
-			if (secondary.X.get()) {
-				selectionNegated = !selectionNegated;
-				if (selectionNegated) {
-					if (selection == 0) { swerveCtrl.setVelocities(-0.4, 0, 0, 0); }
-					if (selection == 90) { swerveCtrl.setVelocities(0, -0.4, 0, 0); }
-					if (selection == 180) { swerveCtrl.setVelocities(0, 0, -0.4, 0); }
-					if (selection == 270) { swerveCtrl.setVelocities(0, 0, 0, -0.4); }
-				} else {
-					if (selection == 0) { swerveCtrl.setVelocities(0.4, 0, 0, 0); }
-					if (selection == 90) { swerveCtrl.setVelocities(0, 0.4, 0, 0); }
-					if (selection == 180) { swerveCtrl.setVelocities(0, 0, 0.4, 0); }
-					if (selection == 270) { swerveCtrl.setVelocities(0, 0, 0, 0.4); }
-				}
-				while (secondary.X.get()) {}
-				swerveCtrl.setVelocities(0, 0, 0, 0);
-			}
-			computedAngle = swerveCtrl.i_tan(secondary.stick(0), secondary.stick(1));
-			if (selectionNegated) { computedAngle += 180; }
-			if (selection == 0) { swerveCtrl.A_offset = computedAngle; }
-			if (selection == 90) { swerveCtrl.B_offset = computedAngle; }
-			if (selection == 180) { swerveCtrl.C_offset = computedAngle; }
-			if (selection == 270) { swerveCtrl.D_offset = computedAngle; }
+			action(collector.getGamePiece(getting));
 		}
 		if (now == 2) {
-			if (collector.getGamePiece(getting)) {
-				now = 0;
-			}
+			
 		}
 		if (now == 4) {}
 
