@@ -35,7 +35,7 @@ public class Navx {
         yaw_Offset = Math.round(100*NavX.getAngle())/100;
     }
 
-    public void reset() {
+    public void fullReset() {
         NavX.reset();
     }
 

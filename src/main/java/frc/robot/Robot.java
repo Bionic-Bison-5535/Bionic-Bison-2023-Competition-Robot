@@ -115,7 +115,9 @@ public class Robot extends TimedRobot {
 
 
 	@Override
-	public void autonomousInit() {}
+	public void autonomousInit() {
+		dir = 0;
+	}
 
 
 	@Override
@@ -127,8 +129,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		navx.zeroYaw();
-		dir = 0;
+		now = 0;
 	}
 
 
@@ -155,6 +156,7 @@ public class Robot extends TimedRobot {
 			resist = false;
 		}
 		if (secondary.X.get()) {
+			navx.fullReset();
 		}
 		if (secondary.Y.get()) {
 			now = 0;
@@ -241,7 +243,7 @@ public class Robot extends TimedRobot {
 					headless = true;
 				}
 				if (headless) {
-					swerveCtrl.swerve(cubed(-primary.stick(1)), cubed(primary.stick(0)), rotation, navx.coterminalYaw());
+					swerveCtrl.swerve(cubed(-primary.stick(1)), cubed(primary.stick(0)), rotation, navx.coterminalYaw()+180);
 				} else {
 					swerveCtrl.swerve(cubed(-primary.stick(1)), cubed(primary.stick(0)), rotation, 0);
 				}
@@ -253,7 +255,6 @@ public class Robot extends TimedRobot {
 		if (now == 2) {
 			
 		}
-		if (now == 4) {}
 
 		// Static Periodics:
 		swerveCtrl.update();
