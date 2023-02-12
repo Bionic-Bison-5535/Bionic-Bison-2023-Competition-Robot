@@ -16,7 +16,7 @@ public class Navx {
     }
 
     public double yaw() {
-        return Math.round(100*(NavX.getAngle()-yaw_Offset))/100;
+        return (NavX.getAngle()-yaw_Offset);
     }
 
     public double coterminalYaw() {
@@ -28,11 +28,11 @@ public class Navx {
     }
 
     public boolean accel() {
-        return (NavX.getVelocityX() != 0);
+        return (Math.sqrt(Math.pow(NavX.getVelocityX(),2)+Math.pow(NavX.getVelocityX(),2)) >= 0.03);
     }
 
     public void zeroYaw() {
-        yaw_Offset = Math.round(100*NavX.getAngle())/100;
+        yaw_Offset = NavX.getAngle();
     }
 
     public void fullReset() {

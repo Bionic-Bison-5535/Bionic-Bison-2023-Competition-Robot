@@ -183,10 +183,10 @@ public class Robot extends TimedRobot {
 					swerveCtrl.speed = swerveCtrl.default_speed * 0.3;
 					if (primary.B.get()) {
 						if (navx.balance() < -2 && arm.there) {
-							arm.changeExpansion(2);
+							arm.changeExpansion(-2);
 						}
 						if (navx.balance() > 2 && arm.there) {
-							arm.changeExpansion(-2);
+							arm.changeExpansion(2);
 						}
 					}
 				} else {
@@ -225,12 +225,16 @@ public class Robot extends TimedRobot {
 				}
 				if (resist) {
 					dir += 4 * primary.stick(4);
-					if (Math.abs(navx.yaw()-dir) > dir_accuracy && (((primary.active()) || (!primary.active() && !navx.accel())) || rotationNeeded)) {
-						rotation = -0.01*(navx.yaw()-dir);
-						if (rotation > 0) {
-							rotation += 0.1;
+					if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
+						if (primary.active() || !navx.accel() || rotationNeeded) {
+							rotation = -0.01*(navx.yaw()-dir);
+							if (rotation > 0) {
+								rotation += 0.1;
+							} else {
+								rotation -= 0.1;
+							}
 						} else {
-							rotation -= 0.1;
+							rotation = 0;
 						}
 					} else {
 						rotation = 0;
