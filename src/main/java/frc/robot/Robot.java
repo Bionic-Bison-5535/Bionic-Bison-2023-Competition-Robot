@@ -53,6 +53,10 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Pos 3 y", arm.pos_3_y);
 		SmartDashboard.putNumber("Robot Speed", swerveCtrl.default_speed);
 		SmartDashboard.putNumber("Robot Steering Sharpness", swerveCtrl.steeringAmplifier);
+		SmartDashboard.putNumber("A offset", swerveCtrl.A_offset);
+		SmartDashboard.putNumber("B offset", swerveCtrl.B_offset);
+		SmartDashboard.putNumber("C offset", swerveCtrl.C_offset);
+		SmartDashboard.putNumber("D offset", swerveCtrl.D_offset);
 	}
 
 	public void dash() {
@@ -81,6 +85,10 @@ public class Robot extends TimedRobot {
 		arm.pos_3_y = SmartDashboard.getNumber("Pos 3 y", arm.pos_3_y);
 		swerveCtrl.default_speed = SmartDashboard.getNumber("Robot Speed", swerveCtrl.default_speed);
 		swerveCtrl.steeringAmplifier = SmartDashboard.getNumber("Robot Steering Sharpness", swerveCtrl.steeringAmplifier);
+		swerveCtrl.A_offset = SmartDashboard.getNumber("A offset", swerveCtrl.A_offset);
+		swerveCtrl.B_offset = SmartDashboard.getNumber("B offset", swerveCtrl.B_offset);
+		swerveCtrl.C_offset = SmartDashboard.getNumber("C offset", swerveCtrl.C_offset);
+		swerveCtrl.D_offset = SmartDashboard.getNumber("D offset", swerveCtrl.D_offset);
 	}
 
 	double cubed(double inputNumber) {
