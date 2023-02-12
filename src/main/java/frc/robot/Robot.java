@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
 	public boolean resist = true;
 	public boolean rawMode = false;
 	public boolean finalMode = false;
+	public double pwr2 = 0.15;
 	private boolean rotationNeeded = false;
 	private int selection;
 	private boolean selectionNegated;
@@ -57,6 +58,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("B offset", swerveCtrl.B_offset);
 		SmartDashboard.putNumber("C offset", swerveCtrl.C_offset);
 		SmartDashboard.putNumber("D offset", swerveCtrl.D_offset);
+		SmartDashboard.putNumber("Secondary Adjustment Strength", pwr2);
 	}
 
 	public void dash() {
@@ -89,6 +91,7 @@ public class Robot extends TimedRobot {
 		swerveCtrl.B_offset = SmartDashboard.getNumber("B offset", swerveCtrl.B_offset);
 		swerveCtrl.C_offset = SmartDashboard.getNumber("C offset", swerveCtrl.C_offset);
 		swerveCtrl.D_offset = SmartDashboard.getNumber("D offset", swerveCtrl.D_offset);
+		pwr2 = SmartDashboard.getNumber("Secondary Adjustment Strength", pwr2);
 	}
 
 	double cubed(double inputNumber) {
@@ -165,7 +168,7 @@ public class Robot extends TimedRobot {
 		// Dynamic Periodics:
 		if (now == 0) {
 			if (rawMode) { // RAW MODE:
-				swerveCtrl.swerve(cubed(-primary.stick(1)), cubed(primary.stick(0)), primary.stick(4), 0);
+				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), primary.stick(4), 0);
 				arm.changeExpansion(primary.stick(3)-primary.stick(2));
 				arm.changeUpDown(-0.3*primary.stick(5));
 			} else { // NORMAL MODE:
@@ -237,9 +240,9 @@ public class Robot extends TimedRobot {
 					headless = true;
 				}
 				if (headless) {
-					swerveCtrl.swerve(cubed(-primary.stick(1)), cubed(primary.stick(0)), rotation, navx.coterminalYaw()+180);
+					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+180);
 				} else {
-					swerveCtrl.swerve(cubed(-primary.stick(1)), cubed(primary.stick(0)), rotation, 0);
+					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
 				}
 			}
 		}
