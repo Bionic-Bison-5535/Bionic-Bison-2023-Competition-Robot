@@ -170,7 +170,7 @@ public class Robot extends TimedRobot {
 				arm.changeUpDown(-0.3*primary.stick(5));
 			} else { // NORMAL MODE:
 				if (finalMode) {
-					swerveCtrl.speed = swerveCtrl.default_speed * 0.47;
+					swerveCtrl.speed = swerveCtrl.default_speed * 0.3;
 					if (primary.B.get()) {
 						if (navx.balance() < -2 && arm.there) {
 							arm.changeExpansion(2);
