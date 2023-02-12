@@ -21,6 +21,8 @@ public class Arm {
     private double retractedExpansionLength = 28;
     private double circumferenceOfExpansionWheel = 7.8125;
 
+    private double previousEncoderValue = 1000000;
+
     public double pos_0_x = 50; // Collect or Score in Row 1
     public double pos_0_y = 30;
     public double pos_1_x = 50; // Score in Row 2
@@ -41,6 +43,20 @@ public class Arm {
         upDownEncoder.setPosition(upDownStart);
         expansion.setInverted(true);
         upDown.setInverted(false);
+    }
+
+    public boolean zeroExpansion() {
+        if (expansionEncoder.getPosition() < previousEncoderValue) {
+            previousEncoderValue = expansionEncoder.getPosition();
+            expansion.set(-0.5);
+            return false;
+        } else {
+            expansion.set(0);
+            previousEncoderValue = 1000000;
+            expansionEncoder.setPosition(0);
+            expansionPos = 0;
+            return true;
+        }
     }
 
     public void setExpansion(double Rotations) {
