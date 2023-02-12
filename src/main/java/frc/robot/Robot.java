@@ -12,7 +12,7 @@ public class Robot extends TimedRobot {
 	private final Arm arm = new Arm(50, 51, 0, 0);
 	private final Navx navx = new Navx();
 	private final Controls primary = new Controls(0, 0.05);
-	private final Controls secondary = new Controls(1, 0.4);
+	private final Controls secondary = new Controls(1, 0.17);
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm);
 	
 	Timer timer;
@@ -160,10 +160,17 @@ public class Robot extends TimedRobot {
 		}
 		if (secondary.X.get()) {
 			navx.fullReset();
+			while (secondary.X.get()) {}
+			navx.zeroYaw();
+			dir = 0;
 		}
 		if (secondary.Y.get()) {
 			now = 0;
 		}
+		swerveCtrl.default_speed -= 0.005*secondary.stick(5);
+		if (swerveCtrl.default_speed < -1) { swerveCtrl.default_speed = -1; }
+		if (swerveCtrl.default_speed > 1) { swerveCtrl.default_speed = 1; }
+		swerveCtrl.steeringAmplifier += 0.005*secondary.stick(4);
 
 		// Dynamic Periodics:
 		if (now == 0) {
