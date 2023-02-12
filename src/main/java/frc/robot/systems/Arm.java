@@ -17,18 +17,18 @@ public class Arm {
     public double upDownMin = 0;
     public double upDownMax = 88;
 
-    public double rotationsPerAngle30 = 18;
-    public double retractedExpansionLength = 28;
-    public double circumferenceOfExpansionWheel = 7.8125;
+    private double rotationsPerAngle30 = 18;
+    private double retractedExpansionLength = 28;
+    private double circumferenceOfExpansionWheel = 7.8125;
 
     public double pos_0_x = 50; // Collect or Score in Row 1
-    public double pos_0_y = 50;
+    public double pos_0_y = 30;
     public double pos_1_x = 50; // Score in Row 2
-    public double pos_1_y = 50;
+    public double pos_1_y = 30;
     public double pos_2_x = 50; // Score in Row 3
-    public double pos_2_y = 50;
+    public double pos_2_y = 30;
     public double pos_3_x = 50; // Holding Mode
-    public double pos_3_y = 50;
+    public double pos_3_y = 30;
 
     public Arm(int expansion_canID, int upDown_canID, double expansionStart, double upDownStart) {
         expansion = new CANSparkMax(expansion_canID, MotorType.kBrushless);
