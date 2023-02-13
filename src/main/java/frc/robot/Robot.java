@@ -59,6 +59,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("C offset", swerveCtrl.C_offset);
 		SmartDashboard.putNumber("D offset", swerveCtrl.D_offset);
 		SmartDashboard.putNumber("Secondary Adjustment Strength", pwr2);
+		SmartDashboard.putNumber("Cube Closeness for Pickup", collector.cubeAreaToPickUp);
+		SmartDashboard.putNumber("Cone Closeness for Pickup", collector.coneAreaToPickUp);
 	}
 
 	public void dash() {
@@ -92,6 +94,8 @@ public class Robot extends TimedRobot {
 		swerveCtrl.C_offset = SmartDashboard.getNumber("C offset", swerveCtrl.C_offset);
 		swerveCtrl.D_offset = SmartDashboard.getNumber("D offset", swerveCtrl.D_offset);
 		pwr2 = SmartDashboard.getNumber("Secondary Adjustment Strength", pwr2);
+		collector.cubeAreaToPickUp = SmartDashboard.getNumber("Cube Closeness for Pickup", collector.cubeAreaToPickUp);
+		collector.coneAreaToPickUp = SmartDashboard.getNumber("Cone Closeness for Pickup", collector.coneAreaToPickUp);
 	}
 
 	double cubed(double inputNumber) {
