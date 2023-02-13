@@ -74,8 +74,10 @@ public class GetObject {
             }
         }
         if (stage == 3) {
-            //intake
-            stage = 4;
+            //grab
+            // if (grabber squeezing tight) {
+                stage = 4;
+            // }
         }
         if (stage == 4) {
             arm.pos(3);

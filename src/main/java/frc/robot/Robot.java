@@ -139,8 +139,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
-		// Secondary Controller Input:
-		if (secondary.BACK.get()) {
+		if (secondary.BACK.get()) {          // Secondary Controller Input:
 			rawMode = true;
 		}
 		if (secondary.START.get()) {
@@ -172,14 +171,17 @@ public class Robot extends TimedRobot {
 		if (swerveCtrl.default_speed > 1) { swerveCtrl.default_speed = 1; }
 		swerveCtrl.steeringAmplifier += 0.005*secondary.stick(4);
 
-		// Dynamic Periodics:
 		if (now == 0) {
-			if (rawMode) { // RAW MODE:
+
+			if (rawMode) {                   // RAW MODE:
+
 				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), primary.stick(4), 0);
 				arm.changeExpansion(primary.stick(3)-primary.stick(2));
 				arm.changeUpDown(-0.3*primary.stick(5));
-			} else { // NORMAL MODE:
-				if (finalMode) {
+			
+			} else {                         // NORMAL MODE:
+
+				if (finalMode) {                 // Restrictive Final Mode Functionality:
 					swerveCtrl.speed = swerveCtrl.default_speed * 0.3;
 					if (primary.B.get()) {
 						if (navx.balance() < -2 && arm.there) {
@@ -189,18 +191,26 @@ public class Robot extends TimedRobot {
 							arm.changeExpansion(2);
 						}
 					}
-				} else {
+				
+				} else {                         // Restrictive Non-Final Mode Functionality:
 					swerveCtrl.speed = swerveCtrl.default_speed;
 					if (primary.X.get()) {
 						getting = 0;
-						now = 2;
+						now = 1;
 					}
 					if (primary.Y.get()) {
 						getting = 1;
-						now = 2;
+						now = 1;
 					}
 				}
-				if (primary.A.get()) {
+
+				if (primary.BACK.get()) {        // General Primary Controller Button Actions:
+					headless = false;
+				}
+				if (primary.START.get()) {
+					headless = true;
+				}
+				if (primary.A.get()) {            
 					navx.zeroYaw();
 					dir = 0;
 				}
@@ -220,7 +230,8 @@ public class Robot extends TimedRobot {
 					dir = newAngle;
 					rotationNeeded = true;
 				}
-				if (primary.stick(4) == 0) {
+
+				if (primary.stick(4) != 0) {     // Rotational Management:
 					rotationNeeded = true;
 				}
 				if (resist) {
@@ -244,13 +255,8 @@ public class Robot extends TimedRobot {
 					rotation = primary.stick(4);
 					rotationNeeded = false;
 				}
-				if (primary.BACK.get()) {
-					headless = false;
-				}
-				if (primary.START.get()) {
-					headless = true;
-				}
-				if (headless) {
+				
+				if (headless) {                  // Actual Drive:
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+180);
 				} else {
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
