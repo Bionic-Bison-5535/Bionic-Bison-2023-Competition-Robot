@@ -14,6 +14,7 @@ public class Robot extends TimedRobot {
 	private final Controls primary = new Controls(0, 0.05);
 	private final Controls secondary = new Controls(1, 0.17);
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm);
+	private final Score score = new Score(0, swerveCtrl, arm);
 	
 	Timer timer;
 
@@ -75,6 +76,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Angle Encoder Value", arm.upDownPos);
 		SmartDashboard.putBoolean("Arm Reached Position", arm.there);
 		SmartDashboard.putBoolean("Robot In Motion", navx.accel());
+		SmartDashboard.putNumber("Points Earned", score.points);
+		SmartDashboard.putNumber("Cubes ◼", score.cubes);
+		SmartDashboard.putNumber("Cones ▲", score.cones);
 		arm.expansionMin = SmartDashboard.getNumber("Expansion Min", arm.expansionMin);
 		arm.expansionMax = SmartDashboard.getNumber("Expansion Max", arm.expansionMax);
 		arm.upDownMin = SmartDashboard.getNumber("Angle Min", arm.upDownMin);
