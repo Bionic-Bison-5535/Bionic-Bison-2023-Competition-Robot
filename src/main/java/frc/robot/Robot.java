@@ -14,7 +14,7 @@ public class Robot extends TimedRobot {
 	private final Controls primary = new Controls(0, 0.05);
 	private final Controls secondary = new Controls(1, 0.17);
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm);
-	private final Score score = new Score(0, swerveCtrl, arm);
+	private final Score score = new Score(0, swerveCtrl, arm, navx);
 	
 	Timer timer;
 
@@ -37,7 +37,8 @@ public class Robot extends TimedRobot {
 	/* now = ID of currently running dynamic periodic
 	 * 0 = Driving
 	 * 1 = Getting Object
-	 * 2 = Preparing to Score / Aligning & Extending
+	 * 2 = Preparing to Score
+	 * 3 = Scoring Mode (With Input)
 	*/
 
 	public void dashInit() {
@@ -106,9 +107,9 @@ public class Robot extends TimedRobot {
 		return inputNumber * inputNumber * inputNumber;
 	}
 
-	void action(boolean dynamicPeriodicFunction) {
+	void action(boolean dynamicPeriodicFunction, int defaultNowTo) {
 		if (dynamicPeriodicFunction == true) {
-			now = 0;
+			now = defaultNowTo;
 		}
 	}
 	
@@ -272,10 +273,15 @@ public class Robot extends TimedRobot {
 			}
 		}
 		if (now == 1) {
-			action(collector.getGamePiece(getting));
+			action(collector.getGamePiece(getting), 0);
 		}
 		if (now == 2) {
-			
+			action(score.prepare(getting), 3);
+		}
+		if (now == 3) {
+			if (primary.stick(5) == 0) { arm.pos(1); }
+			if (primary.stick(5) > 0) { arm.pos(0); }
+			if (primary.stick(5) < 0) { arm.pos(2); }
 		}
 
 		// Static Periodics:
