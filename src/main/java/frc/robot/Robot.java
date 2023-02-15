@@ -28,9 +28,6 @@ public class Robot extends TimedRobot {
 	public boolean finalMode = false;
 	public double pwr2 = 0.15;
 	private boolean rotationNeeded = false;
-	private int selection;
-	private boolean selectionNegated;
-	private double computedAngle;
 	private int getting;
 	private double newAngle;
 	public int now = 0;
