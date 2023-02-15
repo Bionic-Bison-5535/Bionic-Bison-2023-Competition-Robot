@@ -234,6 +234,7 @@ public class Robot extends TimedRobot {
 				}
 				if (primary.pov() != -1) {
 					newAngle = (double)primary.pov();
+					newAngle += 180;
 					while (newAngle > dir+180) { newAngle -= 360; }
 					while (newAngle < dir-180) { newAngle += 360; }
 					dir = newAngle;
