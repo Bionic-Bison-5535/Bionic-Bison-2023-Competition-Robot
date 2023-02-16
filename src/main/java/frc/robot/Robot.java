@@ -3,16 +3,21 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.systems.*;
-import frc.robot.smart_features.*;
+import frc.robot.systems.Weswerve;
+import frc.robot.systems.Navx;
+import frc.robot.systems.Limelight;
+import frc.robot.systems.Controls;
+import frc.robot.systems.Arm;
+import frc.robot.smart_features.GetObject;
+import frc.robot.smart_features.Score;
 
 public class Robot extends TimedRobot {
 
   	private final Weswerve swerveCtrl = new Weswerve(30, 31, 32, 33, 20, 21, 22, 23, 10, 11, 12, 13, 70, 100, 148, 358);
-	private final Arm arm = new Arm(50, 51, 0, 0);
 	private final Navx navx = new Navx();
 	private final Controls primary = new Controls(0, 0.05);
 	private final Controls secondary = new Controls(1, 0.17);
+	private final Arm arm = new Arm(50, 51, 0, 0);
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm);
 	private final Score score = new Score(0, swerveCtrl, arm, navx);
 	
