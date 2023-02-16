@@ -75,8 +75,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Arm Reached Position", arm.there);
 		SmartDashboard.putBoolean("Robot In Motion", navx.accel());
 		SmartDashboard.putNumber("Points Earned", score.points);
-		SmartDashboard.putNumber("Cubes ◼", score.cubes);
-		SmartDashboard.putNumber("Cones ▲", score.cones);
+		SmartDashboard.putNumber("Cubes", score.cubes);
+		SmartDashboard.putNumber("Cones", score.cones);
 		arm.expansionMin = SmartDashboard.getNumber("Expansion Min", arm.expansionMin);
 		arm.expansionMax = SmartDashboard.getNumber("Expansion Max", arm.expansionMax);
 		arm.upDownMin = SmartDashboard.getNumber("Angle Min", arm.upDownMin);
