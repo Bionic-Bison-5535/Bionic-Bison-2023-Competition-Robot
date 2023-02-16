@@ -30,6 +30,16 @@ public class Limelight {
 		return table.getEntry("ta").getDouble(0);
 	}
 
+	public double width() {
+		table.getEntry("pipeline").setNumber(pipeline);
+		return table.getEntry("thor").getDouble(0);
+	}
+
+	public double height() {
+		table.getEntry("pipeline").setNumber(pipeline);
+		return table.getEntry("tvert").getDouble(0);
+	}
+
 	public boolean valid() {
 		table.getEntry("pipeline").setNumber(pipeline);
 		if (table.getEntry("ta").getDouble(0) > invalidArea) {

@@ -11,8 +11,8 @@ public class GetObject {
     private Arm arm;
     public int stage = 0; // 0 = Ready, 1 = Aligning, 2 = Arm Going Down, 3 = Intake, 4 = Done + Arm Up, 5 = Error / Cancel,
 
-    public double cubeAreaToPickUp = 15;
-    public double coneAreaToPickUp = 15;
+    public double cubeWidthForPickUp = 150;
+    public double coneWidthForPickUp = 100;
 
     public GetObject(int cubePipeline, int conePipeline, Weswerve swerveAccess, Arm armAccess) {
         cubeCam = new Limelight(cubePipeline);
@@ -27,11 +27,11 @@ public class GetObject {
         }
         if (stage == 1) {
             if (cubeCam.valid()) {
-                if (cubeCam.inRange(cubeCam.area(), cubeAreaToPickUp, 0.5) && cubeCam.inRange(cubeCam.X(), 0, 5)) {
+                if (cubeCam.inRange(cubeCam.width(), cubeWidthForPickUp, 40) && cubeCam.inRange(cubeCam.X(), 0, 5)) {
                     stage = 2;
                     swerveCtrl.swerve(0, 0, 0, 0);
                 } else {
-                    swerveCtrl.swerve((cubeAreaToPickUp-cubeCam.area())/10, cubeCam.X()/30, 0, 0);
+                    swerveCtrl.swerve((cubeWidthForPickUp-cubeCam.width())/100, cubeCam.X()/30, 0, 0);
                 }
             } else {
                 stage = 5;
@@ -46,11 +46,11 @@ public class GetObject {
         }
         if (stage == 1) {
             if (coneCam.valid()) {
-                if (coneCam.inRange(coneCam.area(), coneAreaToPickUp, 0.5) && coneCam.inRange(coneCam.X(), 0, 5)) {
+                if (coneCam.inRange(coneCam.width(), coneWidthForPickUp, 40) && coneCam.inRange(coneCam.X(), 0, 5)) {
                     stage = 2;
                     swerveCtrl.swerve(0, 0, 0, 0);
                 } else {
-                    swerveCtrl.swerve((coneAreaToPickUp-coneCam.area())/10, coneCam.X()/30, 0, 0);
+                    swerveCtrl.swerve((coneWidthForPickUp-coneCam.width())/100, coneCam.X()/30, 0, 0);
                 }
             } else {
                 stage = 5;
