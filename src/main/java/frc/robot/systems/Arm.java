@@ -32,6 +32,8 @@ public class Arm {
     public double pos_3_x = 50; // Holding Mode
     public double pos_3_y = 30;
 
+    public int mostRecentPos = 3;
+
     public Arm(int expansion_canID, int upDown_canID, double expansionStart, double upDownStart) {
         expansion = new CANSparkMax(expansion_canID, MotorType.kBrushless);
         upDown = new CANSparkMax(upDown_canID, MotorType.kBrushless);
@@ -109,6 +111,7 @@ public class Arm {
         if (positionNumber == 3) {
             trigIt(pos_3_x, pos_3_y);
         }
+        mostRecentPos = positionNumber;
     }
 
     public void update() {

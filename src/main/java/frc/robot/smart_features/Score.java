@@ -11,7 +11,7 @@ public class Score {
     private Weswerve swerveCtrl;
     private Arm arm;
     private Navx navx;
-    public int stage = 0; // 0 = Ready, 1 = Aligning Horizontally, 2 = Pressing Up Against Grid, 3 = Adjusting Arm Position, 4 = Done, 5 = Error / Cancel,
+    public int stage = 0; // 0 = Ready, 1 = Aligning Horizontally, 2 = Pressing Up Against Grid, 3 = Adjusting Arm Position, 4 = Done + Arm Up, 5 = Error / Cancel,
 
     public int cones = 0;
     public int cubes = 0;
@@ -66,6 +66,27 @@ public class Score {
         } else {
             stage = 0;
             return true;
+        }
+    }
+
+    public void drop(int cube0_or_cone1) {
+        // claw open
+        if (cube0_or_cone1 == 0) {
+            cubes += 1;
+        } else {
+            cones += 1;
+        }
+        if (arm.mostRecentPos == 2) {
+            if (isAutonomous()) { points += 6; }
+            if (isOperatorControl()) { points += 5; }
+        }
+        if (arm.mostRecentPos == 1) {
+            if (isAutonomous()) { points += 4; }
+            if (isOperatorControl()) { points += 3; }
+        }
+        if (arm.mostRecentPos == 0) {
+            if (isAutonomous()) { points += 3; }
+            if (isOperatorControl()) { points += 2; }
         }
     }
 
