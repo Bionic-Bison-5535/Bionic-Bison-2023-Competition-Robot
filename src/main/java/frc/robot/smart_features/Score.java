@@ -73,20 +73,23 @@ public class Score {
         // claw open
         if (cube0_or_cone1 == 0) {
             cubes += 1;
-        } else {
+        }
+        if (cube0_or_cone1 == 1) {
             cones += 1;
         }
-        if (arm.mostRecentPos == 2) {
-            if (isAutonomous()) { points += 6; }
-            if (isOperatorControl()) { points += 5; }
-        }
-        if (arm.mostRecentPos == 1) {
-            if (isAutonomous()) { points += 4; }
-            if (isOperatorControl()) { points += 3; }
-        }
-        if (arm.mostRecentPos == 0) {
-            if (isAutonomous()) { points += 3; }
-            if (isOperatorControl()) { points += 2; }
+        if (cube0_or_cone1 == 0 || cube0_or_cone1 == 1) {
+            if (arm.mostRecentPos == 2) {
+                if (isAutonomous()) { points += 6; }
+                if (isOperatorControl()) { points += 5; }
+            }
+            if (arm.mostRecentPos == 1) {
+                if (isAutonomous()) { points += 4; }
+                if (isOperatorControl()) { points += 3; }
+            }
+            if (arm.mostRecentPos == 0) {
+                if (isAutonomous()) { points += 3; }
+                if (isOperatorControl()) { points += 2; }
+            }
         }
     }
 
