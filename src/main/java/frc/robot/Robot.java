@@ -204,11 +204,17 @@ public class Robot extends TimedRobot {
 					swerveCtrl.speed = swerveCtrl.default_speed;
 					if (primary.X.get()) {
 						getting = 0;
+						collector.stage = 0;
 						now = 1;
 					}
 					if (primary.Y.get()) {
 						getting = 1;
+						collector.stage = 0;
 						now = 1;
+					}
+					if (primary.RIGHT_STICK.get()) {
+						score.stage = 0;
+						now = 2;
 					}
 				}
 
@@ -221,6 +227,9 @@ public class Robot extends TimedRobot {
 				if (primary.A.get()) {            
 					navx.zeroYaw();
 					dir = 0;
+				}
+				if (primary.RIGHT.get()) {
+					score.drop(2);
 				}
 				if (primary.LEFT.get()) {
 					if (primary.stick(0) >= 0) {
@@ -282,6 +291,9 @@ public class Robot extends TimedRobot {
 			if (primary.stick(5) == 0) { arm.pos(1); }
 			if (primary.stick(5) > 0) { arm.pos(0); }
 			if (primary.stick(5) < 0) { arm.pos(2); }
+			if (primary.RIGHT.get()) {
+				score.drop(2);
+			}
 		}
 
 		// Static Periodics:
