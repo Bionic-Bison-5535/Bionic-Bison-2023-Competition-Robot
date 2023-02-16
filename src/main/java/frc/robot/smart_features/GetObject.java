@@ -31,7 +31,7 @@ public class GetObject {
                     stage = 2;
                     swerveCtrl.swerve(0, 0, 0, 0);
                 } else {
-                    swerveCtrl.swerve((cubeAreaToPickUp-cubeCam.area())/7, cubeCam.X()/50, 0, 0);
+                    swerveCtrl.swerve((cubeAreaToPickUp-cubeCam.area())/10, cubeCam.X()/30, 0, 0);
                 }
             } else {
                 stage = 5;
@@ -50,7 +50,7 @@ public class GetObject {
                     stage = 2;
                     swerveCtrl.swerve(0, 0, 0, 0);
                 } else {
-                    swerveCtrl.swerve((coneAreaToPickUp-coneCam.area())/7, coneCam.X()/50, 0, 0);
+                    swerveCtrl.swerve((coneAreaToPickUp-coneCam.area())/10, coneCam.X()/30, 0, 0);
                 }
             } else {
                 stage = 5;

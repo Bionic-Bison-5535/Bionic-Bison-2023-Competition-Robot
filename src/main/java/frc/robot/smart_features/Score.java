@@ -34,7 +34,7 @@ public class Score {
                     stage = 2;
                     swerveCtrl.swerve(0, 0, 0, 0);
                 } else {
-                    swerveCtrl.swerve(-0.05, -tape.X()/50, 0, 0);
+                    swerveCtrl.swerve(-0.05, tape.X()/30, 0, 0);
                 }
             } else {
                 stage = 5;

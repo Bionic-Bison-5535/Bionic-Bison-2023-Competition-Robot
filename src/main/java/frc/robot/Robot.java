@@ -171,6 +171,8 @@ public class Robot extends TimedRobot {
 		}
 		if (secondary.Y.get()) {
 			now = 0;
+			collector.stage = 0;
+			score.stage = 0;
 		}
 		swerveCtrl.default_speed -= 0.005*secondary.stick(5);
 		if (swerveCtrl.default_speed < -1) { swerveCtrl.default_speed = -1; }
