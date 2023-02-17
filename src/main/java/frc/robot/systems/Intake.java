@@ -15,6 +15,7 @@ public class Intake {
     public boolean open;
 
     private double previousEncoderValue = 1000000;
+    public double pressureThreshold = 0.3;
 
     public Intake(int intake_canID, double intakeStart) {
         intakeMotor = new CANSparkMax(intake_canID, MotorType.kBrushless);
@@ -52,12 +53,21 @@ public class Intake {
         open = false;
     }
 
+    public boolean pressure() {
+        return (intakeEncoder.getPosition()+pressureThreshold > previousEncoderValue && intakeEncoder.getPosition()-pressureThreshold < previousEncoderValue);
+    }
+
     public void update() {
-        if (Math.abs((pos()-intakeEncoder.getPosition())/(12.33)) > 0.05) {
+        if ((Math.abs((pos()-intakeEncoder.getPosition())/(12.33)) > 0.05) && !pressure()) {
             intakeMotor.set((pos()-intakeEncoder.getPosition())/(12.33));
         } else {
-            intakeMotor.set(0);
+            if (pressure()) {
+                intakeMotor.set(-0.1); // Hold object tightly
+            } else {
+                intakeMotor.set(0);
+            }
         }
+        previousEncoderValue = intakeEncoder.getPosition;
     }
 
 }
