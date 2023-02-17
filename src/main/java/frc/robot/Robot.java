@@ -19,6 +19,7 @@ public class Robot extends TimedRobot {
 	private final Controls secondary = new Controls(1, 0.2);
 	private final Arm arm = new Arm(50, 51, 0, 0);
 	private final Intake claw = new Intake(52, 30);
+	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
 	
 	Timer timer;
 
