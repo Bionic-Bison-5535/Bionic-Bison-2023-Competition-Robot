@@ -26,7 +26,7 @@ public class Intake {
     public boolean zeroIntake() {
         if (intakeEncoder.getPosition() < previousEncoderValue) {
             previousEncoderValue = intakeEncoder.getPosition();
-            intakeMotor.set(-0.5);
+            intakeMotor.set(-0.1);
             return false;
         } else {
             intakeMotor.set(0);
