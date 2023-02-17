@@ -3,22 +3,25 @@ package frc.robot.smart_features;
 import frc.robot.systems.Weswerve;
 import frc.robot.systems.Limelight;
 import frc.robot.systems.Arm;
+import frc.robot.systems.Intake;
 
 public class GetObject {
 
     public Limelight cubeCam, coneCam;
     private Weswerve swerveCtrl;
     private Arm arm;
+    private Intake claw;
     public int stage = 0; // 0 = Ready, 1 = Aligning, 2 = Arm Going Down, 3 = Intake, 4 = Done + Arm Up, 5 = Error / Cancel,
 
     public double cubeWidthForPickUp = 135;
     public double coneWidthForPickUp = 135;
 
-    public GetObject(int cubePipeline, int conePipeline, Weswerve swerveAccess, Arm armAccess) {
+    public GetObject(int cubePipeline, int conePipeline, Weswerve swerveAccess, Arm armAccess, Intake intakeAccess) {
         cubeCam = new Limelight(cubePipeline);
         coneCam = new Limelight(conePipeline);
         swerveCtrl = swerveAccess;
         arm = armAccess;
+        claw = intakeAccess;
     }
 
     public void alignToCube() {
