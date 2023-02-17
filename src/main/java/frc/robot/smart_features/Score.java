@@ -34,7 +34,7 @@ public class Score {
                     stage = 2;
                     swerveCtrl.swerve(0, 0, 0, 0);
                 } else {
-                    swerveCtrl.swerve(-0.05, tape.X()/30, 0, 0);
+                    swerveCtrl.swerve(-0.05, tape.X()/40, 0, 0);
                 }
             } else {
                 stage = 5;
@@ -49,7 +49,7 @@ public class Score {
         }
         if (stage == 2) {
             arm.pos(1);
-            swerveCtrl.swerve(0.3, 0, 0, 0);
+            swerveCtrl.swerve(0.5, 0, 0, 0);
             if (!navx.accel()) {
                 stage = 3;
             }
@@ -69,7 +69,7 @@ public class Score {
         }
     }
 
-    public void drop(int cube0_or_cone1) {
+    public void drop(int cube0_or_cone1, boolean auto, boolean tele) {
         // claw open
         if (cube0_or_cone1 == 0) {
             cubes += 1;
@@ -79,16 +79,16 @@ public class Score {
         }
         if (cube0_or_cone1 == 0 || cube0_or_cone1 == 1) {
             if (arm.mostRecentPos == 2) {
-                if (isAutonomous()) { points += 6; }
-                if (isOperatorControl()) { points += 5; }
+                if (auto) { points += 6; }
+                if (tele) { points += 5; }
             }
             if (arm.mostRecentPos == 1) {
-                if (isAutonomous()) { points += 4; }
-                if (isOperatorControl()) { points += 3; }
+                if (auto) { points += 4; }
+                if (tele) { points += 3; }
             }
             if (arm.mostRecentPos == 0) {
-                if (isAutonomous()) { points += 3; }
-                if (isOperatorControl()) { points += 2; }
+                if (auto) { points += 3; }
+                if (tele) { points += 2; }
             }
         }
     }

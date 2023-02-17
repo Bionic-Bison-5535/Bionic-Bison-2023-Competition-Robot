@@ -16,8 +16,8 @@ public class Weswerve {
 
 	private boolean usingTalons = true; // Set to false to use CANSparkMaxs, set to true to use TalonSRXs.
 	
-	private TalonSRX frontLeftSteer, frontRightSteer, backRightSteer, backLeftSteer, frontLeftDrive, frontRightDrive, backRightDrive, backLeftDrive;
-	private CANSparkMax frontLeftSteer_sm, frontRightSteer_sm, backRightSteer_sm, backLeftSteer_sm, frontLeftDrive_sm, frontRightDrive_sm, backRightDrive_sm, backLeftDrive_sm;
+	public TalonSRX frontLeftSteer, frontRightSteer, backRightSteer, backLeftSteer, frontLeftDrive, frontRightDrive, backRightDrive, backLeftDrive;
+	public CANSparkMax frontLeftSteer_sm, frontRightSteer_sm, backRightSteer_sm, backLeftSteer_sm, frontLeftDrive_sm, frontRightDrive_sm, backRightDrive_sm, backLeftDrive_sm;
 	public final CANCoder frontLeft, frontRight, backRight, backLeft;
 	public double angle0, angle1, angle2, angle3;
 	public boolean negation0, negation1, negation2, negation3;
