@@ -52,7 +52,7 @@ public class Score {
         }
         if (stage == 2) {
             arm.pos(1);
-            swerveCtrl.swerve(0.5, 0, 0, 0);
+            swerveCtrl.swerve(0.25, 0, 0, 0);
             if (!navx.accel()) {
                 stage = 3;
             }
