@@ -11,8 +11,8 @@ public class GetObject {
     private Arm arm;
     public int stage = 0; // 0 = Ready, 1 = Aligning, 2 = Arm Going Down, 3 = Intake, 4 = Done + Arm Up, 5 = Error / Cancel,
 
-    public double cubeWidthForPickUp = 150;
-    public double coneWidthForPickUp = 100;
+    public double cubeWidthForPickUp = 135;
+    public double coneWidthForPickUp = 135;
 
     public GetObject(int cubePipeline, int conePipeline, Weswerve swerveAccess, Arm armAccess) {
         cubeCam = new Limelight(cubePipeline);
@@ -31,7 +31,7 @@ public class GetObject {
                     stage = 2;
                     swerveCtrl.swerve(0, 0, 0, 0);
                 } else {
-                    swerveCtrl.swerve((cubeWidthForPickUp-cubeCam.width())/100, cubeCam.X()/30, 0, 0);
+                    swerveCtrl.swerve((cubeWidthForPickUp-cubeCam.width())/100, cubeCam.X()/50, 0, 0);
                 }
             } else {
                 stage = 5;
@@ -50,7 +50,7 @@ public class GetObject {
                     stage = 2;
                     swerveCtrl.swerve(0, 0, 0, 0);
                 } else {
-                    swerveCtrl.swerve((coneWidthForPickUp-coneCam.width())/100, coneCam.X()/30, 0, 0);
+                    swerveCtrl.swerve((coneWidthForPickUp-coneCam.width())/100, coneCam.X()/50, 0, 0);
                 }
             } else {
                 stage = 5;

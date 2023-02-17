@@ -28,7 +28,7 @@ public class Navx {
     }
 
     public boolean accel() {
-        return (Math.sqrt(Math.pow(NavX.getVelocityX(),2)+Math.pow(NavX.getVelocityX(),2)) >= 0.03);
+        return (Math.sqrt(Math.pow(NavX.getVelocityX(),2)+Math.pow(NavX.getVelocityX(),2)) >= 0.01);
     }
 
     public void zeroYaw() {

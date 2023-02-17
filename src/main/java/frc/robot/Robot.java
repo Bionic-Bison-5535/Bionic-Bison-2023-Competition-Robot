@@ -3,16 +3,20 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.systems.*;
-import frc.robot.smart_features.*;
+import frc.robot.systems.Weswerve;
+import frc.robot.systems.Navx;
+import frc.robot.systems.Controls;
+import frc.robot.systems.Arm;
+import frc.robot.smart_features.GetObject;
+import frc.robot.smart_features.Score;
 
 public class Robot extends TimedRobot {
 
   	private final Weswerve swerveCtrl = new Weswerve(30, 31, 32, 33, 20, 21, 22, 23, 10, 11, 12, 13, 70, 100, 148, 358);
-	private final Arm arm = new Arm(50, 51, 0, 0);
 	private final Navx navx = new Navx();
-	private final Controls primary = new Controls(0, 0.05);
+	private final Controls primary = new Controls(0, 0.1);
 	private final Controls secondary = new Controls(1, 0.17);
+	private final Arm arm = new Arm(50, 51, 0, 0);
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm);
 	private final Score score = new Score(0, swerveCtrl, arm, navx);
 	
@@ -27,7 +31,6 @@ public class Robot extends TimedRobot {
 	public boolean rawMode = false;
 	public boolean finalMode = false;
 	public double pwr2 = 0.15;
-	private boolean rotationNeeded = false;
 	private int getting;
 	private double newAngle;
 	public int now = 0;
@@ -75,8 +78,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Arm Reached Position", arm.there);
 		SmartDashboard.putBoolean("Robot In Motion", navx.accel());
 		SmartDashboard.putNumber("Points Earned", score.points);
-		SmartDashboard.putNumber("Cubes ◼", score.cubes);
-		SmartDashboard.putNumber("Cones ▲", score.cones);
+		SmartDashboard.putNumber("Cubes", score.cubes);
+		SmartDashboard.putNumber("Cones", score.cones);
 		arm.expansionMin = SmartDashboard.getNumber("Expansion Min", arm.expansionMin);
 		arm.expansionMax = SmartDashboard.getNumber("Expansion Max", arm.expansionMax);
 		arm.upDownMin = SmartDashboard.getNumber("Angle Min", arm.upDownMin);
@@ -204,11 +207,17 @@ public class Robot extends TimedRobot {
 					swerveCtrl.speed = swerveCtrl.default_speed;
 					if (primary.X.get()) {
 						getting = 0;
+						collector.stage = 0;
 						now = 1;
 					}
 					if (primary.Y.get()) {
 						getting = 1;
+						collector.stage = 0;
 						now = 1;
+					}
+					if (primary.RIGHT_STICK.get()) {
+						score.stage = 0;
+						now = 2;
 					}
 				}
 
@@ -222,6 +231,9 @@ public class Robot extends TimedRobot {
 					navx.zeroYaw();
 					dir = 0;
 				}
+				if (primary.RIGHT.get()) {
+					score.drop(2, false, true);
+				}
 				if (primary.LEFT.get()) {
 					if (primary.stick(0) >= 0) {
 						dir -= 180;
@@ -229,7 +241,6 @@ public class Robot extends TimedRobot {
 						dir += 180;
 					}
 					while (primary.LEFT.get()) {}
-					rotationNeeded = true;
 				}
 				if (primary.pov() != -1) {
 					newAngle = (double)primary.pov();
@@ -237,32 +248,21 @@ public class Robot extends TimedRobot {
 					while (newAngle > dir+180) { newAngle -= 360; }
 					while (newAngle < dir-180) { newAngle += 360; }
 					dir = newAngle;
-					rotationNeeded = true;
-				}
-
-				if (primary.stick(4) != 0) {     // Rotational Management:
-					rotationNeeded = true;
 				}
 				if (resist) {
 					dir += 4 * primary.stick(4);
 					if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
-						if (primary.active() || !navx.accel() || rotationNeeded) {
-							rotation = -0.01*(navx.yaw()-dir);
-							if (rotation > 0) {
-								rotation += 0.1;
-							} else {
-								rotation -= 0.1;
-							}
+						rotation = -0.01*(navx.yaw()-dir);
+						if (rotation > 0) {
+							rotation += 0.1;
 						} else {
-							rotation = 0;
+							rotation -= 0.1;
 						}
 					} else {
 						rotation = 0;
-						rotationNeeded = false;
 					}
 				} else {
 					rotation = primary.stick(4);
-					rotationNeeded = false;
 				}
 				
 				if (headless) {                  // Actual Drive:
@@ -282,6 +282,9 @@ public class Robot extends TimedRobot {
 			if (primary.stick(5) == 0) { arm.pos(1); }
 			if (primary.stick(5) > 0) { arm.pos(0); }
 			if (primary.stick(5) < 0) { arm.pos(2); }
+			if (primary.RIGHT.get()) {
+				score.drop(2, false, true);
+			}
 		}
 
 		// Static Periodics:
