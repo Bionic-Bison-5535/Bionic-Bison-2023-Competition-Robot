@@ -312,6 +312,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testPeriodic() {
 		if (arm.zeroExpansion() && claw.zeroIntake() && swerveCtrl.resetMotors()) {
+			swerveCtrl.tone();
 		}
 	}
 

@@ -1,6 +1,6 @@
 /*  WESWERVE for Trapezoid Swerve Robot with CANCoder Angle Detection and Either Talon SRX or CANSparkMax motor controllers.
-	Program written by Wesley McGinn {wesleymcginn1@gmail.com} for Team 5535 (The Bionic Bison, New Buffalo Michigan)
-	Version 4.1 Beta
+	Program written by Wesley McGinn {wesleymcginn1@gmail.com} for Team 5535 (The Bionic Bison, New Buffalo, Michigan)
+	Version 4.2 Beta
 */
 
 package frc.robot.systems;
@@ -217,6 +217,15 @@ public class Weswerve {
 			return !(!motorToAngle(frontLeftSteer, frontLeft, A_offset + 225, false) || !motorToAngle(frontRightSteer, frontRight, B_offset + 135, false) || !motorToAngle(backRightSteer, backRight, C_offset + 225, false) || !motorToAngle(backLeftSteer, backLeft, D_offset + 135, false));
 		} else {
 			return !(!motorToAngle_sm(frontLeftSteer_sm, frontLeft, A_offset + 225, false) || !motorToAngle_sm(frontRightSteer_sm, frontRight, B_offset + 135, false) || !motorToAngle_sm(backRightSteer_sm, backRight, C_offset + 225, false) || !motorToAngle_sm(backLeftSteer_sm, backLeft, D_offset + 135, false));
+		}
+	}
+
+	public void tone() { // Plays chord from driving motors (C5, E5, G5, C6)
+		if (usingTalons) {
+			frontLeftDrive.set(ControlMode.MusicTone, 523.25);
+			frontRightDrive.set(ControlMode.MusicTone, 659.25);
+			backRightDrive.set(ControlMode.MusicTone, 783.99);
+			backLeftDrive.set(ControlMode.MusicTone, 1046.5);
 		}
 	}
 
