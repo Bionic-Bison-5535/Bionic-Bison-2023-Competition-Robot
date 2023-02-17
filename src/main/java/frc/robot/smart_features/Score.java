@@ -3,6 +3,7 @@ package frc.robot.smart_features;
 import frc.robot.systems.Weswerve;
 import frc.robot.systems.Limelight;
 import frc.robot.systems.Arm;
+import frc.robot.systems.Intake;
 import frc.robot.systems.Navx;
 
 public class Score {
@@ -10,6 +11,7 @@ public class Score {
     public Limelight tape;
     private Weswerve swerveCtrl;
     private Arm arm;
+    private Intake claw;
     private Navx navx;
     public int stage = 0; // 0 = Ready, 1 = Aligning Horizontally, 2 = Pressing Up Against Grid, 3 = Adjusting Arm Position, 4 = Done + Arm Up, 5 = Error / Cancel,
 
@@ -17,10 +19,11 @@ public class Score {
     public int cubes = 0;
     public int points = 0;
 
-    public Score(int reflectiveTapePipeline, Weswerve swerveAccess, Arm armAccess, Navx navxAccess) {
+    public Score(int reflectiveTapePipeline, Weswerve swerveAccess, Arm armAccess, Intake intakeAccess, Navx navxAccess) {
         tape = new Limelight(reflectiveTapePipeline);
         swerveCtrl = swerveAccess;
         arm = armAccess;
+        claw = intakeAccess;
         navx = navxAccess;
     }
 
@@ -49,7 +52,7 @@ public class Score {
         }
         if (stage == 2) {
             arm.pos(1);
-            swerveCtrl.swerve(0.5, 0, 0, 0);
+            swerveCtrl.swerve(0.25, 0, 0, 0);
             if (!navx.accel()) {
                 stage = 3;
             }
@@ -70,7 +73,7 @@ public class Score {
     }
 
     public void drop(int cube0_or_cone1, boolean auto, boolean tele) {
-        // claw open
+        claw.open();
         if (cube0_or_cone1 == 0) {
             cubes += 1;
         }

@@ -7,6 +7,7 @@ import frc.robot.systems.Weswerve;
 import frc.robot.systems.Navx;
 import frc.robot.systems.Controls;
 import frc.robot.systems.Arm;
+import frc.robot.systems.Intake;
 import frc.robot.smart_features.GetObject;
 import frc.robot.smart_features.Score;
 
@@ -15,10 +16,11 @@ public class Robot extends TimedRobot {
   	private final Weswerve swerveCtrl = new Weswerve(30, 31, 32, 33, 20, 21, 22, 23, 10, 11, 12, 13, 70, 100, 148, 358);
 	private final Navx navx = new Navx();
 	private final Controls primary = new Controls(0, 0.1);
-	private final Controls secondary = new Controls(1, 0.17);
+	private final Controls secondary = new Controls(1, 0.2);
 	private final Arm arm = new Arm(50, 51, 0, 0);
-	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm);
-	private final Score score = new Score(0, swerveCtrl, arm, navx);
+	private final Intake claw = new Intake(52, 30);
+	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
+	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
 	
 	Timer timer;
 
@@ -136,6 +138,7 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		swerveCtrl.update();
 		arm.update();
+		claw.update();
 	}
 
 
@@ -189,6 +192,12 @@ public class Robot extends TimedRobot {
 				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), primary.stick(4), 0);
 				arm.changeExpansion(primary.stick(3)-primary.stick(2));
 				arm.changeUpDown(-0.3*primary.stick(5));
+				if (primary.LEFT.get()) {
+					claw.close();
+				}
+				if (primary.RIGHT.get()) {
+					claw.open();
+				}
 			
 			} else {                         // NORMAL MODE:
 
@@ -284,12 +293,15 @@ public class Robot extends TimedRobot {
 			if (primary.stick(5) < 0) { arm.pos(2); }
 			if (primary.RIGHT.get()) {
 				score.drop(2, false, true);
+				arm.pos(3);
+				now = 0;
 			}
 		}
 
 		// Static Periodics:
 		swerveCtrl.update();
 		arm.update();
+		claw.update();
 	}
 	
 	
@@ -299,8 +311,9 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void testPeriodic() {
-		arm.zeroExpansion();
-		swerveCtrl.resetMotors();
+		if (arm.zeroExpansion() && claw.zeroIntake() && swerveCtrl.resetMotors()) {
+			swerveCtrl.tone();
+		}
 	}
 
 }
