@@ -71,16 +71,17 @@ public class GetObject {
             }
         }
         if (stage == 2) {
+            claw.open();
             arm.pos(0);
             if (arm.there) {
                 stage = 3;
             }
         }
         if (stage == 3) {
-            //grab
-            // if (grabber squeezing tight) {
+            claw.close();
+            if (claw.pressure()) {
                 stage = 4;
-            // }
+            }
         }
         if (stage == 4) {
             arm.pos(3);

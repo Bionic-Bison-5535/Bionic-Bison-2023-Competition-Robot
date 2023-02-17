@@ -138,6 +138,7 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		swerveCtrl.update();
 		arm.update();
+		claw.update();
 	}
 
 
@@ -191,6 +192,12 @@ public class Robot extends TimedRobot {
 				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), primary.stick(4), 0);
 				arm.changeExpansion(primary.stick(3)-primary.stick(2));
 				arm.changeUpDown(-0.3*primary.stick(5));
+				if (primary.LEFT.get()) {
+					claw.close();
+				}
+				if (primary.RIGHT.get()) {
+					claw.open();
+				}
 			
 			} else {                         // NORMAL MODE:
 
@@ -286,12 +293,15 @@ public class Robot extends TimedRobot {
 			if (primary.stick(5) < 0) { arm.pos(2); }
 			if (primary.RIGHT.get()) {
 				score.drop(2, false, true);
+				arm.pos(3);
+				now = 0;
 			}
 		}
 
 		// Static Periodics:
 		swerveCtrl.update();
 		arm.update();
+		claw.update();
 	}
 	
 	
@@ -301,8 +311,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void testPeriodic() {
-		arm.zeroExpansion();
-		swerveCtrl.resetMotors();
+		if (arm.zeroExpansion() && claw.zeroIntake() && swerveCtrl.resetMotors()) {
+		}
 	}
 
 }

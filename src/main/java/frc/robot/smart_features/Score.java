@@ -73,7 +73,7 @@ public class Score {
     }
 
     public void drop(int cube0_or_cone1, boolean auto, boolean tele) {
-        // claw open
+        claw.open();
         if (cube0_or_cone1 == 0) {
             cubes += 1;
         }
