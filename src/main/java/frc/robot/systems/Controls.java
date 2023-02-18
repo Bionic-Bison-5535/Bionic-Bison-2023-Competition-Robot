@@ -44,4 +44,8 @@ public class Controls {
         return (stick(0) != 0 || stick(1) != 0);
     }
 
+    public boolean press(JoystickButton Button) {
+        return Button.get();
+    }
+
 }
