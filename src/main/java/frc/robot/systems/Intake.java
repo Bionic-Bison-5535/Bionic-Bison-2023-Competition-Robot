@@ -67,7 +67,7 @@ public class Intake {
                 intakeMotor.set(0);
             }
         }
-        previousEncoderValue = intakeEncoder.getPosition;
+        previousEncoderValue = intakeEncoder.getPosition();
     }
 
 }
