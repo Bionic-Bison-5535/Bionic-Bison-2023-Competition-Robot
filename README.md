@@ -10,9 +10,9 @@ _80%_  `============----||||`
 ```
 
 ## Finished Program Includes:
- - The first trapezoidal swerve code in the world
- - Impressive AI Autonomous System
- - Advanced navx features such as immediate rotation in any direction and automatic balancing
- - Smart Features for teleop mode including press-to-get-cube, press-to-get-cone, press-to-score, automatic scorekeeping, automatic push resistance, and so much more
- - Ability to instantly score into top, middle, or bottom row
+ - [x] The first trapezoidal swerve code in the world
+ - [ ] Impressive AI Autonomous System
+ - [x] Advanced navx features such as immediate rotation in any direction and automatic balancing
+ - [x] Smart Features for teleop mode including press-to-get-cube, press-to-get-cone, press-to-score, automatic scorekeeping, automatic push resistance, and so much more
+ - [ ] Ability to instantly score into top, middle, or bottom row
 
