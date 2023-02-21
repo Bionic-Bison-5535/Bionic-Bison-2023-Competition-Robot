@@ -8,6 +8,7 @@ import frc.robot.systems.Navx;
 import frc.robot.systems.Controls;
 import frc.robot.systems.Arm;
 import frc.robot.systems.Intake;
+import frc.robot.systems.Peg;
 import frc.robot.smart_features.GetObject;
 import frc.robot.smart_features.Score;
 
@@ -19,6 +20,7 @@ public class Robot extends TimedRobot {
 	private final Controls secondary = new Controls(1, 0.2);
 	private final Arm arm = new Arm(50, 51, 0, 0);
 	private final Intake claw = new Intake(52, 30);
+	private final Peg peg = new Peg(0, 1, 0, 0.7);
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
 	
@@ -180,6 +182,12 @@ public class Robot extends TimedRobot {
 			collector.stage = 0;
 			score.stage = 0;
 		}
+		if (secondary.stick(3) > 0.9) {
+			peg.in();
+		}
+		if (secondary.stick(2) > 0.9) {
+			peg.out();
+		}
 		swerveCtrl.default_speed -= 0.005*secondary.stick(5);
 		if (swerveCtrl.default_speed < -1) { swerveCtrl.default_speed = -1; }
 		if (swerveCtrl.default_speed > 1) { swerveCtrl.default_speed = 1; }
@@ -210,6 +218,9 @@ public class Robot extends TimedRobot {
 						if (navx.balance() > 2 && arm.there) {
 							arm.changeExpansion(2);
 						}
+						if (primary.LEFT_STICK.get()) {
+							peg.out();
+						}
 					}
 				
 				} else {                         // Restrictive Non-Final Mode Functionality:
@@ -227,6 +238,9 @@ public class Robot extends TimedRobot {
 					if (primary.RIGHT_STICK.get()) {
 						score.stage = 0;
 						now = 2;
+					}
+					if (peg.actuated) {
+						peg.in();
 					}
 				}
 
@@ -306,7 +320,9 @@ public class Robot extends TimedRobot {
 	
 	
 	@Override
-	public void testInit() {}
+	public void testInit() {
+		peg.in();
+	}
 
 
 	@Override
