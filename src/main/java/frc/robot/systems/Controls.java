@@ -1,7 +1,7 @@
 package frc.robot.systems;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class Controls {
 
@@ -42,10 +42,6 @@ public class Controls {
 
     public boolean active() {
         return (stick(0) != 0 || stick(1) != 0);
-    }
-
-    public boolean press(JoystickButton Button) {
-        return Button.get();
     }
 
 }
