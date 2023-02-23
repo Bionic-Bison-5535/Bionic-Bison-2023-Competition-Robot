@@ -218,7 +218,7 @@ public class Robot extends TimedRobot {
 						if (navx.balance() > 2 && arm.there) {
 							arm.changeExpansion(2);
 						}
-						if (primary.LEFT_STICK.get()) {
+						if (primary.LEFT_STICK.getAsBoolean()) {
 							peg.out();
 						}
 					}
