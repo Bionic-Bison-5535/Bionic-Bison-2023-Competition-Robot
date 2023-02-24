@@ -12,10 +12,10 @@ public class Arm {
 
     public double expansionPos, upDownPos;
     public boolean there;
-    public double expansionMin = 0;
-    public double expansionMax = 70;
-    public double upDownMin = 0;
-    public double upDownMax = 88;
+    public double expansionMin = -1000;
+    public double expansionMax = 1000;
+    public double upDownMin = 1000;
+    public double upDownMax = 1000;
 
     private double rotationsPerAngle30 = 18;
     private double retractedExpansionLength = 28;
