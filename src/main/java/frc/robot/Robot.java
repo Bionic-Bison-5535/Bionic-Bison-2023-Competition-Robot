@@ -199,8 +199,7 @@ public class Robot extends TimedRobot {
 			if (rawMode) {                   // RAW MODE:
 
 				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), primary.stick(4), 0);
-				arm.changeExpansion(primary.stick(3)-primary.stick(2));
-				arm.changeUpDown(-0.3*primary.stick(5));
+				arm.setRaw(primary.stick(3)-primary.stick(2), -primary.stick(5));
 				if (primary.LEFT.getAsBoolean()) {
 					claw.close();
 				}
@@ -209,7 +208,7 @@ public class Robot extends TimedRobot {
 				}
 			
 			} else {                         // NORMAL MODE:
-
+				/*
 				if (finalMode) {                 // Restrictive Final Mode Functionality:
 					swerveCtrl.speed = swerveCtrl.default_speed * 0.3;
 					if (primary.B.getAsBoolean()) {
@@ -294,8 +293,9 @@ public class Robot extends TimedRobot {
 				} else {
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
 				}
+				 */
 			}
-		}
+		}/*
 		if (now == 1) {
 			action(collector.getGamePiece(getting), 0);
 		}
@@ -312,7 +312,7 @@ public class Robot extends TimedRobot {
 				now = 0;
 			}
 		}
-
+		*/
 		// Static Periodics:
 		swerveCtrl.update();
 		arm.update();
@@ -328,7 +328,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void testPeriodic() {
-		if (arm.zeroExpansion() && claw.zeroIntake() && swerveCtrl.resetMotors()) {
+		if (claw.zeroIntake() && swerveCtrl.resetMotors()) {
 			swerveCtrl.tone();
 		}
 	}
