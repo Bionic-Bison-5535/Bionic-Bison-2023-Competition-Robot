@@ -207,7 +207,7 @@ public class Robot extends TimedRobot {
 				}
 			
 			} else {                         // NORMAL MODE:
-
+				/*
 				if (finalMode) {                 // Restrictive Final Mode Functionality:
 					swerveCtrl.speed = swerveCtrl.default_speed * 0.3;
 					if (primary.B.get()) {
@@ -292,8 +292,9 @@ public class Robot extends TimedRobot {
 				} else {
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
 				}
+				 */
 			}
-		}
+		}/*
 		if (now == 1) {
 			action(collector.getGamePiece(getting), 0);
 		}
@@ -310,7 +311,7 @@ public class Robot extends TimedRobot {
 				now = 0;
 			}
 		}
-
+		*/
 		// Static Periodics:
 		swerveCtrl.update();
 		arm.update();
