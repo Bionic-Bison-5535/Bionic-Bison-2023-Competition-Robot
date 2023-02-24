@@ -10,14 +10,17 @@ public class Motor {
 
     private CANSparkMax maxMotor;
     private TalonSRX talonMotor;
+    private RelativeEncoder canEncoder;
     public usingTalon = false;
 
-    public Motor(int canID, boolean isTalon) {
-        if (isTalon) {
+    public Motor(int canID, boolean isTalon, boolean invert) {
         usingTalon = isTalon;
+        if (usingTalon) {
             talonMotor = new TalonSRX(canID);
+            talonMotor.setInverted(invert);
         } else {
             maxMotor = new CANSparkMax(canID, MotorType.kBrushless);
+            maxMotor.setInverted(!invert);
             canEncoder = maxMotor.getEncoder();
         }
     }
