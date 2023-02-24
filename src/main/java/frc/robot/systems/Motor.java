@@ -1,5 +1,6 @@
 package frc.robot.systems;
 
+import java.lang.Math;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
@@ -11,7 +12,10 @@ public class Motor {
     private CANSparkMax maxMotor;
     private TalonSRX talonMotor;
     private RelativeEncoder canEncoder;
-    public usingTalon = false;
+    public double goToPos = 0;
+    public boolean usingTalon = false;
+    public double db = 0.1;
+    public boolean posMode = false;
 
     public Motor(int canID, boolean isTalon, boolean invert) {
         usingTalon = isTalon;
@@ -31,6 +35,12 @@ public class Motor {
         } else {
             maxMotor.set(power);
         }
+        posMode = false;
+    }
+
+    public void goTo(double newEncValueToGoTo) {
+        goToPos = newEncValueToGoTo;
+        posMode = true;
     }
 
     public double getEnc() {
@@ -51,6 +61,7 @@ public class Motor {
         } else {
             canEncoder.setPosition(newEncValue);
         }
+        goToPos = newEncValue;
     }
 
     public double ticksPerRotation() {
@@ -58,6 +69,33 @@ public class Motor {
             return 4096;
         } else {
             return 43;
+        }
+    }
+
+    public boolean there() {
+        if (posMode) {
+            if (Math.abs(getEnc()-goToPos) > db * ticksPerRotation()) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public void update() {
+        if (posMode) {
+            if (!there()) {
+                if (getEnc()-goToPos > 0) {
+                    set(-0.1-(getRotations()));
+                } else {
+                    set(0.1-(getRotations()));
+                }
+            } else {
+                set(0);
+            }
+            posMode = true;
         }
     }
 
