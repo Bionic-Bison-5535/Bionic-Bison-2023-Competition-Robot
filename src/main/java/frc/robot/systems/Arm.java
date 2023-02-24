@@ -1,8 +1,5 @@
 package frc.robot.systems;
 
-import java.lang.Math;
-import frc.robot.systems.Motor;
-
 public class Arm {
 
     public Motor alpha, beta;
@@ -25,7 +22,7 @@ public class Arm {
         beta.setEnc(beta_start);
     }
 
-    public setRaw(double alpha_speed, double beta_speed) {
+    public void setRaw(double alpha_speed, double beta_speed) {
         alpha.set(alpha_speed);
         beta.set(beta_speed);
     }
@@ -48,6 +45,10 @@ public class Arm {
             trigIt(pos_3_x, pos_3_y);
         }
         mostRecentPos = positionNumber;
+    }
+
+    public boolean there() {
+        return (alpha.there() && beta.there());
     }
 
     public void update() {

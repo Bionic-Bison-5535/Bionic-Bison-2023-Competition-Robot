@@ -46,10 +46,6 @@ public class Robot extends TimedRobot {
 	*/
 
 	public void dashInit() {
-		SmartDashboard.putNumber("Expansion Min", arm.expansionMin);
-		SmartDashboard.putNumber("Expansion Max", arm.expansionMax);
-		SmartDashboard.putNumber("Angle Min", arm.upDownMin);
-		SmartDashboard.putNumber("Angle Max", arm.upDownMax);
 		SmartDashboard.putNumber("Pos 0 x", arm.pos_0_x);
 		SmartDashboard.putNumber("Pos 0 y", arm.pos_0_y);
 		SmartDashboard.putNumber("Pos 1 x", arm.pos_1_x);
@@ -77,18 +73,14 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Mode", now);
 		SmartDashboard.putBoolean("Smart Features Enabled", !rawMode);
 		SmartDashboard.putBoolean("Final Mode!", finalMode);
-		SmartDashboard.putNumber("Expansion Encoder Value", arm.expansionPos);
-		SmartDashboard.putNumber("Angle Encoder Value", arm.upDownPos);
-		SmartDashboard.putBoolean("Arm Reached Position", arm.there);
+		SmartDashboard.putNumber("Alpha Encoder Value", arm.alpha.getEnc());
+		SmartDashboard.putNumber("Beta Encoder Value", arm.beta.getEnc());
+		SmartDashboard.putBoolean("Arm Reached Position", arm.there());
 		SmartDashboard.putBoolean("Robot In Motion", navx.accel());
 		SmartDashboard.putNumber("Points Earned", score.points);
 		SmartDashboard.putNumber("Cubes", score.cubes);
 		SmartDashboard.putNumber("Cones", score.cones);
 		SmartDashboard.putBoolean("Peg Out", peg.actuated);
-		arm.expansionMin = SmartDashboard.getNumber("Expansion Min", arm.expansionMin);
-		arm.expansionMax = SmartDashboard.getNumber("Expansion Max", arm.expansionMax);
-		arm.upDownMin = SmartDashboard.getNumber("Angle Min", arm.upDownMin);
-		arm.upDownMax = SmartDashboard.getNumber("Angle Max", arm.upDownMax);
 		arm.pos_0_x = SmartDashboard.getNumber("Pos 0 x", arm.pos_0_x);
 		arm.pos_0_y = SmartDashboard.getNumber("Pos 0 y", arm.pos_0_y);
 		arm.pos_1_x = SmartDashboard.getNumber("Pos 1 x", arm.pos_1_x);

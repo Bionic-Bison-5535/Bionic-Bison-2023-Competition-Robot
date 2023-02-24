@@ -73,7 +73,7 @@ public class GetObject {
         if (stage == 2) {
             claw.open();
             arm.pos(0);
-            if (arm.there) {
+            if (arm.there()) {
                 stage = 3;
             }
         }

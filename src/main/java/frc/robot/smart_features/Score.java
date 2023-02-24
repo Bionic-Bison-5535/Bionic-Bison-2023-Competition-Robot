@@ -60,7 +60,7 @@ public class Score {
         if (stage == 3) {
             arm.pos(1);
             swerveCtrl.swerve(0, 0, 0, 0);
-            if (arm.there) {
+            if (arm.there()) {
                 stage = 4;
             }
         }
