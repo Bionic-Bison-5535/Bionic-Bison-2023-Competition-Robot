@@ -84,6 +84,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Points Earned", score.points);
 		SmartDashboard.putNumber("Cubes", score.cubes);
 		SmartDashboard.putNumber("Cones", score.cones);
+		SmartDashboard.putBoolean("Peg Out", peg.actuated);
 		arm.expansionMin = SmartDashboard.getNumber("Expansion Min", arm.expansionMin);
 		arm.expansionMax = SmartDashboard.getNumber("Expansion Max", arm.expansionMax);
 		arm.upDownMin = SmartDashboard.getNumber("Angle Min", arm.upDownMin);
