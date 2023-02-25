@@ -16,8 +16,8 @@ public class Arm {
     public int mostRecentPos = 3;
 
     public Arm(int alpha_canID, int beta_canID, double alpha_start, double beta_start) {
-        alpha = new Motor(alpha_canID, false, false);
-        beta = new Motor(beta_canID, false, true);
+        alpha = new Motor(alpha_canID, true, false);
+        beta = new Motor(beta_canID, true, true);
         alpha.setEnc(alpha_start);
         beta.setEnc(beta_start);
     }
