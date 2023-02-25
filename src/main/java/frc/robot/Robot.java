@@ -19,7 +19,7 @@ public class Robot extends TimedRobot {
 	private final Controls primary = new Controls(0, 0.1);
 	private final Controls secondary = new Controls(1, 0.2);
 	private final Arm arm = new Arm(50, 51, 0, 0);
-	private final Intake claw = new Intake(55, 30);
+	private final Intake claw = new Intake(55);
 	private final Peg peg = new Peg(0, 1, 0, 0.7);
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
@@ -32,12 +32,11 @@ public class Robot extends TimedRobot {
 	public double dir_accuracy = 1;
 	public double rotation = 0;
 	public boolean resist = true;
-	public boolean rawMode = false;
+	public boolean rawMode = true;
 	public boolean finalMode = false;
 	public double pwr2 = 0.15;
 	private int getting;
 	private double newAngle;
-	private boolean resetClaw;
 	public int now = 0;
 	/* now = ID of currently running dynamic periodic
 	 * 0 = Driving
@@ -64,6 +63,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Secondary Adjustment Strength", pwr2);
 		SmartDashboard.putNumber("Cube Closeness for Pickup", collector.cubeWidthForPickUp);
 		SmartDashboard.putNumber("Cone Closeness for Pickup", collector.coneWidthForPickUp);
+		SmartDashboard.putNumber("Alpha Angle", arm.getAlpha());
+		SmartDashboard.putNumber("Beta Angle", arm.getBeta());
 	}
 
 	public void dash() {
@@ -191,9 +192,27 @@ public class Robot extends TimedRobot {
 			if (rawMode) {                   // RAW MODE:
 
 				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), primary.stick(4), 0);
-				arm.setRaw(primary.stick(3)-primary.stick(2), -primary.stick(5));
+				//arm.setRaw(primary.stick(3)-primary.stick(2), -primary.stick(5));
+/*
+				if (primary.stick(5) < -0.4) {
+					arm.pos(0);
+				} else if (primary.stick(5) < 0.3) {
+					arm.pos(3);
+				} else if (primary.stick(5) < 0.95) {
+					arm.pos(1);
+				} else {
+					arm.pos(2);
+				}
+*/
+
+				arm.setAlpha(SmartDashboard.getNumber("Alpha Angle", arm.getAlpha()));
+				arm.setBeta(SmartDashboard.getNumber("Beta Angle", arm.getBeta()));
+
 				if (primary.LEFT.getAsBoolean()) {
-					claw.close();
+					claw.close(1);
+				}
+				if (primary.B.getAsBoolean()) {
+					claw.close(0);
 				}
 				if (primary.RIGHT.getAsBoolean()) {
 					claw.open();
@@ -316,22 +335,14 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testInit() {
 		peg.in();
-		resetClaw = true;
+		claw.intakeMotor.setEnc(0);
 	}
 
 
 	@Override
 	public void testPeriodic() {
-		if (resetClaw) {
-			if (claw.zeroIntake()) {
-				resetClaw = false;
-			} else {
-				Timer.delay(0.5);
-			}
-		} else {
-			if (swerveCtrl.resetMotors()) {
-				swerveCtrl.tone();
-			}
+		if (swerveCtrl.resetMotors()) {
+			swerveCtrl.tone();
 		}
 	}
 

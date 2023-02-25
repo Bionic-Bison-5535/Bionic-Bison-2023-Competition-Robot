@@ -6,36 +6,27 @@ public class Intake {
 
     public Motor intakeMotor;
 
-    public double presetOpen = 100;
-    public double presetClosed = 20;
+    public double presetOpen = 24;
+    public double presetClosedCube = 0;
+    public double presetClosedCone = -37;
     public boolean open = false;
+    public int gamePiece = 0;
 
-    private double previousEncoderValue = 1000000;
-    public double pressureThreshold = 0.3;
-
-    public Intake(int intake_canID, double intakeStart) {
+    public Intake(int intake_canID) {
         intakeMotor = new Motor(intake_canID, false, true);
-        intakeMotor.setEnc(intakeStart);
-    }
-
-    public boolean zeroIntake() {
-        if (intakeMotor.getEnc() < previousEncoderValue) {
-            previousEncoderValue = intakeMotor.getEnc();
-            intakeMotor.set(-0.14);
-            return false;
-        } else {
-            intakeMotor.set(0);
-            previousEncoderValue = 1000000;
-            intakeMotor.setEnc(0);
-            return true;
-        }
     }
 
     public double pos() {
         if (open) {
             return presetOpen;
         } else {
-            return presetClosed;
+            if (gamePiece == 0) {
+                return presetClosedCube;
+            }
+            if (gamePiece == 1) {
+                return presetClosedCone;
+            }
+            return presetOpen;
         }
     }
 
@@ -43,23 +34,25 @@ public class Intake {
         open = true;
     }
 
-    public void close() {
+    public void close(int cube0_or_cone1) {
         open = false;
-    }
-
-    public boolean pressure() {
-        return (intakeMotor.getEnc()+pressureThreshold > previousEncoderValue && intakeMotor.getEnc()-pressureThreshold < previousEncoderValue);
+        gamePiece = cube0_or_cone1;
     }
 
     public void update() {
-        if ((Math.abs((pos()-intakeMotor.getEnc())/(43)) > 0.05)) {
-            if (((pos()-intakeMotor.getEnc())/(43) < 0 && !pressure()) || (pos()-intakeMotor.getEnc())/(43) >= 0) {
-                intakeMotor.set((pos()-intakeMotor.getEnc())/(43));
-            }
+        if ((Math.abs((pos()-intakeMotor.getEnc())/(20)) > 0.05)) {
+            intakeMotor.set((pos()-intakeMotor.getEnc())/(20));
         } else {
             intakeMotor.set(0);
         }
-        previousEncoderValue = intakeMotor.getEnc();
+    }
+
+    public boolean closed() {
+        if (gamePiece == 1) {
+            return (intakeMotor.getEnc()-5 < presetClosedCone);
+        } else {
+            return (intakeMotor.getEnc()-5 < presetClosedCube);
+        }
     }
 
 }

@@ -78,8 +78,8 @@ public class GetObject {
             }
         }
         if (stage == 3) {
-            claw.close();
-            if (claw.pressure()) {
+            claw.close(cube0_or_cone1);
+            if (claw.closed()) {
                 stage = 4;
             }
         }
