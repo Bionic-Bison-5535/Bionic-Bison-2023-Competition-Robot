@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
 	public double pwr2 = 0.15;
 	private int getting;
 	private double newAngle;
+	private boolean resetClaw;
 	public int now = 0;
 	/* now = ID of currently running dynamic periodic
 	 * 0 = Driving
@@ -75,6 +76,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Final Mode!", finalMode);
 		SmartDashboard.putNumber("Alpha Encoder Value", arm.alpha.getEnc());
 		SmartDashboard.putNumber("Beta Encoder Value", arm.beta.getEnc());
+		SmartDashboard.putNumber("Intake Encoder Value", claw.intakeMotor.getEnc());
 		SmartDashboard.putBoolean("Arm Reached Position", arm.there());
 		SmartDashboard.putBoolean("Robot In Motion", navx.accel());
 		SmartDashboard.putNumber("Points Earned", score.points);
@@ -181,10 +183,6 @@ public class Robot extends TimedRobot {
 		if (secondary.stick(2) > 0.9) {
 			peg.out();
 		}
-		swerveCtrl.default_speed -= 0.005*secondary.stick(5);
-		if (swerveCtrl.default_speed < -1) { swerveCtrl.default_speed = -1; }
-		if (swerveCtrl.default_speed > 1) { swerveCtrl.default_speed = 1; }
-		swerveCtrl.steeringAmplifier += 0.005*secondary.stick(4);
 
 		if (now == 0) {
 
@@ -198,21 +196,22 @@ public class Robot extends TimedRobot {
 				if (primary.RIGHT.getAsBoolean()) {
 					claw.open();
 				}
+				if (primary.A.getAsBoolean()) {
+					rawMode = false;
+				}
+				if (primary.X.getAsBoolean()) {
+					peg.out();
+				}
+				if (primary.Y.getAsBoolean()) {
+					peg.in();
+				}
 			
 			} else {                         // NORMAL MODE:
-				/*
+				
 				if (finalMode) {                 // Restrictive Final Mode Functionality:
 					swerveCtrl.speed = swerveCtrl.default_speed * 0.3;
-					if (primary.B.getAsBoolean()) {
-						if (navx.balance() < -2 && arm.there) {
-							arm.changeExpansion(-2);
-						}
-						if (navx.balance() > 2 && arm.there) {
-							arm.changeExpansion(2);
-						}
-						if (primary.LEFT_STICK.getAsBoolean()) {
-							peg.out();
-						}
+					if (primary.LEFT_STICK.getAsBoolean()) {
+						peg.out();
 					}
 				
 				} else {                         // Restrictive Non-Final Mode Functionality:
@@ -227,7 +226,7 @@ public class Robot extends TimedRobot {
 						collector.stage = 0;
 						now = 1;
 					}
-					if (primary.RIGHT_STICK.getAsBoolean()) {
+					if (primary.A.getAsBoolean()) {
 						score.stage = 0;
 						now = 2;
 					}
@@ -236,10 +235,10 @@ public class Robot extends TimedRobot {
 					}
 				}
 
-				if (primary.BACK.getAsBoolean()) {        // General Primary Controller Button Actions:
+				if (primary.stick(2) > 0.9) {        // General Primary Controller Button Actions:
 					headless = false;
 				}
-				if (primary.START.getAsBoolean()) {
+				if (primary.stick(3) > 0.9) {
 					headless = true;
 				}
 				if (primary.A.getAsBoolean()) {            
@@ -285,9 +284,9 @@ public class Robot extends TimedRobot {
 				} else {
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
 				}
-				 */
+				
 			}
-		}/*
+		}
 		if (now == 1) {
 			action(collector.getGamePiece(getting), 0);
 		}
@@ -304,7 +303,7 @@ public class Robot extends TimedRobot {
 				now = 0;
 			}
 		}
-		*/
+		
 		// Static Periodics:
 		swerveCtrl.update();
 		arm.update();
@@ -315,13 +314,22 @@ public class Robot extends TimedRobot {
 	@Override
 	public void testInit() {
 		peg.in();
+		resetClaw = true;
 	}
 
 
 	@Override
 	public void testPeriodic() {
-		if (claw.zeroIntake() && swerveCtrl.resetMotors()) {
-			swerveCtrl.tone();
+		if (resetClaw) {
+			if (claw.zeroIntake()) {
+				resetClaw = false;
+			} else {
+				Timer.delay(0.5);
+			}
+		} else {
+			if (swerveCtrl.resetMotors()) {
+				swerveCtrl.tone();
+			}
 		}
 	}
 

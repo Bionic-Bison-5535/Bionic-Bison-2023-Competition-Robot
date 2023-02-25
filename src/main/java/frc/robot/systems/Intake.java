@@ -1,38 +1,32 @@
 package frc.robot.systems;
 
 import java.lang.Math;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
 
 public class Intake {
 
-    public CANSparkMax intakeMotor;
-    public RelativeEncoder intakeEncoder;
+    public Motor intakeMotor;
 
-    public double presetOpen = 50;
-    public double presetClosed = 30;
-    public boolean open;
+    public double presetOpen = 100;
+    public double presetClosed = 20;
+    public boolean open = false;
 
     private double previousEncoderValue = 1000000;
     public double pressureThreshold = 0.3;
 
     public Intake(int intake_canID, double intakeStart) {
-        intakeMotor = new CANSparkMax(intake_canID, MotorType.kBrushless);
-        intakeEncoder = intakeMotor.getEncoder();
-        intakeEncoder.setPosition(intakeStart);
-        intakeMotor.setInverted(true);
+        intakeMotor = new Motor(intake_canID, false, true);
+        intakeMotor.setEnc(intakeStart);
     }
 
     public boolean zeroIntake() {
-        if (intakeEncoder.getPosition() < previousEncoderValue) {
-            previousEncoderValue = intakeEncoder.getPosition();
-            intakeMotor.set(-0.1);
+        if (intakeMotor.getEnc() < previousEncoderValue) {
+            previousEncoderValue = intakeMotor.getEnc();
+            intakeMotor.set(-0.14);
             return false;
         } else {
             intakeMotor.set(0);
             previousEncoderValue = 1000000;
-            intakeEncoder.setPosition(0);
+            intakeMotor.setEnc(0);
             return true;
         }
     }
@@ -54,20 +48,18 @@ public class Intake {
     }
 
     public boolean pressure() {
-        return (intakeEncoder.getPosition()+pressureThreshold > previousEncoderValue && intakeEncoder.getPosition()-pressureThreshold < previousEncoderValue);
+        return (intakeMotor.getEnc()+pressureThreshold > previousEncoderValue && intakeMotor.getEnc()-pressureThreshold < previousEncoderValue);
     }
 
     public void update() {
-        if ((Math.abs((pos()-intakeEncoder.getPosition())/(12.33)) > 0.05) && !pressure()) {
-            intakeMotor.set((pos()-intakeEncoder.getPosition())/(12.33));
-        } else {
-            if (pressure()) {
-                intakeMotor.set(-0.1); // Hold object tightly
-            } else {
-                intakeMotor.set(0);
+        if ((Math.abs((pos()-intakeMotor.getEnc())/(43)) > 0.05)) {
+            if (((pos()-intakeMotor.getEnc())/(43) < 0 && !pressure()) || (pos()-intakeMotor.getEnc())/(43) >= 0) {
+                intakeMotor.set((pos()-intakeMotor.getEnc())/(43));
             }
+        } else {
+            intakeMotor.set(0);
         }
-        previousEncoderValue = intakeEncoder.getPosition();
+        previousEncoderValue = intakeMotor.getEnc();
     }
 
 }
