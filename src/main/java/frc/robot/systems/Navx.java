@@ -35,6 +35,10 @@ public class Navx {
         yaw_Offset = NavX.getAngle();
     }
 
+    public void correctYaw(double correction) {
+        yaw_Offset -= correction;
+    }
+
     public void fullReset() {
         NavX.reset();
     }
