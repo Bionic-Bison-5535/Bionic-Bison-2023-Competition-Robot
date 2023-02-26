@@ -15,7 +15,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 public class Weswerve {
 
 	private boolean usingTalons = true; // Set to false to use CANSparkMaxs, set to true to use TalonSRXs.
-	
+
 	public TalonSRX frontLeftSteer, frontRightSteer, backRightSteer, backLeftSteer, frontLeftDrive, frontRightDrive, backRightDrive, backLeftDrive;
 	public CANSparkMax frontLeftSteer_sm, frontRightSteer_sm, backRightSteer_sm, backLeftSteer_sm, frontLeftDrive_sm, frontRightDrive_sm, backRightDrive_sm, backLeftDrive_sm;
 	public final CANCoder frontLeft, frontRight, backRight, backLeft;
@@ -158,7 +158,7 @@ public class Weswerve {
 		}
 		return negation;
 	}
-	
+
 	public boolean motorToAngle_sm(CANSparkMax Output, CANCoder Input, double angle, boolean smartAngle) { // Called periodically by update() function - adjusts wheel-rotating motor speeds to get to desired angle - if smart angle enabled, returns whether or not the wheel should have a negated velocity (true=negate) - if smart angle disabled, returns whether or not the wheel has reached te desired angle
 		newAngle = angle;
 		negation = false;
