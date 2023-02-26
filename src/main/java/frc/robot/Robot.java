@@ -257,7 +257,7 @@ public class Robot extends TimedRobot {
 					}
 				}
 
-				if (primary.stick(2) > 0.9) {        // General Primary Controller Button Actions:
+				if (primary.stick(2) > 0.9) {        // Other Primary Controller Code:
 					headless = false;
 				}
 				if (primary.stick(3) > 0.9) {
@@ -300,8 +300,11 @@ public class Robot extends TimedRobot {
 				} else {
 					rotation = primary.stick(4);
 				}
-				
-				if (headless) {                  // Actual Drive:
+
+				if (!primary.active()) {         // Actual Drive:
+					swerveCtrl.setAngles(navx.botDir(), navx.botDir(), navx.botDir(), navx.botDir());
+					swerveCtrl.setVelocities(0, 0, 0, 0);
+				} else if (headless) {
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+180);
 				} else {
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
