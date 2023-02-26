@@ -10,6 +10,7 @@ public class Navx {
 
     private double yaw_Offset = 0;
     private double balance_Offset;
+    private double xVel, yVel;
 
     public Navx() {
         balance_Offset = NavX.getRoll();
@@ -27,8 +28,22 @@ public class Navx {
         return NavX.getRoll()-balance_Offset;
     }
 
-    public boolean accel() {
-        return (Math.sqrt(Math.pow(NavX.getVelocityX(),2)+Math.pow(NavX.getVelocityX(),2)) >= 0.01);
+    public double botVel() {
+        return Math.sqrt(Math.pow(NavX.getVelocityX(), 2) + Math.pow(NavX.getVelocityY(), 2));
+    }
+
+    public double botDir() {
+        xVel = NavX.getVelocityY();
+        yVel = NavX.getVelocityX();
+        if (xVel == 0 && yVel == 0) {
+			return 0;
+		} else {
+			if (yVel <= 0) {
+				return (Math.atan(xVel/yVel) * (180 / Math.PI) + 180);
+			} else {
+				return (Math.atan(xVel/yVel) * (180 / Math.PI));
+			}
+		}
     }
 
     public void zeroYaw() {
