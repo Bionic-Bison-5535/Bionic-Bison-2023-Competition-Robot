@@ -17,7 +17,7 @@ public class Robot extends TimedRobot {
   	private final Weswerve swerveCtrl = new Weswerve(30, 31, 32, 33, 20, 21, 22, 23, 10, 11, 12, 13, 70, 100, 148, 358);
 	private final Navx navx = new Navx();
 	private final Controls primary = new Controls(0, 0.1);
-	private final Controls secondary = new Controls(1, 0.2);
+	private final Controls secondary = new Controls(1, 0.1);
 	private final Arm arm = new Arm(50, 51, 0, 0);
 	private final Intake claw = new Intake(55);
 	private final Peg peg = new Peg(0, 1, 0, 0.7);
@@ -185,7 +185,7 @@ public class Robot extends TimedRobot {
 		if (secondary.stick(2) > 0.9) {
 			peg.out();
 		}
-		navx.correctYaw(0.2*secondary.stick(4));
+		navx.correctYaw(0.5*secondary.stick(4));
 
 
 		if (now == 0) {
