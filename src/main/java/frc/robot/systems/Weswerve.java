@@ -1,6 +1,6 @@
 /*  WESWERVE for Trapezoid Swerve Robot with CANCoder Angle Detection and Either Talon SRX or CANSparkMax motor controllers.
 	Program written by Wesley McGinn {wesleymcginn1@gmail.com} for Team 5535 (The Bionic Bison, New Buffalo, Michigan)
-	Version 4.3 Beta
+	Version 4.4 Beta
 */
 
 package frc.robot.systems;
@@ -55,10 +55,10 @@ public class Weswerve {
 			frontRightSteer.configOpenloopRamp(0);
 			backRightSteer.configOpenloopRamp(0);
 			backLeftSteer.configOpenloopRamp(0);
-			frontLeftDrive.configOpenloopRamp(0.5);
-			frontRightDrive.configOpenloopRamp(0.5);
-			backRightDrive.configOpenloopRamp(0.5);
-			backLeftDrive.configOpenloopRamp(0.5);
+			frontLeftDrive.configOpenloopRamp(1);
+			frontRightDrive.configOpenloopRamp(1);
+			backRightDrive.configOpenloopRamp(1);
+			backLeftDrive.configOpenloopRamp(1);
 			frontLeftSteer.setInverted(false);
 			frontRightSteer.setInverted(false);
 			backRightSteer.setInverted(false);
