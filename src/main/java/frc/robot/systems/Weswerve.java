@@ -215,9 +215,9 @@ public class Weswerve {
 		negation2 = false;
 		negation3 = false;
 		if (usingTalons) {
-			return !(!motorToAngle(frontLeftSteer, frontLeft, A_offset + 225, false) || !motorToAngle(frontRightSteer, frontRight, B_offset + 135, false) || !motorToAngle(backRightSteer, backRight, C_offset + 225, false) || !motorToAngle(backLeftSteer, backLeft, D_offset + 135, false));
+			return (motorToAngle(frontLeftSteer, frontLeft, A_offset + 225, false) && motorToAngle(frontRightSteer, frontRight, B_offset + 135, false) && motorToAngle(backRightSteer, backRight, C_offset + 225, false) && motorToAngle(backLeftSteer, backLeft, D_offset + 135, false));
 		} else {
-			return !(!motorToAngle_sm(frontLeftSteer_sm, frontLeft, A_offset + 225, false) || !motorToAngle_sm(frontRightSteer_sm, frontRight, B_offset + 135, false) || !motorToAngle_sm(backRightSteer_sm, backRight, C_offset + 225, false) || !motorToAngle_sm(backLeftSteer_sm, backLeft, D_offset + 135, false));
+			return (motorToAngle_sm(frontLeftSteer_sm, frontLeft, A_offset + 225, false) && motorToAngle_sm(frontRightSteer_sm, frontRight, B_offset + 135, false) && motorToAngle_sm(backRightSteer_sm, backRight, C_offset + 225, false) && motorToAngle_sm(backLeftSteer_sm, backLeft, D_offset + 135, false));
 		}
 	}
 
