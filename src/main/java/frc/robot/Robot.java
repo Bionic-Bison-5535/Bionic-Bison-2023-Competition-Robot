@@ -23,7 +23,7 @@ public class Robot extends TimedRobot {
 	private final Peg peg = new Peg(0, 1, 0, 0.7);
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
-	
+
 	Timer timer;
 
 	public boolean headless = true;
@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
 			now = defaultNowTo;
 		}
 	}
-	
+
 
 	@Override
 	public void robotInit() {
@@ -227,15 +227,15 @@ public class Robot extends TimedRobot {
 				if (primary.Y.getAsBoolean()) {
 					peg.in();
 				}
-			
+
 			} else {                         // NORMAL MODE:
-				
+
 				if (finalMode) {                 // Restrictive Final Mode Functionality:
 					swerveCtrl.speed = swerveCtrl.default_speed * 0.3;
 					if (primary.LEFT_STICK.getAsBoolean()) {
 						peg.out();
 					}
-				
+
 				} else {                         // Restrictive Non-Final Mode Functionality:
 					swerveCtrl.speed = swerveCtrl.default_speed;
 					if (primary.X.getAsBoolean()) {
@@ -257,7 +257,7 @@ public class Robot extends TimedRobot {
 					}
 				}
 
-				if (primary.stick(2) > 0.9) {        // Other Primary Controller Code:
+				if (primary.stick(2) > 0.9) {    // Other Primary Controller Code:
 					headless = false;
 				}
 				if (primary.stick(3) > 0.9) {
@@ -309,7 +309,7 @@ public class Robot extends TimedRobot {
 				} else {
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
 				}
-				
+
 			}
 		}
 		if (now == 1) {
@@ -328,14 +328,14 @@ public class Robot extends TimedRobot {
 				now = 0;
 			}
 		}
-		
+
 		// Static Periodics:
 		swerveCtrl.update();
 		arm.update();
 		claw.update();
 	}
-	
-	
+
+
 	@Override
 	public void testInit() {
 		peg.in();
