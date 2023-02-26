@@ -288,7 +288,7 @@ public class Robot extends TimedRobot {
 				if (resist) {
 					dir += 4 * primary.stick(4);
 					if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
-						rotation = -0.01*(navx.yaw()-dir);
+						rotation = -0.015*(navx.yaw()-dir);
 						if (rotation > 0) {
 							rotation += 0.1;
 						} else {
@@ -305,7 +305,7 @@ public class Robot extends TimedRobot {
 					swerveCtrl.setAngles(navx.botDir(), navx.botDir(), navx.botDir(), navx.botDir());
 					swerveCtrl.setVelocities(0, 0, 0, 0);
 				} else if (headless) {
-					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+180);
+					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation+0.1*navx.botVel(), navx.coterminalYaw()+180);
 				} else {
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
 				}

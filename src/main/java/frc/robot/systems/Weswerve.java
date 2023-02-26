@@ -28,7 +28,7 @@ public class Weswerve {
 	public double theta = 0;
 	public double default_speed = 0.9;
 	public double speed = default_speed;
-	public double steeringAmplifier = 0.5;
+	public double steeringAmplifier = 0.7;
 	private final double wheelAngleErrorRange = 1.2;
 	private final double dist1 = 0.6164031008;
 	private final double dist2 = 0.5270387597;
