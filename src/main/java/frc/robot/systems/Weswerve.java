@@ -147,13 +147,11 @@ public class Weswerve {
 		if (move) {
 			if (Math.round(Input.getPosition()-wheelAngleErrorRange) > newAngle) {
 				Output.set(ControlMode.PercentOutput, -0.007*(Input.getPosition() - newAngle) - 0.05);
+			} else if (Math.round(Input.getPosition()+wheelAngleErrorRange) < newAngle) {
+				Output.set(ControlMode.PercentOutput, -0.007*(Input.getPosition() - newAngle) + 0.05);
 			} else {
-				if (Math.round(Input.getPosition()+wheelAngleErrorRange) < newAngle) {
-					Output.set(ControlMode.PercentOutput, -0.007*(Input.getPosition() - newAngle) + 0.05);
-				} else {
-					Output.set(ControlMode.PercentOutput, 0);
-					if (!smartAngle) { negation = true; }
-				}
+				Output.set(ControlMode.PercentOutput, 0);
+				if (!smartAngle) { negation = true; }
 			}
 		} else {
 			Output.set(ControlMode.PercentOutput, 0);
@@ -173,13 +171,11 @@ public class Weswerve {
 		if (move) {
 			if (Math.round(Input.getPosition()-wheelAngleErrorRange) > newAngle) {
 				Output.set(0.007*(Input.getPosition() - newAngle) + 0.05);
+			} else if (Math.round(Input.getPosition()+wheelAngleErrorRange) < newAngle) {
+				Output.set(0.007*(Input.getPosition() - newAngle) - 0.05);
 			} else {
-				if (Math.round(Input.getPosition()+wheelAngleErrorRange) < newAngle) {
-					Output.set(0.007*(Input.getPosition() - newAngle) - 0.05);
-				} else {
-					Output.set(0);
-					if (!smartAngle) { negation = true; }
-				}
+				Output.set(0);
+				if (!smartAngle) { negation = true; }
 			}
 		} else {
 			Output.set(0);
