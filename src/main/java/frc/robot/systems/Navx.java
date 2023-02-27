@@ -37,7 +37,7 @@ public class Navx {
     }
 
     public void correctYaw(double correction) {
-        yaw_Offset -= correction;
+        yaw_Offset += correction;
     }
 
     public void fullReset() {

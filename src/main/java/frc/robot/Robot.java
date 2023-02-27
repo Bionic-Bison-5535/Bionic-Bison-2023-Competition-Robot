@@ -184,7 +184,7 @@ public class Robot extends TimedRobot {
 		if (secondary.stick(2) > 0.9) {
 			peg.out();
 		}
-		navx.correctYaw(-secondary.stick(4));
+		navx.correctYaw(secondary.stick(4));
 
 
 		if (now == 0) {
