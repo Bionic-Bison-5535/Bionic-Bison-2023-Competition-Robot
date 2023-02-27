@@ -185,7 +185,7 @@ public class Robot extends TimedRobot {
 		if (secondary.stick(2) > 0.9) {
 			peg.out();
 		}
-		navx.correctYaw(0.5*secondary.stick(4));
+		navx.correctYaw(-secondary.stick(4));
 
 
 		if (now == 0) {
@@ -193,7 +193,7 @@ public class Robot extends TimedRobot {
 			if (rawMode) {                   // RAW MODE:
 
 				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), primary.stick(4), 0);
-				//arm.setRaw(primary.stick(3)-primary.stick(2), -primary.stick(5));
+				//arm.setRaw(primary.stick(2)-primary.stick(3), -primary.stick(5));
 /*
 				if (primary.stick(5) < -0.4) {
 					arm.pos(0);
