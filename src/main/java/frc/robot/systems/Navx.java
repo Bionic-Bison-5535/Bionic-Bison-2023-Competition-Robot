@@ -32,20 +32,6 @@ public class Navx {
         return Math.sqrt(Math.pow(NavX.getVelocityX(), 2) + Math.pow(NavX.getVelocityY(), 2));
     }
 
-    public double botDir() {
-        xVel = NavX.getVelocityY();
-        yVel = NavX.getVelocityX();
-        if (xVel == 0 && yVel == 0) {
-			return 0;
-		} else {
-			if (yVel <= 0) {
-				return (Math.atan(xVel/yVel) * (180 / Math.PI) + 180);
-			} else {
-				return (Math.atan(xVel/yVel) * (180 / Math.PI));
-			}
-		}
-    }
-
     public void zeroYaw() {
         yaw_Offset = NavX.getAngle();
     }

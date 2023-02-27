@@ -80,7 +80,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Intake Encoder Value", claw.intakeMotor.getEnc());
 		SmartDashboard.putBoolean("Arm Reached Position", arm.there());
 		SmartDashboard.putNumber("Robot Velocity", navx.botVel());
-		SmartDashboard.putNumber("Robot Direction", navx.botDir());
 		SmartDashboard.putNumber("Points Earned", score.points);
 		SmartDashboard.putNumber("Cubes", score.cubes);
 		SmartDashboard.putNumber("Cones", score.cones);
