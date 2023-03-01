@@ -1,6 +1,6 @@
 /*  WESWERVE for Trapezoid Swerve Robot with CANCoder Angle Detection and Either Talon SRX or CANSparkMax motor controllers.
 	Program written by Wesley McGinn {wesleymcginn1@gmail.com} for Team 5535 (The Bionic Bison, New Buffalo, Michigan)
-	Version 4.7 Beta
+	Version 4.8 Beta
 */
 
 package frc.robot.systems;
@@ -15,7 +15,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 public class Weswerve {
 
 	private boolean usingTalons = true; // Set to false to use CANSparkMaxs, set to true to use TalonSRXs.
-	
+
 	public TalonSRX frontLeftSteer, frontRightSteer, backRightSteer, backLeftSteer, frontLeftDrive, frontRightDrive, backRightDrive, backLeftDrive;
 	public CANSparkMax frontLeftSteer_sm, frontRightSteer_sm, backRightSteer_sm, backLeftSteer_sm, frontLeftDrive_sm, frontRightDrive_sm, backRightDrive_sm, backLeftDrive_sm;
 	public final CANCoder frontLeft, frontRight, backRight, backLeft;
@@ -146,20 +146,18 @@ public class Weswerve {
 		if (move) {
 			if (Math.round(Input.getPosition()-wheelAngleErrorRange) > newAngle) {
 				Output.set(ControlMode.PercentOutput, -0.007*(Input.getPosition() - newAngle) - 0.05);
+			} else if (Math.round(Input.getPosition()+wheelAngleErrorRange) < newAngle) {
+				Output.set(ControlMode.PercentOutput, -0.007*(Input.getPosition() - newAngle) + 0.05);
 			} else {
-				if (Math.round(Input.getPosition()+wheelAngleErrorRange) < newAngle) {
-					Output.set(ControlMode.PercentOutput, -0.007*(Input.getPosition() - newAngle) + 0.05);
-				} else {
-					Output.set(ControlMode.PercentOutput, 0);
-					if (!smartAngle) { negation = true; }
-				}
+				Output.set(ControlMode.PercentOutput, 0);
+				if (!smartAngle) { negation = true; }
 			}
 		} else {
 			Output.set(ControlMode.PercentOutput, 0);
 		}
 		return negation;
 	}
-	
+
 	public boolean motorToAngle_sm(CANSparkMax Output, CANCoder Input, double angle, boolean smartAngle) { // Called periodically by update() function - adjusts wheel-rotating motor speeds to get to desired angle - if smart angle enabled, returns whether or not the wheel should have a negated velocity (true=negate) - if smart angle disabled, returns whether or not the wheel has reached te desired angle
 		newAngle = angle;
 		negation = false;
@@ -172,13 +170,11 @@ public class Weswerve {
 		if (move) {
 			if (Math.round(Input.getPosition()-wheelAngleErrorRange) > newAngle) {
 				Output.set(0.007*(Input.getPosition() - newAngle) + 0.05);
+			} else if (Math.round(Input.getPosition()+wheelAngleErrorRange) < newAngle) {
+				Output.set(0.007*(Input.getPosition() - newAngle) - 0.05);
 			} else {
-				if (Math.round(Input.getPosition()+wheelAngleErrorRange) < newAngle) {
-					Output.set(0.007*(Input.getPosition() - newAngle) - 0.05);
-				} else {
-					Output.set(0);
-					if (!smartAngle) { negation = true; }
-				}
+				Output.set(0);
+				if (!smartAngle) { negation = true; }
 			}
 		} else {
 			Output.set(0);
@@ -189,12 +185,10 @@ public class Weswerve {
 	public double i_tan(double opp, double adj) { // Special inverse tangent - returns 0:360
 		if (opp == 0 && adj == 0) {
 			return 0;
+		} else if (adj <= 0) {
+			return (Math.atan(opp/adj) * (180 / Math.PI) + 180);
 		} else {
-			if (adj <= 0) {
-				return (Math.atan(opp/adj) * (180 / Math.PI) + 180);
-			} else {
-				return (Math.atan(opp/adj) * (180 / Math.PI));
-			}
+			return (Math.atan(opp/adj) * (180 / Math.PI));
 		}
 	}
 
@@ -244,32 +238,26 @@ public class Weswerve {
 				d = 1;
 				x = 0;
 				setVelocities(a*y*speed, -b*y*speed, -c*y*speed, -d*y*speed);
+			} else if (Math.abs(x) < 0.4) {
+				setAngles(-54.20917723, 54.20917723, -71.56750291, 71.56750291);
+				setVelocities(rotationalInput*speed, rotationalInput*speed, rotationalInput*speed, -rotationalInput*speed);
 			} else {
-				if (Math.abs(x) < 0.4) {
-					setAngles(-54.20917723, 54.20917723, -71.56750291, 71.56750291);
-					a = 2;
-					b = -2;
-					c = -2;
-					d = 2;
-					setVelocities(a*(y+0.4*(rotationalInput))*speed, -b*(y+0.4*(rotationalInput))*speed, -c*(y+0.4*(rotationalInput))*speed, -d*(y+0.4*(rotationalInput))*speed);
+				if (x < 0) {
+					angle0 = -i_tan((dist1*sine(-theta+108.4324971)),(2*x-dist1*cosine(-theta+108.4324971)))+theta+180;
+					angle1 = -i_tan((dist1*sine(-theta+71.56750291)),(2*x-dist1*cosine(-theta+71.56750291)))+theta+180;
+					angle2 = -i_tan((dist2*sine(-theta-54.20917723)),(2*x-dist2*cosine(-theta-54.20917723)))+theta+180;
+					angle3 = -i_tan((dist2*sine(-theta-125.7908228)),(2*x-dist2*cosine(-theta-125.7908228)))+theta+180;
 				} else {
-					if (x < 0) {
-						angle0 = -i_tan((dist1*sine(-theta+108.4324971)),(2*x-dist1*cosine(-theta+108.4324971)))+theta+180;
-						angle1 = -i_tan((dist1*sine(-theta+71.56750291)),(2*x-dist1*cosine(-theta+71.56750291)))+theta+180;
-						angle2 = -i_tan((dist2*sine(-theta-54.20917723)),(2*x-dist2*cosine(-theta-54.20917723)))+theta+180;
-						angle3 = -i_tan((dist2*sine(-theta-125.7908228)),(2*x-dist2*cosine(-theta-125.7908228)))+theta+180;
-					} else {
-						angle0 = -i_tan((dist1*sine(-theta+108.4324971)),(2*x-dist1*cosine(-theta+108.4324971)))+theta;
-						angle1 = -i_tan((dist1*sine(-theta+71.56750291)),(2*x-dist1*cosine(-theta+71.56750291)))+theta;
-						angle2 = -i_tan((dist2*sine(-theta-54.20917723)),(2*x-dist2*cosine(-theta-54.20917723)))+theta;
-						angle3 = -i_tan((dist2*sine(-theta-125.7908228)),(2*x-dist2*cosine(-theta-125.7908228)))+theta;
-					}
-					a = Math.abs(Math.sqrt((x*x)-(x*dist1*cosine(-theta+108.4324971))+(0.5))/x);
-					b = Math.abs(Math.sqrt((x*x)-(x*dist1*cosine(-theta+71.56750291))+(0.5))/x);
-					c = Math.abs(Math.sqrt((x*x)-(x*dist2*cosine(-theta-54.20917723))+(0.5))/x);
-					d = Math.abs(Math.sqrt((x*x)-(x*dist2*cosine(-theta-125.7908228))+(0.5))/x);
-					setVelocities(a*y*speed, -b*y*speed, -c*y*speed, -d*y*speed);
+					angle0 = -i_tan((dist1*sine(-theta+108.4324971)),(2*x-dist1*cosine(-theta+108.4324971)))+theta;
+					angle1 = -i_tan((dist1*sine(-theta+71.56750291)),(2*x-dist1*cosine(-theta+71.56750291)))+theta;
+					angle2 = -i_tan((dist2*sine(-theta-54.20917723)),(2*x-dist2*cosine(-theta-54.20917723)))+theta;
+					angle3 = -i_tan((dist2*sine(-theta-125.7908228)),(2*x-dist2*cosine(-theta-125.7908228)))+theta;
 				}
+				a = Math.abs(Math.sqrt((x*x)-(x*dist1*cosine(-theta+108.4324971))+(0.5))/x);
+				b = Math.abs(Math.sqrt((x*x)-(x*dist1*cosine(-theta+71.56750291))+(0.5))/x);
+				c = Math.abs(Math.sqrt((x*x)-(x*dist2*cosine(-theta-54.20917723))+(0.5))/x);
+				d = Math.abs(Math.sqrt((x*x)-(x*dist2*cosine(-theta-125.7908228))+(0.5))/x);
+				setVelocities(a*y*speed, -b*y*speed, -c*y*speed, -d*y*speed);
 			}
 		}
 	}

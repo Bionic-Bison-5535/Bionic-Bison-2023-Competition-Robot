@@ -17,13 +17,13 @@ public class Robot extends TimedRobot {
   	private final Weswerve swerveCtrl = new Weswerve(30, 31, 32, 33, 20, 21, 22, 23, 10, 11, 12, 13, 70, 100, 148, 358);
 	private final Navx navx = new Navx();
 	private final Controls primary = new Controls(0, 0.1);
-	private final Controls secondary = new Controls(1, 0.2);
+	private final Controls secondary = new Controls(1, 0.1);
 	private final Arm arm = new Arm(50, 51, 0, 0);
 	private final Intake claw = new Intake(55);
 	private final Peg peg = new Peg(0, 1, 0, 0.7);
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
-	
+
 	Timer timer;
 
 	public boolean headless = true;
@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
 			now = defaultNowTo;
 		}
 	}
-	
+
 
 	@Override
 	public void robotInit() {
@@ -149,7 +149,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
-		if (secondary.BACK.getAsBoolean()) {          // Secondary Controller Input:
+		if (secondary.BACK.getAsBoolean()) {         // Secondary Controller Input:
 			rawMode = true;
 		}
 		if (secondary.START.getAsBoolean()) {
@@ -184,15 +184,13 @@ public class Robot extends TimedRobot {
 		if (secondary.stick(2) > 0.9) {
 			peg.out();
 		}
-		navx.correctYaw(0.2*secondary.stick(4));
-
+		navx.correctYaw(-secondary.stick(4));
 
 		if (now == 0) {
 
-			if (rawMode) {                   // RAW MODE:
+			if (rawMode) {                           // RAW MODE:
 
 				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), primary.stick(4), 0);
-				//arm.setRaw(primary.stick(3)-primary.stick(2), -primary.stick(5));
 /*
 				if (primary.stick(5) < -0.4) {
 					arm.pos(0);
@@ -204,7 +202,6 @@ public class Robot extends TimedRobot {
 					arm.pos(2);
 				}
 */
-
 				if (primary.LEFT.getAsBoolean()) {
 					claw.close(1);
 				}
@@ -223,16 +220,16 @@ public class Robot extends TimedRobot {
 				if (primary.Y.getAsBoolean()) {
 					peg.in();
 				}
-			
-			} else {                         // NORMAL MODE:
-				
-				if (finalMode) {                 // Restrictive Final Mode Functionality:
+
+			} else {                                 // NORMAL MODE:
+
+				if (finalMode) {                         // Restrictive Final Mode Functionality:
 					swerveCtrl.speed = swerveCtrl.default_speed * 0.3;
 					if (primary.LEFT_STICK.getAsBoolean()) {
 						peg.out();
 					}
 				
-				} else {                         // Restrictive Non-Final Mode Functionality:
+				} else {                                 // Restrictive Non-Final Mode Functionality:
 					swerveCtrl.speed = swerveCtrl.default_speed;
 					if (primary.X.getAsBoolean()) {
 						getting = 0;
@@ -253,7 +250,7 @@ public class Robot extends TimedRobot {
 					}
 				}
 
-				if (primary.stick(2) > 0.9) {        // General Primary Controller Button Actions:
+				if (primary.stick(2) > 0.9) {            // Other Primary Controller Code:
 					headless = false;
 				}
 				if (primary.stick(3) > 0.9) {
@@ -284,34 +281,26 @@ public class Robot extends TimedRobot {
 				if (resist) {
 					dir += 4 * primary.stick(4);
 					if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
-						rotation = -0.01*(navx.yaw()-dir);
-						if (rotation > 0) {
-							rotation += 0.1;
-						} else {
-							rotation -= 0.1;
-						}
+						rotation = -0.05*(navx.yaw()-dir);
 					} else {
 						rotation = 0;
 					}
 				} else {
 					rotation = primary.stick(4);
 				}
-				
-				if (headless) {                  // Actual Drive:
+
+				if (headless) {                          // Actual Drive:
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+180);
 				} else {
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
 				}
-				
+
 			}
-		}
-		if (now == 1) {
+		} else if (now == 1) {
 			action(collector.getGamePiece(getting), 0);
-		}
-		if (now == 2) {
+		} else if (now == 2) {
 			action(score.prepare(getting), 3);
-		}
-		if (now == 3) {
+		} else if (now == 3) {
 			if (primary.stick(5) == 0) { arm.pos(1); }
 			if (primary.stick(5) > 0) { arm.pos(0); }
 			if (primary.stick(5) < 0) { arm.pos(2); }
@@ -321,14 +310,14 @@ public class Robot extends TimedRobot {
 				now = 0;
 			}
 		}
-		
+
 		// Static Periodics:
 		swerveCtrl.update();
 		arm.update();
 		claw.update();
 	}
-	
-	
+
+
 	@Override
 	public void testInit() {
 		peg.in();
