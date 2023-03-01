@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
 	public double dir_accuracy = 1;
 	public double rotation = 0;
 	public boolean resist = true;
-	public boolean rawMode = true;
+	public boolean rawMode = false;
 	public boolean finalMode = false;
 	public double pwr2 = 0.15;
 	private int getting;
@@ -204,9 +204,6 @@ public class Robot extends TimedRobot {
 					arm.pos(2);
 				}
 */
-
-				arm.setAlpha(SmartDashboard.getNumber("Alpha Angle", arm.getAlpha()));
-				arm.setBeta(SmartDashboard.getNumber("Beta Angle", arm.getBeta()));
 
 				if (primary.LEFT.getAsBoolean()) {
 					claw.close(1);
