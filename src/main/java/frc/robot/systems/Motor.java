@@ -84,12 +84,8 @@ public class Motor {
     }
 
     public boolean there() {
-        if (posMode) {
-            if (Math.abs(getEnc()-goToPos) > db * ticksPerRotation()) {
-                return false;
-            } else {
-                return true;
-            }
+        if (posMode && Math.abs(getEnc()-goToPos) > db * ticksPerRotation()) {
+            return false;
         } else {
             return true;
         }
