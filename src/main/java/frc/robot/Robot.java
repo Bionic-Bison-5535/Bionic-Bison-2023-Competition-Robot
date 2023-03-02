@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
 	public double pwr2 = 0.15;
 	private int getting;
 	private double newAngle;
+	private boolean needsReset;
 	public int now = 0;
 	/* now = ID of currently running dynamic periodic
 	 * 0 = Driving
@@ -322,13 +323,25 @@ public class Robot extends TimedRobot {
 	public void testInit() {
 		peg.in();
 		claw.intakeMotor.setEnc(0);
+		needsReset = true;
 	}
 
 
 	@Override
 	public void testPeriodic() {
-		if (swerveCtrl.resetMotors()) {
-			swerveCtrl.tone();
+		if (needsReset) {
+			if (swerveCtrl.resetMotors()) {
+				swerveCtrl.tone();
+				Timer.delay(2.5);
+				swerveCtrl.swerve(0, 0, 0, 0);
+				needsReset = false;
+				SmartDashboard.putNumber("Arm Pos", arm.mostRecentPos);
+			}
+		} else {
+			if (0 <= SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos) && SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos) <= 3) {
+				arm.pos(SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos));
+				arm.update();
+			}
 		}
 	}
 
