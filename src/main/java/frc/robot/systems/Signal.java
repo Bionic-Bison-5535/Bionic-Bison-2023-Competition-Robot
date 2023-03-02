@@ -13,4 +13,20 @@ public class Signal {
         setConeLED(false);
     }
 
+    public void setCubeLED(boolean on) {
+        if (on) {
+            cubeLED.setSpeed(1);
+        } else {
+            cubeLED.setSpeed(-1);
+        }
+    }
+
+    public void setConeLED(boolean on) {
+        if (on) {
+            coneLED.setSpeed(1);
+        } else {
+            coneLED.setSpeed(-1);
+        }
+    }
+
 }
