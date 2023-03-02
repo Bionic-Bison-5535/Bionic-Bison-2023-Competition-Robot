@@ -77,7 +77,7 @@ public class Motor {
 
     public double ticksPerRotation() {
         if (usingTalon) {
-            return 4096;
+            return 2048;
         } else {
             return 43;
         }
