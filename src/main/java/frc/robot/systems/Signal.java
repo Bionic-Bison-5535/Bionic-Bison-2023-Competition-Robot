@@ -29,4 +29,19 @@ public class Signal {
         }
     }
 
+    public void cube() {
+        setCubeLED(true);
+        setConeLED(false);
+    }
+
+    public void cone() {
+        setCubeLED(false);
+        setConeLED(true);
+    }
+
+    public void off() {
+        setCubeLED(false);
+        setConeLED(false);
+    }
+
 }
