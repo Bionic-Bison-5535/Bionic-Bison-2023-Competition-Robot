@@ -29,6 +29,17 @@ public class Motor {
         }
     }
 
+    public void stop() {
+        if (usingTalon) {
+            talonMotor.set(ControlMode.PercentOutput, 0);
+        } else {
+            maxMotor.set(0);
+        }
+        if (posMode) {
+            setEnc(getEnc());
+        }
+    }
+
     public void set(double power) {
         if (usingTalon) {
             talonMotor.set(ControlMode.PercentOutput, power);
