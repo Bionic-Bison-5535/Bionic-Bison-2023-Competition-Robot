@@ -30,26 +30,24 @@ public class Arm {
         theta.setEnc(0);
     }
 
+    public go(double alpha_encValue, double beta_encValue, double theta_encValue) {
+        alpha.goTo(alpha_encValue);
+        beta.goTo(beta_encValue);
+        theta.goTo(theta_encValue);
+    }
+
     public void pos(int positionNumber) {
         if (positionNumber == 0) {
-            alpha.goTo(pos_0_a);
-            beta.goTo(pos_0_b);
-            theta.goTo(pos_0_c);
+            go(pos_0_a, pos_0_b, pos_0_c);
         }
         if (positionNumber == 1) {
-            alpha.goTo(pos_1_a);
-            beta.goTo(pos_1_b);
-            theta.goTo(pos_1_c);
+            go(pos_1_a, pos_1_b, pos_1_c);
         }
         if (positionNumber == 2) {
-            alpha.goTo(pos_2_a);
-            beta.goTo(pos_2_b);
-            theta.goTo(pos_2_c);
+            go(pos_2_a, pos_2_b, pos_2_c);
         }
         if (positionNumber == 3) {
-            alpha.goTo(pos_3_a);
-            beta.goTo(pos_3_b);
-            theta.goTo(pos_3_c);
+            go(pos_3_a, pos_3_b, pos_3_c);
         }
         mostRecentPos = positionNumber;
     }
