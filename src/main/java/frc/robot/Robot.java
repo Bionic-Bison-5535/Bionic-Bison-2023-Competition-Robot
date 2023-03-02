@@ -24,8 +24,6 @@ public class Robot extends TimedRobot {
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
 
-	Timer timer;
-
 	public boolean headless = true;
 	public double front = 0;
 	public double dir = 0;
@@ -46,15 +44,21 @@ public class Robot extends TimedRobot {
 	 * 3 = Scoring Mode (With Input)
 	*/
 
+	Timer timer;
+
 	public void dashInit() {
-		SmartDashboard.putNumber("Pos 0 x", arm.pos_0_x);
-		SmartDashboard.putNumber("Pos 0 y", arm.pos_0_y);
-		SmartDashboard.putNumber("Pos 1 x", arm.pos_1_x);
-		SmartDashboard.putNumber("Pos 1 y", arm.pos_1_y);
-		SmartDashboard.putNumber("Pos 2 x", arm.pos_2_x);
-		SmartDashboard.putNumber("Pos 2 y", arm.pos_2_y);
-		SmartDashboard.putNumber("Pos 3 x", arm.pos_3_x);
-		SmartDashboard.putNumber("Pos 3 y", arm.pos_3_y);
+		SmartDashboard.putNumber("Pos 0 a", arm.pos_0_a);
+		SmartDashboard.putNumber("Pos 0 b", arm.pos_0_b);
+		SmartDashboard.putNumber("Pos 0 c", arm.pos_0_c);
+		SmartDashboard.putNumber("Pos 1 a", arm.pos_1_a);
+		SmartDashboard.putNumber("Pos 1 b", arm.pos_1_b);
+		SmartDashboard.putNumber("Pos 1 c", arm.pos_1_c);
+		SmartDashboard.putNumber("Pos 2 a", arm.pos_2_a);
+		SmartDashboard.putNumber("Pos 2 b", arm.pos_2_b);
+		SmartDashboard.putNumber("Pos 2 c", arm.pos_2_c);
+		SmartDashboard.putNumber("Pos 3 a", arm.pos_3_a);
+		SmartDashboard.putNumber("Pos 3 b", arm.pos_3_b);
+		SmartDashboard.putNumber("Pos 3 c", arm.pos_3_c);
 		SmartDashboard.putNumber("Robot Speed", swerveCtrl.default_speed);
 		SmartDashboard.putNumber("Robot Steering Sharpness", swerveCtrl.steeringAmplifier);
 		SmartDashboard.putNumber("A offset", swerveCtrl.A_offset);
@@ -85,14 +89,18 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Cubes", score.cubes);
 		SmartDashboard.putNumber("Cones", score.cones);
 		SmartDashboard.putBoolean("Peg Out", peg.actuated);
-		arm.pos_0_x = SmartDashboard.getNumber("Pos 0 x", arm.pos_0_x);
-		arm.pos_0_y = SmartDashboard.getNumber("Pos 0 y", arm.pos_0_y);
-		arm.pos_1_x = SmartDashboard.getNumber("Pos 1 x", arm.pos_1_x);
-		arm.pos_1_y = SmartDashboard.getNumber("Pos 1 y", arm.pos_1_y);
-		arm.pos_2_x = SmartDashboard.getNumber("Pos 2 x", arm.pos_2_x);
-		arm.pos_2_y = SmartDashboard.getNumber("Pos 2 y", arm.pos_2_y);
-		arm.pos_3_x = SmartDashboard.getNumber("Pos 3 x", arm.pos_3_x);
-		arm.pos_3_y = SmartDashboard.getNumber("Pos 3 y", arm.pos_3_y);
+		arm.pos_0_a = SmartDashboard.getNumber("Pos 0 a", arm.pos_0_a);
+		arm.pos_0_b = SmartDashboard.getNumber("Pos 0 b", arm.pos_0_b);
+		arm.pos_0_c = SmartDashboard.getNumber("Pos 0 c", arm.pos_0_c);
+		arm.pos_1_a = SmartDashboard.getNumber("Pos 1 a", arm.pos_1_a);
+		arm.pos_1_b = SmartDashboard.getNumber("Pos 1 b", arm.pos_1_b);
+		arm.pos_1_c = SmartDashboard.getNumber("Pos 1 c", arm.pos_1_c);
+		arm.pos_2_a = SmartDashboard.getNumber("Pos 2 a", arm.pos_2_a);
+		arm.pos_2_b = SmartDashboard.getNumber("Pos 2 b", arm.pos_2_b);
+		arm.pos_2_c = SmartDashboard.getNumber("Pos 2 c", arm.pos_2_c);
+		arm.pos_3_a = SmartDashboard.getNumber("Pos 3 a", arm.pos_3_a);
+		arm.pos_3_b = SmartDashboard.getNumber("Pos 3 b", arm.pos_3_b);
+		arm.pos_3_c = SmartDashboard.getNumber("Pos 3 c", arm.pos_3_c);
 		swerveCtrl.default_speed = SmartDashboard.getNumber("Robot Speed", swerveCtrl.default_speed);
 		swerveCtrl.steeringAmplifier = SmartDashboard.getNumber("Robot Steering Sharpness", swerveCtrl.steeringAmplifier);
 		swerveCtrl.A_offset = SmartDashboard.getNumber("A offset", swerveCtrl.A_offset);
