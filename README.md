@@ -2,11 +2,11 @@
 This programming is for team 5535's robot for the 2023 FIRST Robotics Competition (FRC).  An explaination of the competition can be found [here](https://www.youtube.com/watch?v=0zpflsYc4PA).  You can find all of the matches we have played this year on our [blue alliance page](https://www.thebluealliance.com/team/5535).
 
 ## Current Code Status
-_85%_  `============-----|||`
+_90%_  `==============-----|`
 ```
-= 60% Complete
+= 70% Complete
 - 25% In Verification
-| 15% Not Done
+| 5% Not Done
 ```
 
 ## Finished Program Includes:
