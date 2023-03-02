@@ -6,15 +6,15 @@ public class Arm {
 
     public Motor alpha, beta, theta;
 
-    public double pos_0_a = 20; // Position 0 - Collect or Score in Row 1
-    public double pos_0_b = 20;
-    public double pos_0_c = 20;
+    public double pos_0_a = 0; // Position 0 - Collect or Score in Row 1
+    public double pos_0_b = 0;
+    public double pos_0_c = 64000;
     public double pos_1_a = 0; // Position 1 -  Score in Row 2
     public double pos_1_b = 0;
-    public double pos_1_c = 0;
-    public double pos_2_a = 0; // Position 2 - Score in Row 3 (Most extended and most dangerous)
-    public double pos_2_b = 0;
-    public double pos_2_c = 0;
+    public double pos_1_c = 128000;
+    public double pos_2_a = 128000; // Position 2 - Score in Row 3 (Most extended and most dangerous)
+    public double pos_2_b = 128000;
+    public double pos_2_c = 256000;
     public double pos_3_a = 0; // Position 3 - Holding Mode
     public double pos_3_b = 0;
     public double pos_3_c = 0;
