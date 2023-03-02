@@ -21,6 +21,7 @@ public class Motor {
         usingTalon = isTalon;
         if (usingTalon) {
             talonMotor = new TalonSRX(canID);
+            talonMotor.configOpenloopRamp(0);
             talonMotor.setInverted(invert);
         } else {
             maxMotor = new CANSparkMax(canID, MotorType.kBrushless);
