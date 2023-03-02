@@ -56,12 +56,6 @@ public class Arm {
         return (alpha.there() && beta.there() && theta.there());
     }
 
-    public void all_stop() {
-        alpha.stop();
-        beta.stop();
-        theta.stop();
-    }
-
     public void update() {
         alpha.update();
         beta.update();
