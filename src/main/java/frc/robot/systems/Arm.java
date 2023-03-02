@@ -4,78 +4,70 @@ import java.lang.Math;
 
 public class Arm {
 
-    public Motor alpha, beta;
+    public Motor alpha, beta, theta;
 
-    public double q1 = 48;
-    public double q2 = 48;
-
-    public double pos_0_x = 50; // Collect or Score in Row 1
-    public double pos_0_y = 30;
-    public double pos_1_x = 50; // Score in Row 2
-    public double pos_1_y = 30;
-    public double pos_2_x = 50; // Score in Row 3
-    public double pos_2_y = 30;
-    public double pos_3_x = 50; // Holding Mode
-    public double pos_3_y = 30;
+    public double pos_0_a = 20; // Position 0 - Collect or Score in Row 1
+    public double pos_0_b = 20;
+    public double pos_0_c = 20;
+    public double pos_1_a = 0; // Position 1 -  Score in Row 2
+    public double pos_1_b = 0;
+    public double pos_1_c = 0;
+    public double pos_2_a = 0; // Position 2 - Score in Row 3 (Most extended and most dangerous)
+    public double pos_2_b = 0;
+    public double pos_2_c = 0;
+    public double pos_3_a = 0; // Position 3 - Holding Mode
+    public double pos_3_b = 0;
+    public double pos_3_c = 0;
 
     public int mostRecentPos = 3;
 
-    public Arm(int alpha_canID, int beta_canID, double alpha_start, double beta_start) {
+    public Arm(int alpha_canID, int beta_canID, int theta_canID) {
         alpha = new Motor(alpha_canID, true, false);
         beta = new Motor(beta_canID, true, false);
-        alpha.setEnc(alpha_start);
-        beta.setEnc(beta_start);
-    }
-
-    public void setRaw(double alpha_speed, double beta_speed) {
-        alpha.set(alpha_speed);
-        beta.set(beta_speed);
-    }
-
-    public void trigIt(double set_x, double set_y) {
-        setAlpha(180*Math.floor(set_x/(q1+q2)) + Math.atan(set_y/set_x)*(180/Math.PI) + Math.acos(((Math.sqrt(set_x*set_x+set_y*set_y)*(set_x*set_x+set_y*set_y+q1*q1-q2*q2))/(2*q1*(set_x*set_x+set_y*set_y)))*(Math.PI/180)));
-        setBeta(Math.acos(((q1*q1+q2*q2-set_x*set_x-set_y*set_y)/(2*q1*q2))*(Math.PI/180)) - 180);
+        theta = new Motor(theta_canID, true, false);
+        alpha.setEnc(0);
+        beta.setEnc(0);
+        theta.setEnc(0);
     }
 
     public void pos(int positionNumber) {
         if (positionNumber == 0) {
-            trigIt(pos_0_x, pos_0_y);
+            alpha.goTo(pos_0_a);
+            beta.goTo(pos_0_b);
+            theta.goTo(pos_0_c);
         }
         if (positionNumber == 1) {
-            trigIt(pos_1_x, pos_1_y);
+            alpha.goTo(pos_1_a);
+            beta.goTo(pos_1_b);
+            theta.goTo(pos_1_c);
         }
         if (positionNumber == 2) {
-            trigIt(pos_2_x, pos_2_y);
+            alpha.goTo(pos_2_a);
+            beta.goTo(pos_2_b);
+            theta.goTo(pos_2_c);
         }
         if (positionNumber == 3) {
-            trigIt(pos_3_x, pos_3_y);
+            alpha.goTo(pos_3_a);
+            beta.goTo(pos_3_b);
+            theta.goTo(pos_3_c);
         }
         mostRecentPos = positionNumber;
     }
 
-    public double getAlpha() {
-        return alpha.getEnc()/-2347.14;
+    public boolean all_there() {
+        return (alpha.there() && beta.there() && theta.there());
     }
 
-    public double getBeta() {
-        return 90-((beta.getEnc()-230000)/-5600);
-    }
-
-    public void setAlpha(double newSetAngle) {
-        alpha.goTo(newSetAngle*-2347.14);
-    }
-
-    public void setBeta(double newSetAngle) {
-        beta.goTo(-5600*(newSetAngle-90)+230000);
-    }
-
-    public boolean there() {
-        return (alpha.there() && beta.there());
+    public void all_stop() {
+        alpha.stop();
+        beta.stop();
+        theta.stop();
     }
 
     public void update() {
         alpha.update();
         beta.update();
+        theta.update();
     }
 
 }
