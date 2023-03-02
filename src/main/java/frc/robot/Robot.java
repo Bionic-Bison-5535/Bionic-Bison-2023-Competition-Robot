@@ -42,6 +42,7 @@ public class Robot extends TimedRobot {
 	 * 1 = Getting Object
 	 * 2 = Preparing to Score
 	 * 3 = Scoring Mode (With Input)
+	 * 4 = Scoring top row
 	*/
 
 	Timer timer;
@@ -193,35 +194,33 @@ public class Robot extends TimedRobot {
 		if (secondary.stick(2) > 0.9) {
 			peg.out();
 		}
-		navx.correctYaw(-secondary.stick(4));
+		navx.correctYaw(secondary.stick(4));
 
 		if (now == 0) {
 
 			if (rawMode) {                           // RAW MODE:
 
 				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), primary.stick(4), 0);
-/*
 				if (primary.stick(5) < -0.4) {
 					arm.pos(0);
-				} else if (primary.stick(5) < 0.3) {
+				} else if (primary.stick(5) < 0.2) {
 					arm.pos(3);
 				} else if (primary.stick(5) < 0.95) {
 					arm.pos(1);
 				} else {
 					arm.pos(2);
 				}
-*/
 				if (primary.LEFT.getAsBoolean()) {
-					claw.close(1);
+					rawMode = false;
+				}
+				if (primary.A.getAsBoolean()) {
+					peg.out();
 				}
 				if (primary.B.getAsBoolean()) {
-					claw.close(0);
+					peg.in();
 				}
 				if (primary.RIGHT.getAsBoolean()) {
 					claw.open();
-				}
-				if (primary.A.getAsBoolean()) {
-					rawMode = false;
 				}
 				if (primary.X.getAsBoolean()) {
 					peg.out();
@@ -254,6 +253,10 @@ public class Robot extends TimedRobot {
 						score.stage = 0;
 						now = 2;
 					}
+					if (primary.B.getAsBoolean()) {
+						score.stage = 0;
+						now = 4;
+					}
 					if (peg.actuated) {
 						peg.in();
 					}
@@ -265,12 +268,9 @@ public class Robot extends TimedRobot {
 				if (primary.stick(3) > 0.9) {
 					headless = true;
 				}
-				if (primary.A.getAsBoolean()) {            
-					navx.zeroYaw();
-					dir = 0;
-				}
 				if (primary.RIGHT.getAsBoolean()) {
 					score.drop(2, false, true);
+					arm.pos(3);
 				}
 				if (primary.LEFT.getAsBoolean()) {
 					if (primary.stick(0) >= 0) {
@@ -324,6 +324,7 @@ public class Robot extends TimedRobot {
 		swerveCtrl.update();
 		arm.update();
 		claw.update();
+
 	}
 
 
