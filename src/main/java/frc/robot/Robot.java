@@ -18,7 +18,7 @@ public class Robot extends TimedRobot {
 	private final Navx navx = new Navx();
 	private final Controls primary = new Controls(0, 0.1);
 	private final Controls secondary = new Controls(1, 0.1);
-	private final Arm arm = new Arm(50, 51, 0, 0);
+	private final Arm arm = new Arm(50, 51, 53);
 	private final Intake claw = new Intake(55);
 	private final Peg peg = new Peg(0, 1, 0, 0.7);
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
@@ -69,11 +69,14 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Secondary Adjustment Strength", pwr2);
 		SmartDashboard.putNumber("Cube Closeness for Pickup", collector.cubeWidthForPickUp);
 		SmartDashboard.putNumber("Cone Closeness for Pickup", collector.coneWidthForPickUp);
-		SmartDashboard.putNumber("Alpha Angle", arm.getAlpha());
-		SmartDashboard.putNumber("Beta Angle", arm.getBeta());
 	}
 
 	public void dash() {
+
+		SmartDashboard.putNumber("Alpha", arm.alpha.getEnc());
+		SmartDashboard.putNumber("Beta", arm.beta.getEnc());
+		SmartDashboard.putNumber("Theta", arm.theta.getEnc());
+
 		SmartDashboard.putBoolean("Headless", headless);
 		SmartDashboard.putNumber("Yaw", navx.yaw());
 		SmartDashboard.putNumber("Balance", navx.balance());
@@ -84,7 +87,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Alpha Encoder Value", arm.alpha.getEnc());
 		SmartDashboard.putNumber("Beta Encoder Value", arm.beta.getEnc());
 		SmartDashboard.putNumber("Intake Encoder Value", claw.intakeMotor.getEnc());
-		SmartDashboard.putBoolean("Arm Reached Position", arm.there());
+		SmartDashboard.putBoolean("Arm Reached Position", arm.all_there());
 		SmartDashboard.putBoolean("Robot In Motion", navx.accel());
 		SmartDashboard.putNumber("Points Earned", score.points);
 		SmartDashboard.putNumber("Cubes", score.cubes);
@@ -138,16 +141,19 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
+		now = 0;
 		dir = 0;
+		rotation = 0;
+		resist = true;
+		rawMode = false;
+		finalMode = false;
+		arm.reset();
+		claw.reset();
 	}
 
 
 	@Override
-	public void autonomousPeriodic() {
-		swerveCtrl.update();
-		arm.update();
-		claw.update();
-	}
+	public void autonomousPeriodic() {}
 
 
 	@Override
@@ -201,11 +207,11 @@ public class Robot extends TimedRobot {
 			if (rawMode) {                           // RAW MODE:
 
 				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), primary.stick(4), 0);
-				if (primary.stick(5) < -0.4) {
+				if (primary.stick(5) > 0.4) {
 					arm.pos(0);
-				} else if (primary.stick(5) < 0.2) {
+				} else if (primary.stick(5) > -0.2) {
 					arm.pos(3);
-				} else if (primary.stick(5) < 0.95) {
+				} else if (primary.stick(5) > -0.95) {
 					arm.pos(1);
 				} else {
 					arm.pos(2);
@@ -348,7 +354,7 @@ public class Robot extends TimedRobot {
 			}
 		} else {
 			if (0 <= SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos) && SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos) <= 3) {
-				arm.pos(SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos));
+				arm.pos((int)(SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos)));
 				arm.update();
 			}
 		}

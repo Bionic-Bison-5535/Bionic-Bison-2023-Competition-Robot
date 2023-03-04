@@ -39,6 +39,10 @@ public class Intake {
         gamePiece = cube0_or_cone1;
     }
 
+    public void reset() {
+        intakeMotor.setEnc(0);
+    }
+
     public void update() {
         if ((Math.abs((pos()-intakeMotor.getEnc())/(20)) > 0.05)) {
             intakeMotor.set((pos()-intakeMotor.getEnc())/(20));

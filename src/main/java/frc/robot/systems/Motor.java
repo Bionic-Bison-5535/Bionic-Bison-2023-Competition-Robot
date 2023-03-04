@@ -95,11 +95,7 @@ public class Motor {
     public void update() {
         if (posMode) {
             if (!there()) {
-                if (getEnc()-goToPos > 0) {
-                    set(-0.1+((goToPos/ticksPerRotation())-getRotations()));
-                } else {
-                    set(0.1+((goToPos/ticksPerRotation())-getRotations()));
-                }
+                set(0.21*((goToPos/ticksPerRotation())-getRotations()));
             } else {
                 set(0);
             }
