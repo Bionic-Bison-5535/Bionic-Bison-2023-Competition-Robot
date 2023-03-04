@@ -1,23 +1,21 @@
 package frc.robot.systems;
 
-import java.lang.Math;
-
 public class Arm {
 
     public Motor alpha, beta, theta;
 
-    public double pos_0_a = 0; // Position 0 - Collect or Score in Row 1
-    public double pos_0_b = 0;
-    public double pos_0_c = 64000;
-    public double pos_1_a = 0; // Position 1 -  Score in Row 2
-    public double pos_1_b = 0;
-    public double pos_1_c = 128000;
-    public double pos_2_a = 128000; // Position 2 - Score in Row 3 (Most extended and most dangerous)
-    public double pos_2_b = 128000;
-    public double pos_2_c = 256000;
+    public double pos_0_a = -141488; // Position 0 - Collect or Score in Row 1
+    public double pos_0_b = -17251;
+    public double pos_0_c = 102960;
+    public double pos_1_a = -66438; // Position 1 -  Score in Row 2
+    public double pos_1_b = 54271;
+    public double pos_1_c = 134730;
+    public double pos_2_a = -412271; // Position 2 - Score in Row 3 (Most extended and most dangerous)
+    public double pos_2_b = 140848;
+    public double pos_2_c = 180789;
     public double pos_3_a = 0; // Position 3 - Holding Mode
-    public double pos_3_b = 0;
-    public double pos_3_c = 0;
+    public double pos_3_b = 10000;
+    public double pos_3_c = -7000;
 
     public int mostRecentPos = 3;
 
@@ -30,7 +28,7 @@ public class Arm {
         theta.setEnc(0);
     }
 
-    public go(double alpha_encValue, double beta_encValue, double theta_encValue) {
+    public void go(double alpha_encValue, double beta_encValue, double theta_encValue) {
         alpha.goTo(alpha_encValue);
         beta.goTo(beta_encValue);
         theta.goTo(theta_encValue);
@@ -54,6 +52,12 @@ public class Arm {
 
     public boolean all_there() {
         return (alpha.there() && beta.there() && theta.there());
+    }
+
+    public void reset() {
+        alpha.setEnc(0);
+        beta.setEnc(0);
+        theta.setEnc(0);
     }
 
     public void update() {
