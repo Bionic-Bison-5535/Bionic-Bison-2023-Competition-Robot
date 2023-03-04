@@ -21,11 +21,23 @@ public class Motor {
         usingTalon = isTalon;
         if (usingTalon) {
             talonMotor = new TalonSRX(canID);
+            talonMotor.configOpenloopRamp(0);
             talonMotor.setInverted(invert);
         } else {
             maxMotor = new CANSparkMax(canID, MotorType.kBrushless);
             maxMotor.setInverted(!invert);
             canEncoder = maxMotor.getEncoder();
+        }
+    }
+
+    public void stop() {
+        if (usingTalon) {
+            talonMotor.set(ControlMode.PercentOutput, 0);
+        } else {
+            maxMotor.set(0);
+        }
+        if (posMode) {
+            setEnc(getEnc());
         }
     }
 
@@ -66,19 +78,15 @@ public class Motor {
 
     public double ticksPerRotation() {
         if (usingTalon) {
-            return 4096;
+            return 2048;
         } else {
             return 43;
         }
     }
 
     public boolean there() {
-        if (posMode) {
-            if (Math.abs(getEnc()-goToPos) > db * ticksPerRotation()) {
-                return false;
-            } else {
-                return true;
-            }
+        if (posMode && Math.abs(getEnc()-goToPos) > db * ticksPerRotation()) {
+            return false;
         } else {
             return true;
         }
@@ -87,11 +95,7 @@ public class Motor {
     public void update() {
         if (posMode) {
             if (!there()) {
-                if (getEnc()-goToPos > 0) {
-                    set(-0.1+((goToPos/ticksPerRotation())-getRotations()));
-                } else {
-                    set(0.1+((goToPos/ticksPerRotation())-getRotations()));
-                }
+                set(0.21*((goToPos/ticksPerRotation())-getRotations()));
             } else {
                 set(0);
             }
