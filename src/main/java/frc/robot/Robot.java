@@ -24,8 +24,6 @@ public class Robot extends TimedRobot {
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
 
-	Timer timer;
-
 	public boolean headless = true;
 	public double front = 0;
 	public double dir = 0;
@@ -37,23 +35,31 @@ public class Robot extends TimedRobot {
 	public double pwr2 = 0.15;
 	private int getting;
 	private double newAngle;
+	private boolean needsReset;
 	public int now = 0;
 	/* now = ID of currently running dynamic periodic
 	 * 0 = Driving
 	 * 1 = Getting Object
 	 * 2 = Preparing to Score
 	 * 3 = Scoring Mode (With Input)
+	 * 4 = Scoring top row
 	*/
 
+	Timer timer;
+
 	public void dashInit() {
-		SmartDashboard.putNumber("Pos 0 x", arm.pos_0_x);
-		SmartDashboard.putNumber("Pos 0 y", arm.pos_0_y);
-		SmartDashboard.putNumber("Pos 1 x", arm.pos_1_x);
-		SmartDashboard.putNumber("Pos 1 y", arm.pos_1_y);
-		SmartDashboard.putNumber("Pos 2 x", arm.pos_2_x);
-		SmartDashboard.putNumber("Pos 2 y", arm.pos_2_y);
-		SmartDashboard.putNumber("Pos 3 x", arm.pos_3_x);
-		SmartDashboard.putNumber("Pos 3 y", arm.pos_3_y);
+		SmartDashboard.putNumber("Pos 0 a", arm.pos_0_a);
+		SmartDashboard.putNumber("Pos 0 b", arm.pos_0_b);
+		SmartDashboard.putNumber("Pos 0 c", arm.pos_0_c);
+		SmartDashboard.putNumber("Pos 1 a", arm.pos_1_a);
+		SmartDashboard.putNumber("Pos 1 b", arm.pos_1_b);
+		SmartDashboard.putNumber("Pos 1 c", arm.pos_1_c);
+		SmartDashboard.putNumber("Pos 2 a", arm.pos_2_a);
+		SmartDashboard.putNumber("Pos 2 b", arm.pos_2_b);
+		SmartDashboard.putNumber("Pos 2 c", arm.pos_2_c);
+		SmartDashboard.putNumber("Pos 3 a", arm.pos_3_a);
+		SmartDashboard.putNumber("Pos 3 b", arm.pos_3_b);
+		SmartDashboard.putNumber("Pos 3 c", arm.pos_3_c);
 		SmartDashboard.putNumber("Robot Speed", swerveCtrl.default_speed);
 		SmartDashboard.putNumber("Robot Steering Sharpness", swerveCtrl.steeringAmplifier);
 		SmartDashboard.putNumber("A offset", swerveCtrl.A_offset);
@@ -84,14 +90,18 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Cubes", score.cubes);
 		SmartDashboard.putNumber("Cones", score.cones);
 		SmartDashboard.putBoolean("Peg Out", peg.actuated);
-		arm.pos_0_x = SmartDashboard.getNumber("Pos 0 x", arm.pos_0_x);
-		arm.pos_0_y = SmartDashboard.getNumber("Pos 0 y", arm.pos_0_y);
-		arm.pos_1_x = SmartDashboard.getNumber("Pos 1 x", arm.pos_1_x);
-		arm.pos_1_y = SmartDashboard.getNumber("Pos 1 y", arm.pos_1_y);
-		arm.pos_2_x = SmartDashboard.getNumber("Pos 2 x", arm.pos_2_x);
-		arm.pos_2_y = SmartDashboard.getNumber("Pos 2 y", arm.pos_2_y);
-		arm.pos_3_x = SmartDashboard.getNumber("Pos 3 x", arm.pos_3_x);
-		arm.pos_3_y = SmartDashboard.getNumber("Pos 3 y", arm.pos_3_y);
+		arm.pos_0_a = SmartDashboard.getNumber("Pos 0 a", arm.pos_0_a);
+		arm.pos_0_b = SmartDashboard.getNumber("Pos 0 b", arm.pos_0_b);
+		arm.pos_0_c = SmartDashboard.getNumber("Pos 0 c", arm.pos_0_c);
+		arm.pos_1_a = SmartDashboard.getNumber("Pos 1 a", arm.pos_1_a);
+		arm.pos_1_b = SmartDashboard.getNumber("Pos 1 b", arm.pos_1_b);
+		arm.pos_1_c = SmartDashboard.getNumber("Pos 1 c", arm.pos_1_c);
+		arm.pos_2_a = SmartDashboard.getNumber("Pos 2 a", arm.pos_2_a);
+		arm.pos_2_b = SmartDashboard.getNumber("Pos 2 b", arm.pos_2_b);
+		arm.pos_2_c = SmartDashboard.getNumber("Pos 2 c", arm.pos_2_c);
+		arm.pos_3_a = SmartDashboard.getNumber("Pos 3 a", arm.pos_3_a);
+		arm.pos_3_b = SmartDashboard.getNumber("Pos 3 b", arm.pos_3_b);
+		arm.pos_3_c = SmartDashboard.getNumber("Pos 3 c", arm.pos_3_c);
 		swerveCtrl.default_speed = SmartDashboard.getNumber("Robot Speed", swerveCtrl.default_speed);
 		swerveCtrl.steeringAmplifier = SmartDashboard.getNumber("Robot Steering Sharpness", swerveCtrl.steeringAmplifier);
 		swerveCtrl.A_offset = SmartDashboard.getNumber("A offset", swerveCtrl.A_offset);
@@ -184,35 +194,33 @@ public class Robot extends TimedRobot {
 		if (secondary.stick(2) > 0.9) {
 			peg.out();
 		}
-		navx.correctYaw(-secondary.stick(4));
+		navx.correctYaw(secondary.stick(4));
 
 		if (now == 0) {
 
 			if (rawMode) {                           // RAW MODE:
 
 				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), primary.stick(4), 0);
-/*
 				if (primary.stick(5) < -0.4) {
 					arm.pos(0);
-				} else if (primary.stick(5) < 0.3) {
+				} else if (primary.stick(5) < 0.2) {
 					arm.pos(3);
 				} else if (primary.stick(5) < 0.95) {
 					arm.pos(1);
 				} else {
 					arm.pos(2);
 				}
-*/
 				if (primary.LEFT.getAsBoolean()) {
-					claw.close(1);
+					rawMode = false;
+				}
+				if (primary.A.getAsBoolean()) {
+					peg.out();
 				}
 				if (primary.B.getAsBoolean()) {
-					claw.close(0);
+					peg.in();
 				}
 				if (primary.RIGHT.getAsBoolean()) {
 					claw.open();
-				}
-				if (primary.A.getAsBoolean()) {
-					rawMode = false;
 				}
 				if (primary.X.getAsBoolean()) {
 					peg.out();
@@ -245,6 +253,10 @@ public class Robot extends TimedRobot {
 						score.stage = 0;
 						now = 2;
 					}
+					if (primary.B.getAsBoolean()) {
+						score.stage = 0;
+						now = 4;
+					}
 					if (peg.actuated) {
 						peg.in();
 					}
@@ -256,12 +268,9 @@ public class Robot extends TimedRobot {
 				if (primary.stick(3) > 0.9) {
 					headless = true;
 				}
-				if (primary.A.getAsBoolean()) {            
-					navx.zeroYaw();
-					dir = 0;
-				}
 				if (primary.RIGHT.getAsBoolean()) {
 					score.drop(2, false, true);
+					arm.pos(3);
 				}
 				if (primary.LEFT.getAsBoolean()) {
 					if (primary.stick(0) >= 0) {
@@ -315,6 +324,7 @@ public class Robot extends TimedRobot {
 		swerveCtrl.update();
 		arm.update();
 		claw.update();
+
 	}
 
 
@@ -322,13 +332,25 @@ public class Robot extends TimedRobot {
 	public void testInit() {
 		peg.in();
 		claw.intakeMotor.setEnc(0);
+		needsReset = true;
 	}
 
 
 	@Override
 	public void testPeriodic() {
-		if (swerveCtrl.resetMotors()) {
-			swerveCtrl.tone();
+		if (needsReset) {
+			if (swerveCtrl.resetMotors()) {
+				swerveCtrl.tone();
+				Timer.delay(2.5);
+				swerveCtrl.swerve(0, 0, 0, 0);
+				needsReset = false;
+				SmartDashboard.putNumber("Arm Pos", arm.mostRecentPos);
+			}
+		} else {
+			if (0 <= SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos) && SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos) <= 3) {
+				arm.pos(SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos));
+				arm.update();
+			}
 		}
 	}
 
