@@ -27,7 +27,6 @@ public class Robot extends TimedRobot {
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
 
 	public boolean headless = true;
-	public double front = 0;
 	public double dir = 0;
 	public double dir_accuracy = 1;
 	public double rotation = 0;
