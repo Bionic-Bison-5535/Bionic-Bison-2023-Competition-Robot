@@ -138,16 +138,16 @@ public class Weswerve {
 		newAngle = angle;
 		negation = false;
 		if (smartAngle) {
-			while (newAngle > Input.getPosition()+180) { newAngle -= 360; }
-			while (newAngle < Input.getPosition()-180) { newAngle += 360; }
-			if (newAngle < Input.getPosition()-90) { newAngle += 180; negation = true; }
-			if (newAngle > Input.getPosition()+90) { newAngle -= 180; negation = true; }
+			while (newAngle > Input.getPosition() + 180) { newAngle -= 360; }
+			while (newAngle < Input.getPosition() - 180) { newAngle += 360; }
+			if (newAngle < Input.getPosition() - 90) { newAngle += 180; negation = true; }
+			if (newAngle > Input.getPosition() + 90) { newAngle -= 180; negation = true; }
 		}
 		if (move) {
-			if (Math.round(Input.getPosition()-wheelAngleErrorRange) > newAngle) {
-				Output.set(ControlMode.PercentOutput, -0.007*(Input.getPosition() - newAngle) - 0.05);
-			} else if (Math.round(Input.getPosition()+wheelAngleErrorRange) < newAngle) {
-				Output.set(ControlMode.PercentOutput, -0.007*(Input.getPosition() - newAngle) + 0.05);
+			if (Math.round(Input.getPosition() - wheelAngleErrorRange) > newAngle) {
+				Output.set(ControlMode.PercentOutput, -0.007 * (Input.getPosition() - newAngle) - 0.05);
+			} else if (Math.round(Input.getPosition() + wheelAngleErrorRange) < newAngle) {
+				Output.set(ControlMode.PercentOutput, -0.007 * (Input.getPosition() - newAngle) + 0.05);
 			} else {
 				Output.set(ControlMode.PercentOutput, 0);
 				if (!smartAngle) { negation = true; }
@@ -162,16 +162,16 @@ public class Weswerve {
 		newAngle = angle;
 		negation = false;
 		if (smartAngle) {
-			while (newAngle > Input.getPosition()+180) { newAngle -= 360; }
-			while (newAngle < Input.getPosition()-180) { newAngle += 360; }
-			if (newAngle < Input.getPosition()-90) { newAngle += 180; negation = true; }
-			if (newAngle > Input.getPosition()+90) { newAngle -= 180; negation = true; }
+			while (newAngle > Input.getPosition() + 180) { newAngle -= 360; }
+			while (newAngle < Input.getPosition() - 180) { newAngle += 360; }
+			if (newAngle < Input.getPosition() - 90) { newAngle += 180; negation = true; }
+			if (newAngle > Input.getPosition() + 90) { newAngle -= 180; negation = true; }
 		}
 		if (move) {
-			if (Math.round(Input.getPosition()-wheelAngleErrorRange) > newAngle) {
-				Output.set(0.007*(Input.getPosition() - newAngle) + 0.05);
-			} else if (Math.round(Input.getPosition()+wheelAngleErrorRange) < newAngle) {
-				Output.set(0.007*(Input.getPosition() - newAngle) - 0.05);
+			if (Math.round(Input.getPosition() - wheelAngleErrorRange) > newAngle) {
+				Output.set(0.007 * (Input.getPosition() - newAngle) + 0.05);
+			} else if (Math.round(Input.getPosition() + wheelAngleErrorRange) < newAngle) {
+				Output.set(0.007 * (Input.getPosition() - newAngle) - 0.05);
 			} else {
 				Output.set(0);
 				if (!smartAngle) { negation = true; }
@@ -208,9 +208,9 @@ public class Weswerve {
 		negation2 = false;
 		negation3 = false;
 		if (usingTalons) {
-			return !(!motorToAngle(frontLeftSteer, frontLeft, A_offset + 225, false) || !motorToAngle(frontRightSteer, frontRight, B_offset + 135, false) || !motorToAngle(backRightSteer, backRight, C_offset + 225, false) || !motorToAngle(backLeftSteer, backLeft, D_offset + 135, false));
+			return motorToAngle(frontLeftSteer, frontLeft, A_offset + 225, false) && motorToAngle(frontRightSteer, frontRight, B_offset + 135, false) && motorToAngle(backRightSteer, backRight, C_offset + 225, false) && motorToAngle(backLeftSteer, backLeft, D_offset + 135, false));
 		} else {
-			return !(!motorToAngle_sm(frontLeftSteer_sm, frontLeft, A_offset + 225, false) || !motorToAngle_sm(frontRightSteer_sm, frontRight, B_offset + 135, false) || !motorToAngle_sm(backRightSteer_sm, backRight, C_offset + 225, false) || !motorToAngle_sm(backLeftSteer_sm, backLeft, D_offset + 135, false));
+			return motorToAngle_sm(frontLeftSteer_sm, frontLeft, A_offset + 225, false) && motorToAngle_sm(frontRightSteer_sm, frontRight, B_offset + 135, false) && motorToAngle_sm(backRightSteer_sm, backRight, C_offset + 225, false) && motorToAngle_sm(backLeftSteer_sm, backLeft, D_offset + 135, false));
 		}
 	}
 
@@ -227,9 +227,9 @@ public class Weswerve {
 		if (horizontalInput == 0 && verticalInput == 0 && rotationalInput == 0) {
 			setVelocities(0, 0, 0, 0);
 		} else {
-			theta = i_tan(-horizontalInput,verticalInput)+frontAngle;
-			y = Math.sqrt(horizontalInput*horizontalInput+verticalInput*verticalInput);
-			x = (speed*y)/(steeringAmplifier*rotationalInput);
+			theta = i_tan(-horizontalInput, verticalInput) + frontAngle;
+			y = Math.sqrt(horizontalInput * horizontalInput + verticalInput * verticalInput);
+			x = (speed * y) / (steeringAmplifier * rotationalInput);
 			if (rotationalInput == 0) {
 				setAngles(theta, theta, theta, theta);
 				a = 1;
@@ -240,23 +240,23 @@ public class Weswerve {
 				setVelocities(a*y*speed, -b*y*speed, -c*y*speed, -d*y*speed);
 			} else if (Math.abs(x) < 0.4) {
 				setAngles(-54.20917723, 54.20917723, -71.56750291, 71.56750291);
-				setVelocities(rotationalInput*speed, rotationalInput*speed, rotationalInput*speed, -rotationalInput*speed);
+				setVelocities(rotationalInput * speed, rotationalInput * speed, rotationalInput * speed, -rotationalInput * speed);
 			} else {
 				if (x < 0) {
-					angle0 = -i_tan((dist1*sine(-theta+108.4324971)),(2*x-dist1*cosine(-theta+108.4324971)))+theta+180;
-					angle1 = -i_tan((dist1*sine(-theta+71.56750291)),(2*x-dist1*cosine(-theta+71.56750291)))+theta+180;
-					angle2 = -i_tan((dist2*sine(-theta-54.20917723)),(2*x-dist2*cosine(-theta-54.20917723)))+theta+180;
-					angle3 = -i_tan((dist2*sine(-theta-125.7908228)),(2*x-dist2*cosine(-theta-125.7908228)))+theta+180;
+					angle0 = -i_tan((dist1 * sine(-theta + 108.4324971)), (2*x - dist1 * cosine(-theta + 108.4324971))) + theta + 180;
+					angle1 = -i_tan((dist1 * sine(-theta + 71.56750291)), (2*x - dist1 * cosine(-theta + 71.56750291))) + theta + 180;
+					angle2 = -i_tan((dist2 * sine(-theta - 54.20917723)), (2*x - dist2 * cosine(-theta - 54.20917723))) + theta + 180;
+					angle3 = -i_tan((dist2 * sine(-theta - 125.7908228)), (2*x - dist2 * cosine(-theta - 125.7908228))) + theta + 180;
 				} else {
-					angle0 = -i_tan((dist1*sine(-theta+108.4324971)),(2*x-dist1*cosine(-theta+108.4324971)))+theta;
-					angle1 = -i_tan((dist1*sine(-theta+71.56750291)),(2*x-dist1*cosine(-theta+71.56750291)))+theta;
-					angle2 = -i_tan((dist2*sine(-theta-54.20917723)),(2*x-dist2*cosine(-theta-54.20917723)))+theta;
-					angle3 = -i_tan((dist2*sine(-theta-125.7908228)),(2*x-dist2*cosine(-theta-125.7908228)))+theta;
+					angle0 = -i_tan((dist1 * sine(-theta + 108.4324971)), (2*x - dist1 * cosine(-theta + 108.4324971))) + theta;
+					angle1 = -i_tan((dist1 * sine(-theta + 71.56750291)), (2*x - dist1 * cosine(-theta + 71.56750291))) + theta;
+					angle2 = -i_tan((dist2 * sine(-theta - 54.20917723)), (2*x - dist2 * cosine(-theta - 54.20917723))) + theta;
+					angle3 = -i_tan((dist2 * sine(-theta - 125.7908228)), (2*x - dist2 * cosine(-theta - 125.7908228))) + theta;
 				}
-				a = Math.abs(Math.sqrt((x*x)-(x*dist1*cosine(-theta+108.4324971))+(0.5))/x);
-				b = Math.abs(Math.sqrt((x*x)-(x*dist1*cosine(-theta+71.56750291))+(0.5))/x);
-				c = Math.abs(Math.sqrt((x*x)-(x*dist2*cosine(-theta-54.20917723))+(0.5))/x);
-				d = Math.abs(Math.sqrt((x*x)-(x*dist2*cosine(-theta-125.7908228))+(0.5))/x);
+				a = Math.abs(Math.sqrt((x*x) - (x * dist1 * cosine(-theta + 108.4324971)) + 0.5) / x);
+				b = Math.abs(Math.sqrt((x*x) - (x * dist1 * cosine(-theta + 71.56750291)) + 0.5) / x);
+				c = Math.abs(Math.sqrt((x*x) - (x * dist2 * cosine(-theta - 54.20917723)) + 0.5) / x);
+				d = Math.abs(Math.sqrt((x*x) - (x * dist2 * cosine(-theta - 125.7908228)) + 0.5) / x);
 				setVelocities(a*y*speed, -b*y*speed, -c*y*speed, -d*y*speed);
 			}
 		}
