@@ -167,23 +167,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
-		if (secondary.BACK.getAsBoolean()) {         // Secondary Controller Input:
-			rawMode = true;
-		}
-		if (secondary.START.getAsBoolean()) {
-			rawMode = false;
-		}
-		if (secondary.LEFT.getAsBoolean()) {
-			finalMode = true;
-		}
-		if (secondary.RIGHT.getAsBoolean()) {
-			finalMode = false;
-		}
-		if (secondary.A.getAsBoolean()) {
-			resist = true;
-		}
-		if (secondary.B.getAsBoolean()) {
-			resist = false;
+		if (secondary.Y.getAsBoolean()) {            // Secondary Controller Input:
+			now = 0;
+			collector.stage = 0;
+			score.stage = 0;
 		}
 		if (secondary.X.getAsBoolean()) {
 			navx.fullReset();
@@ -191,24 +178,33 @@ public class Robot extends TimedRobot {
 			navx.zeroYaw();
 			dir = 0;
 		}
-		if (secondary.Y.getAsBoolean()) {
-			now = 0;
-			collector.stage = 0;
-			score.stage = 0;
+		if (secondary.BACK.getAsBoolean()) {
+			rawMode = true;
+		} else if (secondary.START.getAsBoolean()) {
+			rawMode = false;
+		}
+		if (secondary.RIGHT.getAsBoolean()) {
+			finalMode = false;
+		} else if (secondary.LEFT.getAsBoolean()) {
+			finalMode = true;
+		}
+		if (secondary.B.getAsBoolean()) {
+			resist = false;
+		} else if (secondary.A.getAsBoolean()) {
+			resist = true;
 		}
 		if (secondary.stick(3) > 0.9) {
 			peg.in();
-		}
-		if (secondary.stick(2) > 0.9) {
+		} else if (secondary.stick(2) > 0.9) {
 			peg.out();
 		}
-    if (Math.abs(secondary.stick(5)) < 0.1) {
-		  navx.correctYaw(secondary.stick(4));
+    	if (Math.abs(secondary.stick(4)) > 0.15 && Math.abs(secondary.stick(5)) < Math.abs(secondary.stick(4))) {
+			navx.correctYaw(secondary.stick(4));
 			toHuman.off();
 		} else {
-			if (secondary.stick(5) < 0) {
+			if (secondary.stick(5) < -0.1) {
 				toHuman.cone();
-			} else if (secondary.stick(5) > 0) {
+			} else if (secondary.stick(5) > 0.1) {
 				toHuman.cube();
 			}
 		}
@@ -218,32 +214,29 @@ public class Robot extends TimedRobot {
 			if (rawMode) {                           // RAW MODE:
 
 				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), primary.stick(4), 0);
-				if (primary.stick(5) > 0.4) {
-					arm.pos(0);
-				} else if (primary.stick(5) > -0.2) {
-					arm.pos(3);
-				} else if (primary.stick(5) > -0.95) {
-					arm.pos(1);
-				} else {
-					arm.pos(2);
-				}
-				if (primary.LEFT.getAsBoolean()) {
-					rawMode = false;
-				}
 				if (primary.A.getAsBoolean()) {
 					peg.out();
-				}
-				if (primary.B.getAsBoolean()) {
+				} else if (primary.B.getAsBoolean()) {
 					peg.in();
 				}
 				if (primary.RIGHT.getAsBoolean()) {
 					claw.open();
+				} else if (primary.X.getAsBoolean()) {
+					claw.close(0);
+				} else if (primary.Y.getAsBoolean()) {
+					claw.close(1);
 				}
-				if (primary.X.getAsBoolean()) {
-					peg.out();
+				if (primary.LEFT.getAsBoolean()) {
+					rawMode = false;
 				}
-				if (primary.Y.getAsBoolean()) {
-					peg.in();
+				if (primary.stick(5) > 0.4) {
+					arm.pos(0);
+				} else if (primary.stick(5) > -0.12) {
+					arm.pos(3);
+				} else if (primary.stick(5) > -0.97) {
+					arm.pos(1);
+				} else {
+					arm.pos(2);
 				}
 
 			} else {                                 // NORMAL MODE:
@@ -260,17 +253,14 @@ public class Robot extends TimedRobot {
 						getting = 0;
 						collector.stage = 0;
 						now = 1;
-					}
-					if (primary.Y.getAsBoolean()) {
+					} else if (primary.Y.getAsBoolean()) {
 						getting = 1;
 						collector.stage = 0;
 						now = 1;
-					}
-					if (primary.A.getAsBoolean()) {
+					} else if (primary.A.getAsBoolean()) {
 						score.stage = 0;
 						now = 2;
-					}
-					if (primary.B.getAsBoolean()) {
+					} else if (primary.B.getAsBoolean()) {
 						score.stage = 0;
 						now = 4;
 					}
@@ -281,23 +271,20 @@ public class Robot extends TimedRobot {
 
 				if (primary.stick(2) > 0.9) {            // Other Primary Controller Code:
 					headless = false;
-				}
-				if (primary.stick(3) > 0.9) {
+				} else if (primary.stick(3) > 0.9) {
 					headless = true;
 				}
 				if (primary.RIGHT.getAsBoolean()) {
 					score.drop(2, false, true);
 					arm.pos(3);
-				}
-				if (primary.LEFT.getAsBoolean()) {
+				} else if (primary.LEFT.getAsBoolean()) {
 					if (primary.stick(0) >= 0) {
 						dir -= 180;
 					} else {
 						dir += 180;
 					}
 					while (primary.LEFT.getAsBoolean()) {}
-				}
-				if (primary.pov() != -1) {
+				} else if (primary.pov() != -1) {
 					newAngle = (double)primary.pov();
 					newAngle += 180;
 					while (newAngle > dir+180) { newAngle -= 360; }
@@ -305,14 +292,25 @@ public class Robot extends TimedRobot {
 					dir = newAngle;
 				}
 				if (resist) {
-					dir += 4 * primary.stick(4);
+					dir += cubed(5 * primary.stick(4));
 					if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
 						rotation = -0.05*(navx.yaw()-dir);
 					} else {
 						rotation = 0;
 					}
 				} else {
-					rotation = primary.stick(4);
+					rotation = cubed(primary.stick(4));
+				}
+				if (Math.abs(primary.stick(4)) < 0.1) {
+					if (primary.stick(5) > 0.4) {
+						arm.pos(0);
+					} else if (primary.stick(5) > -0.12) {
+						arm.pos(3);
+					} else if (primary.stick(5) > -0.97) {
+						arm.pos(1);
+					} else {
+						arm.pos(2);
+					}
 				}
 
 				if (headless) {                          // Actual Drive:
@@ -335,6 +333,9 @@ public class Robot extends TimedRobot {
 				arm.pos(3);
 				now = 0;
 			}
+		} else if (now == 4) {
+			// This function not programmed yet, redirect to now = 0:
+			now = 0;
 		}
 
 		// Static Periodics:
