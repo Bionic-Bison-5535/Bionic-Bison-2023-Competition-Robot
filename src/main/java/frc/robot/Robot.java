@@ -211,7 +211,6 @@ public class Robot extends TimedRobot {
 
 			if (rawMode) {                           // RAW MODE:
 
-				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), primary.stick(4), 0);
 				if (primary.A.getAsBoolean()) {
 					peg.out();
 				} else if (primary.B.getAsBoolean()) {
@@ -229,12 +228,16 @@ public class Robot extends TimedRobot {
 				}
 				if (primary.stick(5) > 0.4) {
 					arm.pos(0);
+					swerveCtrl.swerve(cubed(0.5*-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(0.5*primary.stick(0))+(pwr2*secondary.stick(0)), cubed(0.7*primary.stick(4)), 0);
 				} else if (primary.stick(5) > -0.12) {
 					arm.pos(3);
+					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), cubed(primary.stick(4)), 0);
 				} else if (primary.stick(5) > -0.97) {
 					arm.pos(1);
+					swerveCtrl.swerve(pwr2*(-secondary.stick(1)), pwr2*secondary.stick(0), cubed(0.5*primary.stick(4)), 0);
 				} else {
 					arm.pos(2);
+					swerveCtrl.swerve(pwr2*(-secondary.stick(1)), pwr2*secondary.stick(0), cubed(0.5*primary.stick(4)), 0);
 				}
 
 			} else {                                 // SMART MODE:
