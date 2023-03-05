@@ -28,8 +28,9 @@ public class Robot extends TimedRobot {
 
 	public boolean headless = true;
 	public double dir = 0;
-	public double dir_accuracy = 1;
 	public double rotation = 0;
+	public double dir_accuracy = 1.7;
+	public double initialAngle = 180;
 	public boolean resist = true;
 	public boolean rawMode = false;
 	public boolean finalMode = false;
@@ -313,7 +314,7 @@ public class Robot extends TimedRobot {
 				}
 
 				if (headless) {                          // Actual Drive:
-					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+180);
+					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+initialAngle);
 				} else {
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
 				}
