@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
 	public boolean rawMode = false;
 	public boolean finalMode = false;
 	public double pwr2 = 0.15;
-	private int getting;
+	private int getting = 0;
 	private double newAngle;
 	private boolean needsReset;
 	public int now = 0;
@@ -74,11 +74,9 @@ public class Robot extends TimedRobot {
 	}
 
 	public void dash() {
-
 		SmartDashboard.putNumber("Alpha", arm.alpha.getEnc());
 		SmartDashboard.putNumber("Beta", arm.beta.getEnc());
 		SmartDashboard.putNumber("Theta", arm.theta.getEnc());
-
 		SmartDashboard.putBoolean("Headless", headless);
 		SmartDashboard.putNumber("Yaw", navx.yaw());
 		SmartDashboard.putNumber("Balance", navx.balance());
@@ -239,15 +237,17 @@ public class Robot extends TimedRobot {
 					arm.pos(2);
 				}
 
-			} else {                                 // NORMAL MODE:
+			} else {                                 // SMART MODE:
 
 				if (finalMode) {                         // Restrictive Final Mode Functionality:
+
 					swerveCtrl.speed = swerveCtrl.default_speed * 0.3;
 					if (primary.LEFT_STICK.getAsBoolean()) {
 						peg.out();
 					}
-				
+
 				} else {                                 // Restrictive Non-Final Mode Functionality:
+
 					swerveCtrl.speed = swerveCtrl.default_speed;
 					if (primary.X.getAsBoolean()) {
 						getting = 0;
@@ -267,6 +267,7 @@ public class Robot extends TimedRobot {
 					if (peg.actuated) {
 						peg.in();
 					}
+
 				}
 
 				if (primary.stick(2) > 0.9) {            // Other Primary Controller Code:
