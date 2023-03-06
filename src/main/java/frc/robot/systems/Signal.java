@@ -6,9 +6,9 @@ public class Signal {
 
     private PWM cubeLED, coneLED;
 
-    public Signal(int cubeLED_Port, int coneLED_port) {
-        peg1 = new PWM(peg1PWMport);
-        peg2 = new PWM(peg2PWMPort);
+    public Signal(int cubeLED_Port, int coneLED_Port) {
+        cubeLED = new PWM(cubeLED_Port);
+        coneLED = new PWM(coneLED_Port);
         setCubeLED(false);
         setConeLED(false);
     }
