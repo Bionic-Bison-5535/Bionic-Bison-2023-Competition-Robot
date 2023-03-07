@@ -17,12 +17,13 @@ public class Arm {
     public double pos_3_b = 0;
     public double pos_3_c = 0;
 
+    public int previousPos = 3;
     public int mostRecentPos = 3;
 
     public Arm(int alpha_canID, int beta_canID, int theta_canID) {
         alpha = new Motor(alpha_canID, true, false, 1);
         beta = new Motor(beta_canID, true, false, 1);
-        theta = new Motor(theta_canID, true, false, 0.9);
+        theta = new Motor(theta_canID, true, false, 1);
         alpha.setEnc(0);
         beta.setEnc(0);
         theta.setEnc(0);
@@ -34,7 +35,26 @@ public class Arm {
         theta.goTo(theta_encValue);
     }
 
+    private int virtualPos(int actualPos) {
+        if (actualPos == 3) {
+            return -1;
+        } else {
+            return actualPos;
+        }
+    }
+
     public void pos(int positionNumber) {
+        previousPos = mostRecentPos;
+        mostRecentPos = positionNumber;
+        if (virtualPos(positionNumber) > virtualPos(previousPos)) {
+            alpha.maxSpeed = 0.5;
+            beta.maxSpeed = 0.7;
+            theta.maxSpeed = 1;
+        } else if (virtualPos(positionNumber) > virtualPos(previousPos)) {
+            alpha.maxSpeed = 1;
+            beta.maxSpeed = 0.2;
+            theta.maxSpeed = 0.4;
+        }
         if (positionNumber == 0) {
             go(pos_0_a, pos_0_b, pos_0_c);
         }
@@ -47,7 +67,6 @@ public class Arm {
         if (positionNumber == 3) {
             go(pos_3_a, pos_3_b, pos_3_c);
         }
-        mostRecentPos = positionNumber;
     }
 
     public boolean all_there() {
