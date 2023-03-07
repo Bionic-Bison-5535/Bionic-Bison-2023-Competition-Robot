@@ -199,13 +199,13 @@ public class Robot extends TimedRobot {
 		} else if (secondary.stick(2) > 0.9) {
 			peg.out();
 		}
-    	if (Math.abs(secondary.stick(4)) > 0.15 && Math.abs(secondary.stick(5)) < Math.abs(secondary.stick(4))) {
+    	if (Math.abs(secondary.stick(4)) > 0.15 && Math.abs((secondary.stick(3)-secondary.stick(2))) < Math.abs(secondary.stick(4))) {
 			navx.correctYaw(secondary.stick(4));
 			toHuman.off();
 		} else {
-			if (secondary.stick(5) < -0.1) {
+			if ((secondary.stick(3)-secondary.stick(2)) < -0.1) {
 				toHuman.cone();
-			} else if (secondary.stick(5) > 0.1) {
+			} else if ((secondary.stick(3)-secondary.stick(2)) > 0.1) {
 				toHuman.cube();
 			}
 		}
@@ -226,14 +226,14 @@ public class Robot extends TimedRobot {
 				} else if (primary.Y.getAsBoolean()) {
 					claw.close(1);
 				}
-				if (primary.LEFT.getAsBoolean()) {
+				if (primary.START.getAsBoolean()) {
 					rawMode = false;
 				}
-				if (secondary.stick(5) > 0.4) {
+				if ((secondary.stick(3)-secondary.stick(2)) > 0.4) {
 					arm.pos(0);
-				} else if (secondary.stick(5) > -0.12) {
+				} else if ((secondary.stick(3)-secondary.stick(2)) > -0.1) {
 					arm.pos(3);
-				} else if (secondary.stick(5) > -0.97) {
+				} else if ((secondary.stick(3)-secondary.stick(2)) > -0.97) {
 					arm.pos(1);
 				} else {
 					arm.pos(2);
@@ -300,11 +300,11 @@ public class Robot extends TimedRobot {
 					rotation = primary.stick(4);
 				}
 				if (Math.abs(secondary.stick(4)) < 0.1) {
-					if (secondary.stick(5) > 0.4) {
+					if ((secondary.stick(3)-secondary.stick(2)) > 0.4) {
 						arm.pos(0);
-					} else if (secondary.stick(5) > -0.12) {
+					} else if ((secondary.stick(3)-secondary.stick(2)) > -0.1) {
 						arm.pos(3);
-					} else if (secondary.stick(5) > -0.97) {
+					} else if ((secondary.stick(3)-secondary.stick(2)) > -0.97) {
 						arm.pos(1);
 					} else {
 						arm.pos(2);
