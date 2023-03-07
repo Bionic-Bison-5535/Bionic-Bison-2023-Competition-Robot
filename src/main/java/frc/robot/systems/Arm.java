@@ -14,8 +14,8 @@ public class Arm {
     public double pos_2_b = 140848;
     public double pos_2_c = 180789;
     public double pos_3_a = 0; // Position 3 - Holding Mode
-    public double pos_3_b = 10000;
-    public double pos_3_c = -7000;
+    public double pos_3_b = 0;
+    public double pos_3_c = 0;
 
     public int mostRecentPos = 3;
 
