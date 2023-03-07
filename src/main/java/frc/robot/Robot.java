@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
 	private int getting = 0;
 	private double newAngle;
 	private boolean needsReset;
+	private int secondary_pov;
 	public int now = 0;
 	/* now = ID of currently running dynamic periodic
 	 * 0 = Driving
@@ -205,6 +206,21 @@ public class Robot extends TimedRobot {
 				toHuman.cone();
 			} else if ((secondary.stick(3)-secondary.stick(2)) > 0.1) {
 				toHuman.cube();
+			}
+		}
+		secondary_pov = secondary.pov();
+		if (secondary_pov == -1) {
+			toHuman.off();
+		} else {
+			if (secondary_pov == 0 || secondary_pov == 45 || secondary_pov == 315) {
+				toHuman.cone();
+			} else if (secondary_pov == 180 || secondary_pov == 135 || secondary_pov == 225) {
+				toHuman.cube();
+			}
+			if (secondary_pov == 90 || secondary_pov == 45 || secondary_pov == 135) {
+				peg.out();
+			} else if (secondary_pov == 270 || secondary_pov == 225 || secondary_pov == 315) {
+				peg.in();
 			}
 		}
 
