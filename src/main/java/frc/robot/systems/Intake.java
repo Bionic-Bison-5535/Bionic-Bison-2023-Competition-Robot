@@ -13,7 +13,7 @@ public class Intake {
     public int gamePiece = 0;
 
     public Intake(int intake_canID) {
-        intakeMotor = new Motor(intake_canID, false, true);
+        intakeMotor = new Motor(intake_canID, false, true, 1);
     }
 
     public double pos() {

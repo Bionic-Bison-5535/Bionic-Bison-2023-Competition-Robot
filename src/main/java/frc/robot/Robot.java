@@ -158,7 +158,10 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+		navx.fullReset();
 		now = 0;
+		dir = 0;
+		rotation = 0;
 	}
 
 
@@ -226,19 +229,16 @@ public class Robot extends TimedRobot {
 				if (primary.LEFT.getAsBoolean()) {
 					rawMode = false;
 				}
-				if (primary.stick(5) > 0.4) {
+				if (secondary.stick(5) > 0.4) {
 					arm.pos(0);
-					swerveCtrl.swerve(cubed(0.5*-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(0.5*primary.stick(0))+(pwr2*secondary.stick(0)), cubed(0.7*primary.stick(4)), 0);
-				} else if (primary.stick(5) > -0.12) {
+				} else if (secondary.stick(5) > -0.12) {
 					arm.pos(3);
-					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), cubed(primary.stick(4)), 0);
-				} else if (primary.stick(5) > -0.97) {
+				} else if (secondary.stick(5) > -0.97) {
 					arm.pos(1);
-					swerveCtrl.swerve(pwr2*(-secondary.stick(1)), pwr2*secondary.stick(0), cubed(0.5*primary.stick(4)), 0);
 				} else {
 					arm.pos(2);
-					swerveCtrl.swerve(pwr2*(-secondary.stick(1)), pwr2*secondary.stick(0), cubed(0.5*primary.stick(4)), 0);
 				}
+				swerveCtrl.swerve(cubed(0.5*-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(0.5*primary.stick(0))+(pwr2*secondary.stick(0)), cubed(0.7*primary.stick(4)), 0);
 
 			} else {                                 // SMART MODE:
 
@@ -279,15 +279,9 @@ public class Robot extends TimedRobot {
 					headless = true;
 				}
 				if (primary.RIGHT.getAsBoolean()) {
-					score.drop(2, false, true);
-					arm.pos(3);
+					dir = 0;
 				} else if (primary.LEFT.getAsBoolean()) {
-					if (primary.stick(0) >= 0) {
-						dir -= 180;
-					} else {
-						dir += 180;
-					}
-					while (primary.LEFT.getAsBoolean()) {}
+					dir = 180;
 				} else if (primary.pov() != -1) {
 					newAngle = (double)primary.pov();
 					newAngle += 180;
@@ -296,21 +290,21 @@ public class Robot extends TimedRobot {
 					dir = newAngle;
 				}
 				if (resist) {
-					dir += cubed(5 * primary.stick(4));
+					dir += 4 * cubed(primary.stick(4));
 					if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
-						rotation = -0.05*(navx.yaw()-dir);
+						rotation = -0.02*(navx.yaw()-dir);
 					} else {
 						rotation = 0;
 					}
 				} else {
-					rotation = cubed(primary.stick(4));
+					rotation = primary.stick(4);
 				}
-				if (Math.abs(primary.stick(4)) < 0.1) {
-					if (primary.stick(5) > 0.4) {
+				if (Math.abs(secondary.stick(4)) < 0.1) {
+					if (secondary.stick(5) > 0.4) {
 						arm.pos(0);
-					} else if (primary.stick(5) > -0.12) {
+					} else if (secondary.stick(5) > -0.12) {
 						arm.pos(3);
-					} else if (primary.stick(5) > -0.97) {
+					} else if (secondary.stick(5) > -0.97) {
 						arm.pos(1);
 					} else {
 						arm.pos(2);

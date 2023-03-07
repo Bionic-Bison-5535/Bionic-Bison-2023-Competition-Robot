@@ -20,9 +20,9 @@ public class Arm {
     public int mostRecentPos = 3;
 
     public Arm(int alpha_canID, int beta_canID, int theta_canID) {
-        alpha = new Motor(alpha_canID, true, false);
-        beta = new Motor(beta_canID, true, false);
-        theta = new Motor(theta_canID, true, false);
+        alpha = new Motor(alpha_canID, true, false, 1);
+        beta = new Motor(beta_canID, true, false, 1);
+        theta = new Motor(theta_canID, true, false, 0.9);
         alpha.setEnc(0);
         beta.setEnc(0);
         theta.setEnc(0);

@@ -16,8 +16,9 @@ public class Motor {
     public boolean usingTalon = false;
     public double db = 0.1;
     public boolean posMode = false;
+    public double maxSpeed = 1;
 
-    public Motor(int canID, boolean isTalon, boolean invert) {
+    public Motor(int canID, boolean isTalon, boolean invert, double maximum_speed) {
         usingTalon = isTalon;
         if (usingTalon) {
             talonMotor = new TalonSRX(canID);
@@ -28,6 +29,7 @@ public class Motor {
             maxMotor.setInverted(!invert);
             canEncoder = maxMotor.getEncoder();
         }
+        maxSpeed = maximum_speed;
     }
 
     public void stop() {
@@ -95,7 +97,13 @@ public class Motor {
     public void update() {
         if (posMode) {
             if (!there()) {
-                set(0.21*((goToPos/ticksPerRotation())-getRotations()));
+                if (0.21*((goToPos/ticksPerRotation())-getRotations()) <= maxSpeed && 0.21*((goToPos/ticksPerRotation())-getRotations()) >= -maxSpeed) {
+                    set(0.21*((goToPos/ticksPerRotation())-getRotations()));
+                } else if (0.21*((goToPos/ticksPerRotation())-getRotations()) > 0) {
+                    set(maxSpeed);
+                } else {
+                    set(-maxSpeed);
+                }
             } else {
                 set(0);
             }
