@@ -14,7 +14,7 @@ public class Motor {
     private RelativeEncoder canEncoder;
     public double goToPos = 0;
     public boolean usingTalon = false;
-    public double db = 0.1;
+    public double db = 0.17;
     public boolean posMode = false;
     public double maxSpeed = 1;
 
@@ -97,9 +97,9 @@ public class Motor {
     public void update() {
         if (posMode) {
             if (!there()) {
-                if (0.21*((goToPos/ticksPerRotation())-getRotations()) <= maxSpeed && 0.21*((goToPos/ticksPerRotation())-getRotations()) >= -maxSpeed) {
-                    set(0.21*((goToPos/ticksPerRotation())-getRotations()));
-                } else if (0.21*((goToPos/ticksPerRotation())-getRotations()) > 0) {
+                if (0.27*((goToPos/ticksPerRotation())-getRotations()) <= maxSpeed && 0.27*((goToPos/ticksPerRotation())-getRotations()) >= -maxSpeed) {
+                    set(0.27*((goToPos/ticksPerRotation())-getRotations()));
+                } else if (0.27*((goToPos/ticksPerRotation())-getRotations()) > 0) {
                     set(maxSpeed);
                 } else {
                     set(-maxSpeed);
