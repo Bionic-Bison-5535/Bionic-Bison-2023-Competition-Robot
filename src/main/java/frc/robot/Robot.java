@@ -26,13 +26,11 @@ public class Robot extends TimedRobot {
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
 
-	public boolean headless = true;
+	public boolean smart = true;
 	public double dir = 0;
 	public double rotation = 0;
 	public double dir_accuracy = 1.7;
 	public double initialAngle = 180;
-	public boolean resist = true;
-	public boolean rawMode = false;
 	public boolean finalMode = false;
 	public double pwr2 = 0.15;
 	private int getting = 0;
@@ -78,12 +76,10 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Alpha", arm.alpha.getEnc());
 		SmartDashboard.putNumber("Beta", arm.beta.getEnc());
 		SmartDashboard.putNumber("Theta", arm.theta.getEnc());
-		SmartDashboard.putBoolean("Headless", headless);
 		SmartDashboard.putNumber("Yaw", navx.yaw());
 		SmartDashboard.putNumber("Balance", navx.balance());
-		SmartDashboard.putBoolean("Resistance Enabled", resist);
+		SmartDashboard.putBoolean("Smart Mode", smart);
 		SmartDashboard.putNumber("Mode", now);
-		SmartDashboard.putBoolean("Smart Features Enabled", !rawMode);
 		SmartDashboard.putBoolean("Final Mode!", finalMode);
 		SmartDashboard.putNumber("Alpha Encoder Value", arm.alpha.getEnc());
 		SmartDashboard.putNumber("Beta Encoder Value", arm.beta.getEnc());
@@ -178,20 +174,15 @@ public class Robot extends TimedRobot {
 			dir = 0;
 			rotation = 0;
 		}
-		if (secondary.BACK.getAsBoolean()) {
-			rawMode = true;
-		} else if (secondary.START.getAsBoolean()) {
-			rawMode = false;
-		}
 		if (secondary.RIGHT.getAsBoolean()) {
 			finalMode = false;
 		} else if (secondary.LEFT.getAsBoolean()) {
 			finalMode = true;
 		}
 		if (secondary.B.getAsBoolean()) {
-			resist = false;
-		} else if (secondary.A.getAsBoolean()) {
-			resist = true;
+			smart = false;
+		} else if (secondary.START.getAsBoolean() || secondary.A.getAsBoolean()) {
+			smart = true;
 		}
 		if (secondary.stick(2) > 0.2 || secondary.stick(3) > 0.2) {
 			navx.correctYaw(secondary.stick(3)-secondary.stick(2));
@@ -224,7 +215,7 @@ public class Robot extends TimedRobot {
 				arm.pos(2);
 			}
 
-			if (rawMode) {                           // RAW MODE:
+			if (finalMode) {                         // Restrictive Final Mode Functionality:
 
 				if (primary.A.getAsBoolean()) {
 					peg.out();
@@ -238,8 +229,6 @@ public class Robot extends TimedRobot {
 				} else if (primary.Y.getAsBoolean()) {
 					claw.close(1);
 				}
-				if (primary.START.getAsBoolean()) {
-					rawMode = false;
 				}
 				swerveCtrl.swerve(cubed(0.5*-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(0.5*primary.stick(0))+(pwr2*secondary.stick(0)), cubed(0.7*primary.stick(4)), 0);
 
@@ -303,12 +292,13 @@ public class Robot extends TimedRobot {
 					rotation = primary.stick(4);
 				}
 
-				if (headless) {                          // Actual Drive:
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+initialAngle);
+			if (smart) {
 				} else {
 					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
 				}
 
+			if (smart) {                             // Actual Drive:
 			}
 		} else if (now == 1) {
 			action(collector.getGamePiece(getting), 0);
