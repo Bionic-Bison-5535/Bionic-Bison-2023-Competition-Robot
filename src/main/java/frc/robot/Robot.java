@@ -224,89 +224,76 @@ public class Robot extends TimedRobot {
 
 			if (finalMode) {                         // Restrictive Final Mode Functionality:
 
-				if (primary.A.getAsBoolean()) {
+				swerveCtrl.speed = swerveCtrl.default_speed * 0.35;
+				if (primary.LEFT_STICK.getAsBoolean()) {
 					peg.out();
+				}
+
+			} else {                                 // Restrictive Non-Final Mode Functionality:
+
+				swerveCtrl.speed = swerveCtrl.default_speed;
+				if (primary.X.getAsBoolean()) {
+					getting = 0;
+					collector.stage = 0;
+					now = 1;
+				} else if (primary.Y.getAsBoolean()) {
+					getting = 1;
+					collector.stage = 0;
+					now = 1;
+				} else if (primary.A.getAsBoolean()) {
+					score.stage = 0;
+					now = 2;
 				} else if (primary.B.getAsBoolean()) {
+					score.stage = 0;
+					now = 4;
+				}
+				if (peg.actuated) {
 					peg.in();
 				}
-				if (primary.RIGHT.getAsBoolean()) {
-					claw.open();
-				} else if (primary.X.getAsBoolean()) {
+
+			}
+
+			if (primary.stick(2) > 0.4) {            // Other Primary Controller Code:
+				if (collector.cubeCam.area() > collector.coneCam.area()) {
 					claw.close(0);
-				} else if (primary.Y.getAsBoolean()) {
+				} else {
 					claw.close(1);
 				}
-				}
-				swerveCtrl.swerve(cubed(0.5*-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(0.5*primary.stick(0))+(pwr2*secondary.stick(0)), cubed(0.7*primary.stick(4)), 0);
-
-			} else {                                 // SMART MODE:
-
-				if (finalMode) {                         // Restrictive Final Mode Functionality:
-
-					swerveCtrl.speed = swerveCtrl.default_speed * 0.3;
-					if (primary.LEFT_STICK.getAsBoolean()) {
-						peg.out();
-					}
-
-				} else {                                 // Restrictive Non-Final Mode Functionality:
-
-					swerveCtrl.speed = swerveCtrl.default_speed;
-					if (primary.X.getAsBoolean()) {
-						getting = 0;
-						collector.stage = 0;
-						now = 1;
-					} else if (primary.Y.getAsBoolean()) {
-						getting = 1;
-						collector.stage = 0;
-						now = 1;
-					} else if (primary.A.getAsBoolean()) {
-						score.stage = 0;
-						now = 2;
-					} else if (primary.B.getAsBoolean()) {
-						score.stage = 0;
-						now = 4;
-					}
-					if (peg.actuated) {
-						peg.in();
-					}
-
-				}
-
-				if (primary.stick(2) > 0.9) {            // Other Primary Controller Code:
-					headless = false;
-				} else if (primary.stick(3) > 0.9) {
-					headless = true;
-				}
-				if (primary.RIGHT.getAsBoolean()) {
-					dir = 0;
-				} else if (primary.LEFT.getAsBoolean()) {
-					dir = 180;
-				} else if (primary.pov() != -1) {
-					newAngle = (double)primary.pov();
-					newAngle += 180;
-					while (newAngle > dir+180) { newAngle -= 360; }
-					while (newAngle < dir-180) { newAngle += 360; }
-					dir = newAngle;
-				}
-				if (resist) {
-					dir += 4 * cubed(primary.stick(4));
-					if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
-						rotation = -0.02*(navx.yaw()-dir);
-					} else {
-						rotation = 0;
-					}
-				} else {
-					rotation = primary.stick(4);
-				}
-
-					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+initialAngle);
+			} else if (primary.stick(3) > 0.4) {
+				score.drop();
+			} else if (primary.BACK.getAsBoolean()) {
+				claw.close(0);
+			} else if (primary.START.getAsBoolean()) {
+				claw.close(1);
+			}
+			if (primary.RIGHT.getAsBoolean()) {
+				dir = 0;
+			} else if (primary.LEFT.getAsBoolean()) {
+				dir = 180;
+			} else if (primary.pov() != -1) {
+				newAngle = (double)primary.pov();
+				newAngle += 180;
+				while (newAngle > dir+180) { newAngle -= 360; }
+				while (newAngle < dir-180) { newAngle += 360; }
+				dir = newAngle;
+			}
 			if (smart) {
+				dir += 4 * cubed(primary.stick(4));
+				if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
+					rotation = -0.02*(navx.yaw()-dir);
 				} else {
-					swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
+					rotation = 0;
 				}
+			} else {
+				rotation = primary.stick(4);
+			}
 
 			if (smart) {                             // Actual Drive:
+				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+initialAngle);
+			} else {
+				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
 			}
+
 		} else if (now == 1) {
 			action(collector.getGamePiece(getting), 0);
 		} else if (now == 2) {
