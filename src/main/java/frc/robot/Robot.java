@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
 	private final Signal toHuman = new Signal(4, 5);
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
+	private final Autonomous auto = new Autonomous(swerveCtrl, arm, claw, navx, collector, score);
 
 	private int getting = 0;
 	private double newAngle;
@@ -133,15 +134,21 @@ public class Robot extends TimedRobot {
 		Global.rotation = 0;
 		arm.reset();
 		claw.reset();
+		Timer.delay(1);
+		auto.start();
 	}
 
 
 	@Override
-	public void autonomousPeriodic() {}
+	public void autonomousPeriodic() {
+		auto.update();
+	}
 
 
 	@Override
-	public void teleopInit() {}
+	public void teleopInit() {
+		auto.finish();
+	}
 
 
 	@Override
