@@ -72,6 +72,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Secondary Adjustment Strength", pwr2);
 		SmartDashboard.putNumber("Cube Closeness for Pickup", collector.cubeWidthForPickUp);
 		SmartDashboard.putNumber("Cone Closeness for Pickup", collector.coneWidthForPickUp);
+		SmartDashboard.putNumber("Arm Pos", arm.mostRecentPos);
 	}
 
 	public void dash() {
@@ -341,16 +342,13 @@ public class Robot extends TimedRobot {
 		if (needsReset) {
 			if (swerveCtrl.resetMotors()) {
 				swerveCtrl.tone();
-				Timer.delay(2.5);
+				Timer.delay(1);
 				swerveCtrl.swerve(0, 0, 0, 0);
 				needsReset = false;
-				SmartDashboard.putNumber("Arm Pos", arm.mostRecentPos);
 			}
 		} else {
-			if (0 <= SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos) && SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos) <= 3) {
-				arm.pos((int)(SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos)));
-				arm.update();
-			}
+			arm.pos((int)(SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos)));
+			arm.update();
 		}
 	}
 
