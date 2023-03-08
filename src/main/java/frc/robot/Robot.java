@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Global;
 import frc.robot.systems.Weswerve;
 import frc.robot.systems.Navx;
 import frc.robot.systems.Controls;
@@ -26,27 +27,10 @@ public class Robot extends TimedRobot {
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
 
-	public boolean smart = true;
-	public double dir = 0;
-	public double rotation = 0;
-	public double dir_accuracy = 1.7;
-	public double initialAngle = 180;
-	public boolean finalMode = false;
-	public boolean armEnabled = true;
-	public double pwr2 = 0.15;
 	private int getting = 0;
 	private double newAngle;
 	private boolean needsReset;
 	private int secondary_pov;
-	public int now = 0;
-	/* now = ID of currently running dynamic periodic
-	 * 0 = Driving
-	 * 1 = Getting Object
-	 * 2 = Preparing to Score
-	 * 3 = Scoring Mode (With Input)
-	 * 4 = Scoring in top row (part 1)
-	 * 5 = Scoring in top row (part 2)
-	*/
 
 	Timer timer;
 
@@ -69,7 +53,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("B offset", swerveCtrl.B_offset);
 		SmartDashboard.putNumber("C offset", swerveCtrl.C_offset);
 		SmartDashboard.putNumber("D offset", swerveCtrl.D_offset);
-		SmartDashboard.putNumber("Secondary Adjustment Strength", pwr2);
+		SmartDashboard.putNumber("Secondary Adjustment Strength", Global.pwr2);
 		SmartDashboard.putNumber("Cube Closeness for Pickup", collector.cubeWidthForPickUp);
 		SmartDashboard.putNumber("Cone Closeness for Pickup", collector.coneWidthForPickUp);
 		SmartDashboard.putNumber("Arm Pos", arm.mostRecentPos);
@@ -81,9 +65,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Theta", arm.theta.getEnc());
 		SmartDashboard.putNumber("Yaw", navx.yaw());
 		SmartDashboard.putNumber("Balance", navx.balance());
-		SmartDashboard.putBoolean("Smart Mode", smart);
-		SmartDashboard.putNumber("Mode", now);
-		SmartDashboard.putBoolean("Final Mode!", finalMode);
+		SmartDashboard.putBoolean("Smart Mode", Global.smart);
+		SmartDashboard.putNumber("Mode", Global.now);
+		SmartDashboard.putBoolean("Final Mode!", Global.finalMode);
 		SmartDashboard.putNumber("Alpha Encoder Value", arm.alpha.getEnc());
 		SmartDashboard.putNumber("Beta Encoder Value", arm.beta.getEnc());
 		SmartDashboard.putNumber("Intake Encoder Value", claw.intakeMotor.getEnc());
@@ -111,18 +95,14 @@ public class Robot extends TimedRobot {
 		swerveCtrl.B_offset = SmartDashboard.getNumber("B offset", swerveCtrl.B_offset);
 		swerveCtrl.C_offset = SmartDashboard.getNumber("C offset", swerveCtrl.C_offset);
 		swerveCtrl.D_offset = SmartDashboard.getNumber("D offset", swerveCtrl.D_offset);
-		pwr2 = SmartDashboard.getNumber("Secondary Adjustment Strength", pwr2);
+		Global.pwr2 = SmartDashboard.getNumber("Secondary Adjustment Strength", Global.pwr2);
 		collector.cubeWidthForPickUp = SmartDashboard.getNumber("Cube Closeness for Pickup", collector.cubeWidthForPickUp);
 		collector.coneWidthForPickUp = SmartDashboard.getNumber("Cone Closeness for Pickup", collector.coneWidthForPickUp);
 	}
 
-	double cubed(double inputNumber) {
-		return inputNumber * inputNumber * inputNumber;
-	}
-
 	void action(boolean dynamicPeriodicFunction, int defaultNowTo) {
 		if (dynamicPeriodicFunction == true) {
-			now = defaultNowTo;
+			Global.now = defaultNowTo;
 		}
 	}
 
@@ -133,9 +113,9 @@ public class Robot extends TimedRobot {
 		navx.fullReset();
 		arm.reset();
 		claw.reset();
-		now = 0;
-		dir = 0;
-		rotation = 0;
+		Global.now = 0;
+		Global.dir = 0;
+		Global.rotation = 0;
 	}
 
 
@@ -148,9 +128,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		navx.fullReset();
-		now = 0;
-		dir = 0;
-		rotation = 0;
+		Global.now = 0;
+		Global.dir = 0;
+		Global.rotation = 0;
 		arm.reset();
 		claw.reset();
 	}
@@ -168,24 +148,24 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
 		if (secondary.Y.getAsBoolean()) {            // Secondary Controller Input:
-			now = 0;
+			Global.now = 0;
 			collector.stage = 0;
 			score.stage = 0;
 		}
 		if (secondary.X.getAsBoolean()) {
 			navx.fullReset();
-			dir = 0;
-			rotation = 0;
+			Global.dir = 0;
+			Global.rotation = 0;
 		}
 		if (secondary.RIGHT.getAsBoolean()) {
-			finalMode = false;
+			Global.finalMode = false;
 		} else if (secondary.LEFT.getAsBoolean()) {
-			finalMode = true;
+			Global.finalMode = true;
 		}
 		if (secondary.B.getAsBoolean()) {
-			smart = false;
+			Global.smart = false;
 		} else if (secondary.START.getAsBoolean() || secondary.A.getAsBoolean()) {
-			smart = true;
+			Global.smart = true;
 		}
 		if (secondary.stick(2) > 0.2 || secondary.stick(3) > 0.2) {
 			navx.correctYaw(secondary.stick(3)-secondary.stick(2));
@@ -206,12 +186,12 @@ public class Robot extends TimedRobot {
 			}
 		}
 		if (secondary.BACK.getAsBoolean()) {
-			armEnabled = false;
+			Global.armEnabled = false;
 		} else if (secondary.START.getAsBoolean()) {
-			armEnabled = true;
+			Global.armEnabled = true;
 		}
 
-		if (now == 0) {
+		if (Global.now == 0) {
 
 			if (secondary.stick(5) > 0.4) {
 				arm.pos(0);
@@ -223,7 +203,7 @@ public class Robot extends TimedRobot {
 				arm.pos(2);
 			}
 
-			if (finalMode) {                         // Restrictive Final Mode Functionality:
+			if (Global.finalMode) {                         // Restrictive Final Mode Functionality:
 
 				swerveCtrl.speed = swerveCtrl.default_speed * 0.35;
 				if (primary.LEFT_STICK.getAsBoolean()) {
@@ -236,17 +216,17 @@ public class Robot extends TimedRobot {
 				if (primary.X.getAsBoolean()) {
 					getting = 0;
 					collector.stage = 0;
-					now = 1;
+					Global.now = 1;
 				} else if (primary.Y.getAsBoolean()) {
 					getting = 1;
 					collector.stage = 0;
-					now = 1;
+					Global.now = 1;
 				} else if (primary.A.getAsBoolean()) {
 					score.stage = 0;
-					now = 2;
+					Global.now = 2;
 				} else if (primary.B.getAsBoolean()) {
 					score.stage = 0;
-					now = 4;
+					Global.now = 4;
 				}
 				if (peg.actuated) {
 					peg.in();
@@ -268,60 +248,60 @@ public class Robot extends TimedRobot {
 				claw.close(1);
 			}
 			if (primary.RIGHT.getAsBoolean()) {
-				dir = 0;
+				Global.dir = 0;
 			} else if (primary.LEFT.getAsBoolean()) {
-				dir = 180;
+				Global.dir = 180;
 			} else if (primary.pov() != -1) {
 				newAngle = (double)primary.pov();
 				newAngle += 180;
-				while (newAngle > dir+180) { newAngle -= 360; }
-				while (newAngle < dir-180) { newAngle += 360; }
-				dir = newAngle;
+				while (newAngle > Global.dir+180) { newAngle -= 360; }
+				while (newAngle < Global.dir-180) { newAngle += 360; }
+				Global.dir = newAngle;
 			}
-			if (smart) {
-				dir += 4 * cubed(primary.stick(4));
-				if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
-					rotation = -0.02*(navx.yaw()-dir);
+			if (Global.smart) {
+				Global.dir += 4 * Global.cubed(primary.stick(4));
+				if (Math.abs(navx.yaw()-Global.dir) > Global.dir_accuracy) {
+					Global.rotation = -0.02*(navx.yaw()-Global.dir);
 				} else {
-					rotation = 0;
+					Global.rotation = 0;
 				}
 			} else {
-				rotation = primary.stick(4);
+				Global.rotation = primary.stick(4);
 			}
 
-			if (smart) {                             // Actual Drive:
-				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+initialAngle);
+			if (Global.smart) {                             // Actual Drive:
+				swerveCtrl.swerve(Global.cubed(-primary.stick(1))+(Global.pwr2*(-secondary.stick(1))), Global.cubed(primary.stick(0))+(Global.pwr2*secondary.stick(0)), Global.rotation, navx.coterminalYaw()+Global.initialAngle);
 			} else {
-				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
+				swerveCtrl.swerve(Global.cubed(-primary.stick(1))+(Global.pwr2*(-secondary.stick(1))), Global.cubed(primary.stick(0))+(Global.pwr2*secondary.stick(0)), Global.rotation, 0);
 			}
 
-		} else if (now == 1) {
+		} else if (Global.now == 1) {
 			action(collector.getGamePiece(getting), 0);
-		} else if (now == 2) {
+		} else if (Global.now == 2) {
 			action(score.prepare(getting), 3);
-		} else if (now == 3) {
+		} else if (Global.now == 3) {
 			if (primary.stick(5) == 0) { arm.pos(1); }
 			if (primary.stick(5) > 0) { arm.pos(0); }
 			if (primary.stick(5) < 0) { arm.pos(2); }
 			if (primary.RIGHT.getAsBoolean()) {
 				score.drop(getting, false, true);
 				arm.pos(3);
-				now = 0;
+				Global.now = 0;
 			}
-		} else if (now == 4) {
+		} else if (Global.now == 4) {
 			action(collector.getGamePiece(getting), 5);
-		} else if (now == 5) {
+		} else if (Global.now == 5) {
 			arm.pos(2);
 			if (arm.all_there()) {
 				score.drop(getting, false, true);
 				arm.pos(3);
-				now = 0;
+				Global.now = 0;
 			}
 		}
 
 		// Static Periodics:
 		swerveCtrl.update();
-		if (armEnabled) {
+		if (Global.armEnabled) {
 			arm.update();
 			claw.update();
 		}
