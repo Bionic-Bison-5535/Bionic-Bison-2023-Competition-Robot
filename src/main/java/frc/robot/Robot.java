@@ -193,20 +193,8 @@ public class Robot extends TimedRobot {
 		} else if (secondary.A.getAsBoolean()) {
 			resist = true;
 		}
-		if (secondary.stick(3) > 0.9) {
-			peg.in();
-		} else if (secondary.stick(2) > 0.9) {
-			peg.out();
-		}
-    	if (Math.abs(secondary.stick(4)) > 0.15 && Math.abs((secondary.stick(3)-secondary.stick(2))) < Math.abs(secondary.stick(4))) {
-			navx.correctYaw(secondary.stick(4));
-			toHuman.off();
-		} else {
-			if ((secondary.stick(3)-secondary.stick(2)) < -0.1) {
-				toHuman.cone();
-			} else if ((secondary.stick(3)-secondary.stick(2)) > 0.1) {
-				toHuman.cube();
-			}
+		if (secondary.stick(2) > 0.2 || secondary.stick(3) > 0.2) {
+			navx.correctYaw(secondary.stick(3)-secondary.stick(2));
 		}
 		secondary_pov = secondary.pov();
 		if (secondary_pov == -1) {
@@ -226,6 +214,16 @@ public class Robot extends TimedRobot {
 
 		if (now == 0) {
 
+			if (secondary.stick(5) > 0.4) {
+				arm.pos(0);
+			} else if (secondary.stick(5) > -0.1) {
+				arm.pos(3);
+			} else if (secondary.stick(5) > -0.97) {
+				arm.pos(1);
+			} else {
+				arm.pos(2);
+			}
+
 			if (rawMode) {                           // RAW MODE:
 
 				if (primary.A.getAsBoolean()) {
@@ -242,15 +240,6 @@ public class Robot extends TimedRobot {
 				}
 				if (primary.START.getAsBoolean()) {
 					rawMode = false;
-				}
-				if ((secondary.stick(3)-secondary.stick(2)) > 0.4) {
-					arm.pos(0);
-				} else if ((secondary.stick(3)-secondary.stick(2)) > -0.1) {
-					arm.pos(3);
-				} else if ((secondary.stick(3)-secondary.stick(2)) > -0.97) {
-					arm.pos(1);
-				} else {
-					arm.pos(2);
 				}
 				swerveCtrl.swerve(cubed(0.5*-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(0.5*primary.stick(0))+(pwr2*secondary.stick(0)), cubed(0.7*primary.stick(4)), 0);
 
@@ -312,17 +301,6 @@ public class Robot extends TimedRobot {
 					}
 				} else {
 					rotation = primary.stick(4);
-				}
-				if (Math.abs(secondary.stick(4)) < 0.1) {
-					if ((secondary.stick(3)-secondary.stick(2)) > 0.4) {
-						arm.pos(0);
-					} else if ((secondary.stick(3)-secondary.stick(2)) > -0.1) {
-						arm.pos(3);
-					} else if ((secondary.stick(3)-secondary.stick(2)) > -0.97) {
-						arm.pos(1);
-					} else {
-						arm.pos(2);
-					}
 				}
 
 				if (headless) {                          // Actual Drive:
