@@ -44,7 +44,8 @@ public class Robot extends TimedRobot {
 	 * 1 = Getting Object
 	 * 2 = Preparing to Score
 	 * 3 = Scoring Mode (With Input)
-	 * 4 = Scoring top row
+	 * 4 = Scoring in top row (part 1)
+	 * 5 = Scoring in top row (part 2)
 	*/
 
 	Timer timer;
@@ -315,13 +316,19 @@ public class Robot extends TimedRobot {
 			if (primary.stick(5) > 0) { arm.pos(0); }
 			if (primary.stick(5) < 0) { arm.pos(2); }
 			if (primary.RIGHT.getAsBoolean()) {
-				score.drop(2, false, true);
+				score.drop(getting, false, true);
 				arm.pos(3);
 				now = 0;
 			}
 		} else if (now == 4) {
-			// This function not programmed yet, redirect to now = 0:
-			now = 0;
+			action(collector.getGamePiece(getting), 5);
+		} else if (now == 5) {
+			arm.pos(2);
+			if (arm.all_there()) {
+				score.drop(getting, false, true);
+				arm.pos(3);
+				now = 0;
+			}
 		}
 
 		// Static Periodics:
