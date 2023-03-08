@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
 	public double dir_accuracy = 1.7;
 	public double initialAngle = 180;
 	public boolean finalMode = false;
+	public boolean armEnabled = true;
 	public double pwr2 = 0.15;
 	private int getting = 0;
 	private double newAngle;
@@ -202,6 +203,11 @@ public class Robot extends TimedRobot {
 				peg.in();
 			}
 		}
+		if (secondary.BACK.getAsBoolean()) {
+			armEnabled = false;
+		} else if (secondary.START.getAsBoolean()) {
+			armEnabled = true;
+		}
 
 		if (now == 0) {
 
@@ -320,8 +326,10 @@ public class Robot extends TimedRobot {
 
 		// Static Periodics:
 		swerveCtrl.update();
-		arm.update();
-		claw.update();
+		if (armEnabled) {
+			arm.update();
+			claw.update();
+		}
 
 	}
 
