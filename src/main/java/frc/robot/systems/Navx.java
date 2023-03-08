@@ -9,10 +9,11 @@ public class Navx {
     private AHRS NavX = new AHRS(I2C.Port.kMXP);
 
     private double yaw_Offset = 0;
-    private double balance_Offset;
+    private double balance_Offset1, balance_Offset2;
 
     public Navx() {
-        balance_Offset = NavX.getRoll();
+        balance_Offset1 = NavX.getRoll();
+        balance_Offset2 = NavX.getPitch();
     }
 
     public double yaw() {
@@ -24,7 +25,11 @@ public class Navx {
     }
 
     public double balance() {
-        return NavX.getRoll()-balance_Offset;
+        return Math.sqrt(Math.pow(NavX.getRoll()-balance_Offset1, 2) + Math.pow(NavX.getPitch()-balance_Offset2, 2));
+    }
+
+    public double rawBalance() {
+        return (NavX.getRoll()-balance_Offset1);
     }
 
     public boolean accel() {
