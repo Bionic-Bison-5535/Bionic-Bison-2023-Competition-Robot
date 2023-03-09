@@ -251,12 +251,17 @@ public class Robot extends TimedRobot {
 					getting = 1;
 					collector.stage = 0;
 					now = 1;
-				} else if (primary.A.getAsBoolean()) {
+				}/* else if (primary.A.getAsBoolean()) {
 					score.stage = 0;
 					now = 2;
 				} else if (primary.B.getAsBoolean()) {
 					score.stage = 0;
 					now = 4;
+				}*/
+				else if (primary.A.getAsBoolean()) {
+					claw.changePos(1);
+				} else if (primary.B.getAsBoolean()) {
+					claw.changePos(-1);
 				}
 
 			}

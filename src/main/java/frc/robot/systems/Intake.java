@@ -30,6 +30,19 @@ public class Intake {
         }
     }
 
+    public void changePos(double increment) {
+        if (open) {
+            presetOpen += increment;
+        } else {
+            if (gamePiece == 0) {
+                presetClosedCube += increment;
+            }
+            if (gamePiece == 1) {
+                presetClosedCone += increment;
+            }
+        }
+    }
+
     public void open() {
         open = true;
     }
