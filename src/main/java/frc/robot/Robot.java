@@ -76,6 +76,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Cube Closeness for Pickup", collector.cubeWidthForPickUp);
 		SmartDashboard.putNumber("Cone Closeness for Pickup", collector.coneWidthForPickUp);
 		SmartDashboard.putNumber("Arm Pos", arm.mostRecentPos);
+		SmartDashboard.putNumber("Auto Counts", (double)auto.counts);
+		SmartDashboard.putNumber("Auto Stage", (double)auto.stage);
 	}
 
 	public void dash() {

@@ -94,6 +94,14 @@ public class Motor {
         }
     }
 
+    public boolean almost() {
+        if (Math.abs(0.27*((goToPos/ticksPerRotation())-getRotations())) >= 1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public void update() {
         if (posMode) {
             if (!there()) {

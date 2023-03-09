@@ -47,9 +47,9 @@ public class Arm {
         previousPos = mostRecentPos;
         mostRecentPos = positionNumber;
         if (positionNumber == 3 && previousPos == 0) {
-            alpha.maxSpeed = 1;
+            alpha.maxSpeed = 0.5;
             beta.maxSpeed = 1;
-            theta.maxSpeed = 0.2;
+            theta.maxSpeed = 0.12;
         } else if (virtualPos(positionNumber) > virtualPos(previousPos)) {
             alpha.maxSpeed = 0.5;
             beta.maxSpeed = 0.7;
@@ -74,7 +74,7 @@ public class Arm {
     }
 
     public boolean all_there() {
-        return (alpha.there() && beta.there() && theta.there());
+        return (alpha.almost() && beta.almost() && theta.almost());
     }
 
     public void reset() {
