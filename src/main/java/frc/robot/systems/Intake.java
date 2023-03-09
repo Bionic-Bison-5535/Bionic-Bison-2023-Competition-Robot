@@ -6,9 +6,9 @@ public class Intake {
 
     public Motor intakeMotor;
 
-    public double presetOpen = 24;
+    public double presetOpen = 70;
     public double presetClosedCube = 0;
-    public double presetClosedCone = -37;
+    public double presetClosedCone = -115;
     public boolean open = false;
     public int gamePiece = 0;
 

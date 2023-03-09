@@ -4,15 +4,15 @@ public class Arm {
 
     public Motor alpha, beta, theta;
 
-    public double pos_0_a = -141488; // Position 0 - Collect or Score in Row 1
-    public double pos_0_b = -17251;
-    public double pos_0_c = 102960;
-    public double pos_1_a = -66438; // Position 1 -  Score in Row 2
-    public double pos_1_b = 54271;
-    public double pos_1_c = 134730;
-    public double pos_2_a = -412271; // Position 2 - Score in Row 3 (Most extended and most dangerous)
-    public double pos_2_b = 140848;
-    public double pos_2_c = 180789;
+    public double pos_0_a = 0; // Position 0 - Collect or Score in Row 1
+    public double pos_0_b = -370000;
+    public double pos_0_c = 122500;
+    public double pos_1_a = 0; // Position 1 -  Score in Row 2
+    public double pos_1_b = 0;
+    public double pos_1_c = 170000;
+    public double pos_2_a = -370000; // Position 2 - Score in Row 3 (Most extended and most dangerous)
+    public double pos_2_b = 400000;
+    public double pos_2_c = 190000;
     public double pos_3_a = 0; // Position 3 - Holding Mode
     public double pos_3_b = 0;
     public double pos_3_c = 0;
@@ -46,13 +46,17 @@ public class Arm {
     public void pos(int positionNumber) {
         previousPos = mostRecentPos;
         mostRecentPos = positionNumber;
-        if (virtualPos(positionNumber) > virtualPos(previousPos)) {
+        if (positionNumber == 3 && previousPos == 0) {
+            alpha.maxSpeed = 1;
+            beta.maxSpeed = 1;
+            theta.maxSpeed = 0.2;
+        } else if (virtualPos(positionNumber) > virtualPos(previousPos)) {
             alpha.maxSpeed = 0.5;
             beta.maxSpeed = 0.7;
-            theta.maxSpeed = 1;
-        } else if (virtualPos(positionNumber) > virtualPos(previousPos)) {
+            theta.maxSpeed = 0.7;
+        } else if (virtualPos(positionNumber) < virtualPos(previousPos)) {
             alpha.maxSpeed = 1;
-            beta.maxSpeed = 0.2;
+            beta.maxSpeed = 0.5;
             theta.maxSpeed = 0.4;
         }
         if (positionNumber == 0) {

@@ -1,6 +1,5 @@
 package frc.robot.smart_features;
 
-import frc.robot.Global;
 import frc.robot.systems.Weswerve;
 import frc.robot.systems.Arm;
 import frc.robot.systems.Intake;
@@ -14,6 +13,10 @@ public class Autonomous {
     private Navx navx;
     private GetObject collector;
     private Score score;
+
+    private double dir = 0;
+    private double rotation = 0;
+    private double dir_accuracy = 1.7;
 
     public int stage = 0;
     /* Stage
@@ -41,15 +44,15 @@ public class Autonomous {
         score = scoreAccess;
     }
 
-    public start() {
+    public void start() {
         stage = 1;
     }
 
-    public finish() {
+    public void finish() {
         stage = 0;
     }
 
-    public update() {
+    public void update() {
         if (stage == 0) {
             swerveCtrl.swerve(0, 0, 0, 0);
             arm.pos(3);
@@ -86,7 +89,7 @@ public class Autonomous {
             if (collector.getGamePiece(getting)) {
                 stage = 5;
             }
-        } else if (stage = 5) {
+        } else if (stage == 5) {
             dir = 0;
             if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
                 rotation = -0.02*(navx.yaw()-dir);
@@ -121,22 +124,19 @@ public class Autonomous {
             charge();
         }
 
-        public void charge() {
-            if (navx.rawBalance() < 1.2 && navx.rawBalance() > -1.2) {
-                swerveCtrl.swerve(0, 0, 0, 0);
-            } else if (navx.rawBalance() >= 1.2) {
-                swerveCtrl.swerve(-0.1, 0, 0, 0);
-            } else {
-                swerveCtrl.swerve(0.1, 0, 0, 0);
-            }
-        }
-
         swerveCtrl.update();
-		if (Global.armEnabled) {
-			arm.update();
-			claw.update();
-        }
+        arm.update();
+        claw.update();
+    }
 
+    public void charge() {
+        if (navx.rawBalance() < 1.2 && navx.rawBalance() > -1.2) {
+            swerveCtrl.swerve(0, 0, 0, 0);
+        } else if (navx.rawBalance() >= 1.2) {
+            swerveCtrl.swerve(-0.1, 0, 0, 0);
+        } else {
+            swerveCtrl.swerve(0.1, 0, 0, 0);
+        }
     }
 
 }
