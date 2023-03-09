@@ -22,7 +22,7 @@ public class Robot extends TimedRobot {
 	private final Controls secondary = new Controls(1, 0.1);
 	private final Arm arm = new Arm(50, 51, 53);
 	private final Intake claw = new Intake(55);
-	private final Peg peg = new Peg(8, 9, -0.70, 0.15);
+	private final Peg peg = new Peg(8, 9, -0.64, 0.15);
 	private final Signal toHuman = new Signal(4, 5);
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
