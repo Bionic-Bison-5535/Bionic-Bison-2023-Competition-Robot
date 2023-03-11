@@ -173,6 +173,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		auto.finish();
+		claw.open();
 	}
 
 
