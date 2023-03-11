@@ -308,9 +308,9 @@ public class Robot extends TimedRobot {
 			}
 
 			if (smart) {                             // Actual Drive:
-				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+initialAngle);
+				swerveCtrl.swerve(cubed(-primary.stickWithRamp(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stickWithRamp(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+initialAngle);
 			} else {
-				swerveCtrl.swerve(cubed(-primary.stick(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stick(0))+(pwr2*secondary.stick(0)), rotation, 0);
+				swerveCtrl.swerve(cubed(-primary.stickWithRamp(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stickWithRamp(0))+(pwr2*secondary.stick(0)), rotation, 0);
 			}
 
 		} else if (now == 1) {
