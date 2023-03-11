@@ -5,8 +5,8 @@ public class Arm {
     public Motor alpha, beta, theta;
 
     public double pos_0_a = 0; // Position 0 - Collect or Score in Row 1
-    public double pos_0_b = -370000;
-    public double pos_0_c = 122500;
+    public double pos_0_b = -430000;
+    public double pos_0_c = 153000;
     public double pos_1_a = 0; // Position 1 -  Score in Row 2
     public double pos_1_b = 0;
     public double pos_1_c = 170000;
