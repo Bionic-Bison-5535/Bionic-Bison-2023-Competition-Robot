@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot {
     public double initialAngle = 180;
     public boolean armEnabled = true;
     public double pwr2 = 0.15;
+	public double time = 120;
     public int now = 0;
     /* now = ID of currently running dynamic periodic
 	 * 0 = Driving
@@ -50,8 +52,6 @@ public class Robot extends TimedRobot {
 	private double newAngle;
 	private boolean needsReset;
 	private int secondary_pov;
-
-	Timer timer;
 
 	public void dashInit() {
 		SmartDashboard.putNumber("Pos 0 a", arm.pos_0_a);
@@ -99,6 +99,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Cubes", score.cubes);
 		SmartDashboard.putNumber("Cones", score.cones);
 		SmartDashboard.putBoolean("Peg Out", peg.actuated);
+		SmartDashboard.putNumber("Remaining Time", time);
 		arm.pos_0_a = SmartDashboard.getNumber("Pos 0 a", arm.pos_0_a);
 		arm.pos_0_b = SmartDashboard.getNumber("Pos 0 b", arm.pos_0_b);
 		arm.pos_0_c = SmartDashboard.getNumber("Pos 0 c", arm.pos_0_c);
@@ -122,7 +123,7 @@ public class Robot extends TimedRobot {
 		collector.coneWidthForPickUp = SmartDashboard.getNumber("Cone Closeness for Pickup", collector.coneWidthForPickUp);
 	}
 
-	public double cubed(double inputNumber) {
+	double cubed(double inputNumber) {
 		return inputNumber * inputNumber * inputNumber;
 	}
 
@@ -161,11 +162,13 @@ public class Robot extends TimedRobot {
 		claw.reset();
 		Timer.delay(1);
 		auto.start();
+		time = 15;
 	}
 
 
 	@Override
 	public void autonomousPeriodic() {
+		time = DriverStation.getMatchTime();
 		auto.update();
 	}
 
@@ -174,11 +177,14 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		auto.finish();
 		claw.open();
+		time = 105;
 	}
 
 
 	@Override
 	public void teleopPeriodic() {
+
+		time = DriverStation.getMatchTime();
 
 		if (secondary.Y.getAsBoolean()) {            // Secondary Controller Input:
 			now = 0;
@@ -193,7 +199,7 @@ public class Robot extends TimedRobot {
 		if (secondary.RIGHT.getAsBoolean()) {
 			finalMode = false;
 			peg.in();
-		} else if (secondary.LEFT.getAsBoolean()) {
+		} else if (secondary.LEFT.getAsBoolean() || time < 15) {
 			finalMode = true;
 		}
 		if (secondary.B.getAsBoolean()) {
@@ -218,6 +224,9 @@ public class Robot extends TimedRobot {
 			} else if (secondary_pov == 270 || secondary_pov == 225 || secondary_pov == 315) {
 				peg.in();
 			}
+		}
+		if (time <= 5) {
+			peg.out();
 		}
 		if (secondary.BACK.getAsBoolean()) {
 			armEnabled = false;
@@ -279,7 +288,7 @@ public class Robot extends TimedRobot {
 					getting = 1;
 				}
 			} else if (primary.stick(3) > 0.4) {
-				score.drop(getting, false, true);
+				score.drop(getting);
 			} else if (primary.BACK.getAsBoolean()) {
 				claw.close(0);
 			} else if (primary.START.getAsBoolean()) {
@@ -322,7 +331,7 @@ public class Robot extends TimedRobot {
 			if (primary.stick(5) > 0) { arm.pos(0); }
 			if (primary.stick(5) < 0) { arm.pos(2); }
 			if (primary.RIGHT.getAsBoolean()) {
-				score.drop(getting, false, true);
+				score.drop(getting);
 				arm.pos(3);
 				now = 0;
 			}
@@ -331,7 +340,7 @@ public class Robot extends TimedRobot {
 		} else if (now == 5) {
 			arm.pos(2);
 			if (arm.all_there()) {
-				score.drop(getting, false, true);
+				score.drop(getting);
 				arm.pos(3);
 				now = 0;
 			}
