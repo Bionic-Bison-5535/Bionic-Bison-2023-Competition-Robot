@@ -1,6 +1,5 @@
 package frc.robot.smart_features;
 
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.systems.Weswerve;
 import frc.robot.systems.Arm;
 import frc.robot.systems.Intake;

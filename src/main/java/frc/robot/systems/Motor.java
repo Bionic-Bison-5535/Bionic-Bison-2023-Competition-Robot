@@ -13,7 +13,7 @@ public class Motor {
     private TalonSRX talonMotor;
     private RelativeEncoder canEncoder;
     public double goToPos = 0;
-    public boolean usingTalon = false;
+    public boolean usingTalon;
     public double db = 0.17;
     public boolean posMode = false;
     public double maxSpeed = 1;
