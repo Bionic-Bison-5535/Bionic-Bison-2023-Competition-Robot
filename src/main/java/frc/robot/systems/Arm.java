@@ -49,14 +49,14 @@ public class Arm {
         if (positionNumber == 3 && previousPos == 0) {
             alpha.maxSpeed = 0.5;
             beta.maxSpeed = 1;
-            theta.maxSpeed = 0.12;
+            theta.maxSpeed = 0.21;
         } else if (virtualPos(positionNumber) > virtualPos(previousPos)) {
-            alpha.maxSpeed = 0.5;
-            beta.maxSpeed = 0.7;
-            theta.maxSpeed = 0.7;
+            alpha.maxSpeed = 0.57;
+            beta.maxSpeed = 0.9;
+            theta.maxSpeed = 1;
         } else if (virtualPos(positionNumber) < virtualPos(previousPos)) {
             alpha.maxSpeed = 1;
-            beta.maxSpeed = 0.5;
+            beta.maxSpeed = 0.4;
             theta.maxSpeed = 0.4;
         }
         if (positionNumber == 0) {
