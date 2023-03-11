@@ -228,11 +228,11 @@ public class Robot extends TimedRobot {
 
 		if (now == 0) {
 
-			if (secondary.stick(5) > 0.4) {
+			if (secondary.stick(5) > 0.95) {
 				arm.pos(0);
 			} else if (secondary.stick(5) > -0.1) {
 				arm.pos(3);
-			} else if (secondary.stick(5) > -0.97) {
+			} else if (secondary.stick(5) > -0.95) {
 				arm.pos(1);
 			} else {
 				arm.pos(2);
