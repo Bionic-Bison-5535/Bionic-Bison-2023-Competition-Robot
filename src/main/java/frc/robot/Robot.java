@@ -67,38 +67,31 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Pos 3 b", arm.pos_3_b);
 		SmartDashboard.putNumber("Pos 3 c", arm.pos_3_c);
 		SmartDashboard.putNumber("Robot Speed", swerveCtrl.default_speed);
-		SmartDashboard.putNumber("Robot Steering Sharpness", swerveCtrl.steeringAmplifier);
+		SmartDashboard.putNumber("Robot Steering", swerveCtrl.steeringAmplifier);
 		SmartDashboard.putNumber("A offset", swerveCtrl.A_offset);
 		SmartDashboard.putNumber("B offset", swerveCtrl.B_offset);
 		SmartDashboard.putNumber("C offset", swerveCtrl.C_offset);
 		SmartDashboard.putNumber("D offset", swerveCtrl.D_offset);
-		SmartDashboard.putNumber("Secondary Adjustment Strength", pwr2);
+		SmartDashboard.putNumber("Secondary Adjust", pwr2);
 		SmartDashboard.putNumber("Cube Closeness for Pickup", collector.cubeWidthForPickUp);
 		SmartDashboard.putNumber("Cone Closeness for Pickup", collector.coneWidthForPickUp);
 		SmartDashboard.putNumber("Arm Pos", arm.mostRecentPos);
-		SmartDashboard.putNumber("Auto Counts", (double)auto.counts);
-		SmartDashboard.putNumber("Auto Stage", (double)auto.stage);
 	}
 
 	public void dash() {
-		SmartDashboard.putNumber("Alpha", arm.alpha.getEnc());
-		SmartDashboard.putNumber("Beta", arm.beta.getEnc());
-		SmartDashboard.putNumber("Theta", arm.theta.getEnc());
+		SmartDashboard.putBoolean("Smart Mode", smart);
+		SmartDashboard.putBoolean("Final Mode!", finalMode);
+		SmartDashboard.putBoolean("Arm Reached", arm.all_there());
+		SmartDashboard.putBoolean("Robot In Motion", navx.accel());
+		SmartDashboard.putBoolean("Peg Out", peg.actuated);
 		SmartDashboard.putNumber("Yaw", navx.yaw());
 		SmartDashboard.putNumber("Balance", navx.balance());
 		SmartDashboard.putNumber("Raw Balance", navx.rawBalance());
-		SmartDashboard.putBoolean("Smart Mode", smart);
-		SmartDashboard.putNumber("Mode", now);
-		SmartDashboard.putBoolean("Final Mode!", finalMode);
-		SmartDashboard.putNumber("Alpha Encoder Value", arm.alpha.getEnc());
-		SmartDashboard.putNumber("Beta Encoder Value", arm.beta.getEnc());
-		SmartDashboard.putNumber("Intake Encoder Value", claw.intakeMotor.getEnc());
-		SmartDashboard.putBoolean("Arm Reached Position", arm.all_there());
-		SmartDashboard.putBoolean("Robot In Motion", navx.accel());
+		SmartDashboard.putNumber("Dynamic Periodic", now);
 		SmartDashboard.putNumber("Points Earned", score.points);
 		SmartDashboard.putNumber("Cubes", score.cubes);
 		SmartDashboard.putNumber("Cones", score.cones);
-		SmartDashboard.putBoolean("Peg Out", peg.actuated);
+		SmartDashboard.putNumber("Auto Stage", (double)auto.stage);
 		SmartDashboard.putNumber("Remaining Time", time);
 		arm.pos_0_a = SmartDashboard.getNumber("Pos 0 a", arm.pos_0_a);
 		arm.pos_0_b = SmartDashboard.getNumber("Pos 0 b", arm.pos_0_b);
@@ -113,12 +106,12 @@ public class Robot extends TimedRobot {
 		arm.pos_3_b = SmartDashboard.getNumber("Pos 3 b", arm.pos_3_b);
 		arm.pos_3_c = SmartDashboard.getNumber("Pos 3 c", arm.pos_3_c);
 		swerveCtrl.default_speed = SmartDashboard.getNumber("Robot Speed", swerveCtrl.default_speed);
-		swerveCtrl.steeringAmplifier = SmartDashboard.getNumber("Robot Steering Sharpness", swerveCtrl.steeringAmplifier);
+		swerveCtrl.steeringAmplifier = SmartDashboard.getNumber("Robot Steering", swerveCtrl.steeringAmplifier);
 		swerveCtrl.A_offset = SmartDashboard.getNumber("A offset", swerveCtrl.A_offset);
 		swerveCtrl.B_offset = SmartDashboard.getNumber("B offset", swerveCtrl.B_offset);
 		swerveCtrl.C_offset = SmartDashboard.getNumber("C offset", swerveCtrl.C_offset);
 		swerveCtrl.D_offset = SmartDashboard.getNumber("D offset", swerveCtrl.D_offset);
-		pwr2 = SmartDashboard.getNumber("Secondary Adjustment Strength", pwr2);
+		pwr2 = SmartDashboard.getNumber("Secondary Adjust", pwr2);
 		collector.cubeWidthForPickUp = SmartDashboard.getNumber("Cube Closeness for Pickup", collector.cubeWidthForPickUp);
 		collector.coneWidthForPickUp = SmartDashboard.getNumber("Cone Closeness for Pickup", collector.coneWidthForPickUp);
 	}
