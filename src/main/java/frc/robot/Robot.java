@@ -191,7 +191,7 @@ public class Robot extends TimedRobot {
 		if (secondary.RIGHT.getAsBoolean()) {
 			finalMode = false;
 			peg.in();
-		} else if (secondary.LEFT.getAsBoolean() || time < 15) {
+		} else if (secondary.LEFT.getAsBoolean() || (time < 30 && navx.balance() > 1)) {
 			finalMode = true;
 		}
 		if (secondary.B.getAsBoolean()) {
@@ -244,6 +244,7 @@ public class Robot extends TimedRobot {
 				if (primary.LEFT_STICK.getAsBoolean()) {
 					peg.out();
 				}
+				arm.pos(3);
 
 			} else {                                 // Restrictive Non-Final Mode Functionality:
 
