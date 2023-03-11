@@ -1,5 +1,6 @@
 package frc.robot.smart_features;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.systems.Weswerve;
 import frc.robot.systems.Limelight;
 import frc.robot.systems.Arm;
@@ -13,6 +14,7 @@ public class Score {
     private Arm arm;
     private Intake claw;
     private Navx navx;
+    private boolean auto, tele;
     public int stage = 0; // 0 = Ready, 1 = Aligning Horizontally, 2 = Pressing Up Against Grid, 3 = Adjusting Arm Position, 4 = Done + Arm Up, 5 = Error / Cancel,
 
     public int cones = 0;
@@ -72,7 +74,9 @@ public class Score {
         }
     }
 
-    public void drop(int cube0_or_cone1, boolean auto, boolean tele) {
+    public void drop(int cube0_or_cone1) {
+        auto = DriverStation.isAutonomousEnabled();
+        tele = DriverStation.isTeleopEnabled();
         claw.open();
         if (cube0_or_cone1 == 0) {
             cubes += 1;

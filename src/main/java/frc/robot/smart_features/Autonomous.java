@@ -75,7 +75,7 @@ public class Autonomous {
             }
         } else if (stage == 3) {
             swerveCtrl.swerve(0, 0, 0, 0);
-            score.drop(0, true, false);
+            score.drop(0);
             if (counts > 27) {
                 stage += 1;
                 counts = 0;
