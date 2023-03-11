@@ -191,7 +191,7 @@ public class Robot extends TimedRobot {
 		if (secondary.RIGHT.getAsBoolean()) {
 			finalMode = false;
 			peg.in();
-		} else if (secondary.LEFT.getAsBoolean() || (time < 30 && navx.balance() > 1)) {
+		} else if (secondary.LEFT.getAsBoolean() || (time < 30 && navx.balance() > 3)) {
 			finalMode = true;
 		}
 		if (secondary.B.getAsBoolean()) {
