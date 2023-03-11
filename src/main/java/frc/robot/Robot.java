@@ -86,6 +86,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Theta", arm.theta.getEnc());
 		SmartDashboard.putNumber("Yaw", navx.yaw());
 		SmartDashboard.putNumber("Balance", navx.balance());
+		SmartDashboard.putNumber("Raw Balance", navx.rawBalance());
 		SmartDashboard.putBoolean("Smart Mode", smart);
 		SmartDashboard.putNumber("Mode", now);
 		SmartDashboard.putBoolean("Final Mode!", finalMode);

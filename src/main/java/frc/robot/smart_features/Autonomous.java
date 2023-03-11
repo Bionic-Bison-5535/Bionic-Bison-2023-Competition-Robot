@@ -1,5 +1,6 @@
 package frc.robot.smart_features;
 
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.systems.Weswerve;
 import frc.robot.systems.Arm;
 import frc.robot.systems.Intake;
@@ -18,7 +19,7 @@ public class Autonomous {
     private double rotation = 0;
     private double dir_accuracy = 1.7;
     public int counts = 0;
-    public boolean chargeUp = false;
+    public boolean chargeUp = true;
     public int getting = 0;
 
     public int stage = 0;
@@ -78,6 +79,7 @@ public class Autonomous {
             if (counts > 100) {
                 stage += 1;
                 counts = 0;
+                arm.pos(3);
             }
         } else if (stage == 4) {
             dir = 0;
@@ -94,6 +96,8 @@ public class Autonomous {
                     stage = 0;
                 }
                 counts = 0;
+                arm.pos(3);
+                claw.close(0);
             }
         } else if (stage == 5) {
             dir = 0;
@@ -103,12 +107,8 @@ public class Autonomous {
                 rotation = 0;
             }
             swerveCtrl.swerve(0.5, 0, rotation, 0);
-            if (counts > 50) {
-                if (chargeUp) {
-                    stage = 5;
-                } else {
-                    stage = 0;
-                }
+            if (counts > 77) {
+                stage += 1;
                 counts = 0;
             }
         } else if (stage == 6) {
@@ -121,12 +121,12 @@ public class Autonomous {
     }
 
     public void charge() {
-        if (navx.rawBalance() < 1.2 && navx.rawBalance() > -1.2) {
+        if (navx.rawBalance() < 3 && navx.rawBalance() > -3) {
             swerveCtrl.swerve(0, 0, 0, 0);
-        } else if (navx.rawBalance() >= 1.2) {
-            swerveCtrl.swerve(-0.12, 0, 0, 0);
+        } else if (navx.rawBalance() > 0) {
+            swerveCtrl.swerve(-0.1, 0, 0, 0);
         } else {
-            swerveCtrl.swerve(0.12, 0, 0, 0);
+            swerveCtrl.swerve(0.1, 0, 0, 0);
         }
     }
 
