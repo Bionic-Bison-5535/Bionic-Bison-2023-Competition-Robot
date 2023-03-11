@@ -28,7 +28,7 @@ public class Autonomous {
      * 1 - Moving arm up
      * 2 - Driving Forward
      * 3 - Releasing cube
-     * 4 - Driving back
+     * 4 - Driving back and lowering arm
      * 5 - Driving forward to charge station
      * 6 - Balancing
     */
@@ -69,14 +69,15 @@ public class Autonomous {
             } else {
                 rotation = 0;
             }
-            swerveCtrl.swerve(0.2, 0, rotation, 0);
-            if (counts > 100) {
+            swerveCtrl.swerve(0.15, 0, rotation, 0);
+            if (counts > 150) {
                 stage += 1;
                 counts = 0;
             }
         } else if (stage == 3) {
+            swerveCtrl.swerve(0, 0, 0, 0);
             score.drop(0, true, false);
-            if (counts > 100) {
+            if (counts > 27) {
                 stage += 1;
                 counts = 0;
                 arm.pos(3);
@@ -88,8 +89,8 @@ public class Autonomous {
             } else {
                 rotation = 0;
             }
-            swerveCtrl.swerve(-0.5, 0, rotation, 0);
-            if (counts > 100) {
+            swerveCtrl.swerve(-0.4, 0, rotation, 0);
+            if (counts > 200) {
                 if (chargeUp) {
                     stage = 5;
                 } else {
