@@ -126,16 +126,20 @@ public class Robot extends TimedRobot {
 		}
 	}
 
+	void resetAll() {
+		navx.fullReset();
+		now = 0;
+		dir = 0;
+		rotation = 0;
+		arm.reset();
+		claw.reset();
+	}
+
 
 	@Override
 	public void robotInit() {
 		dashInit();
-		navx.fullReset();
-		arm.reset();
-		claw.reset();
-		now = 0;
-		dir = 0;
-		rotation = 0;
+		resetAll();
 	}
 
 
@@ -147,13 +151,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-		navx.fullReset();
-		now = 0;
-		dir = 0;
-		rotation = 0;
-		arm.reset();
-		claw.reset();
-		Timer.delay(1);
+		resetAll();
+		Timer.delay(0.2);
 		auto.start();
 		time = 15;
 	}
