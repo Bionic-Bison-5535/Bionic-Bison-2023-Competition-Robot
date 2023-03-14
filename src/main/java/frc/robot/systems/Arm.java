@@ -8,7 +8,7 @@ public class Arm {
     public double pos_0_b = 0;
     public double pos_1_a = 0; // Position 1 -  Score in Row 2
     public double pos_1_b = 0;
-    public double pos_2_a = 1000; // Position 2 - Score in Row 3 (Most extended and most dangerous)
+    public double pos_2_a = 100; // Position 2 - Score in Row 3 (Most extended and most dangerous)
     public double pos_2_b = 1000;
     public double pos_3_a = 0; // Position 3 - Holding Mode
     public double pos_3_b = 0;
@@ -17,7 +17,7 @@ public class Arm {
     public int mostRecentPos = 3;
 
     public Arm(int alpha_canID, int beta_canID) {
-        alpha = new Motor(alpha_canID, true, false, 1);
+        alpha = new Motor(alpha_canID, false, false, 1);
         beta = new Motor(beta_canID, true, false, 1);
         alpha.setEnc(0);
         beta.setEnc(0);
