@@ -1,5 +1,6 @@
 package frc.robot.smart_features;
 
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.systems.Weswerve;
 import frc.robot.systems.Arm;
 import frc.robot.systems.Intake;
@@ -68,8 +69,8 @@ public class Autonomous {
             } else {
                 rotation = 0;
             }
-            swerveCtrl.swerve(0.15, 0, rotation, 0);
-            if (counts > 150) {
+            swerveCtrl.swerve(0.3, 0, rotation, 0);
+            if (counts > 35) {
                 stage += 1;
                 counts = 0;
             }
@@ -92,6 +93,8 @@ public class Autonomous {
             if (counts > 200) {
                 if (chargeUp) {
                     stage = 5;
+                    swerveCtrl.swerve(0, 0, 0, 0);
+                    Timer.delay(1);
                 } else {
                     stage = 0;
                 }
@@ -106,8 +109,8 @@ public class Autonomous {
             } else {
                 rotation = 0;
             }
-            swerveCtrl.swerve(0.5, 0, rotation, 0);
-            if (counts > 77) {
+            swerveCtrl.swerve(0.3, 0, rotation, 0);
+            if (counts > 190) {
                 stage += 1;
                 counts = 0;
             }
