@@ -25,7 +25,7 @@ public class Weswerve {
 	private boolean negation;
 	public boolean SmartAngle = true;
 	public double theta = 0;
-	public double default_speed = 0.9;
+	public double default_speed = 1;
 	public double speed = default_speed;
 	public double steeringAmplifier = 0.5;
 	private final double wheelAngleErrorRange = 1.2;
