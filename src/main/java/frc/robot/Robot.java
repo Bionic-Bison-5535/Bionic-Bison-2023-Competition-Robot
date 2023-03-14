@@ -135,6 +135,13 @@ public class Robot extends TimedRobot {
 		claw.reset();
 	}
 
+	void getTimeFromFMS() {
+		time = DriverStation.getMatchTime();
+		if (time == -1) { // FMS not connected
+			time = 120;
+		}
+	}
+
 
 	@Override
 	public void robotInit() {
@@ -160,7 +167,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousPeriodic() {
-		time = DriverStation.getMatchTime();
+		getTimeFromFMS();
 		auto.update();
 	}
 
@@ -176,7 +183,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
-		time = DriverStation.getMatchTime();
+		getTimeFromFMS();
 
 		if (secondary.Y.getAsBoolean()) {            // Secondary Controller Input:
 			now = 0;
