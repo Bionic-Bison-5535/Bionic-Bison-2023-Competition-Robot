@@ -9,8 +9,10 @@ public class Controls {
     public JoystickButton A, B, X, Y, LEFT, RIGHT, BACK, START, LEFT_STICK, RIGHT_STICK;
     public double inputStickDeadband;
 
-    public double q0, q1, q2, q3, q4, q5, q6, q7, q8, q9;
-    public double w0, w1, w2, w3, w4, w5, w6, w7, w8, w9;
+    private double[] rr0 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    private double[] rr1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    private double add0 = 0;
+    private double add1 = 0;
 
     public Controls(int inputNumber, double setInputStickDeadband) {
         in = new Joystick(inputNumber);
@@ -25,8 +27,6 @@ public class Controls {
         LEFT_STICK = new JoystickButton(in, 9);
         RIGHT_STICK = new JoystickButton(in, 10);
         inputStickDeadband = setInputStickDeadband;
-        resetQ();
-        resetW();
     }
 
     private double deadband(double num_input, double db) {
@@ -43,9 +43,9 @@ public class Controls {
 
     public double stickWithRamp(int axisNumber) {
         if (axisNumber == 0) {
-            return shiftQ();
+            return shift0();
         } else if (axisNumber == 1) {
-            return shiftW();
+            return shift1();
         } else {
             return stick(axisNumber);
         }
@@ -59,58 +59,26 @@ public class Controls {
         return (stick(0) != 0 || stick(1) != 0);
     }
 
-    public void resetQ() {
-        q0 = 0;
-        q1 = 0;
-        q2 = 0;
-        q3 = 0;
-        q4 = 0;
-        q5 = 0;
-        q6 = 0;
-        q7 = 0;
-        q8 = 0;
-        q9 = 0;
+    public double shift0() {
+        add0 = 0;
+        for (int i = 0; i < rr0.length - 1; i++) {
+            rr0[i] = rr0[i+1];
+            add0 += rr0[i];
+        }
+        rr0[rr0.length - 1] = stick(1);
+        add0 += stick(1);
+        return add0/rr0.length;
     }
 
-    public void resetW() {
-        w0 = 0;
-        w1 = 0;
-        w2 = 0;
-        w3 = 0;
-        w4 = 0;
-        w5 = 0;
-        w6 = 0;
-        w7 = 0;
-        w8 = 0;
-        w9 = 0;
-    }
-
-    public double shiftQ() {
-        q9 = q8;
-        q8 = q7;
-        q7 = q6;
-        q6 = q5;
-        q5 = q4;
-        q4 = q3;
-        q3 = q2;
-        q2 = q1;
-        q1 = q0;
-        q0 = stick(0);
-        return (q0 + q1 + q2 + q3 + q4 + q5 + q6 + q7 + q8 + q9)/10;
-    }
-
-    public double shiftW() {
-        w9 = w8;
-        w8 = w7;
-        w7 = w6;
-        w6 = w5;
-        w5 = w4;
-        w4 = w3;
-        w3 = w2;
-        w2 = w1;
-        w1 = w0;
-        w0 = stick(1);
-        return (w0 + w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8 + w9)/10;
+    public double shift1() {
+        add1 = 0;
+        for (int i = 0; i < rr1.length - 1; i++) {
+            rr1[i] = rr1[i+1];
+            add1 += rr1[i];
+        }
+        rr1[rr1.length - 1] = stick(1);
+        add1 += stick(1);
+        return add1/rr1.length;
     }
 
 }
