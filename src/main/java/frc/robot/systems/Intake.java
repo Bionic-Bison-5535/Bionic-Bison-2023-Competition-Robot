@@ -6,9 +6,9 @@ public class Intake {
 
     public Motor intakeMotor;
 
-    public double presetOpen = 24;
+    public double presetOpen = 70;
     public double presetClosedCube = 0;
-    public double presetClosedCone = -37;
+    public double presetClosedCone = -115;
     public boolean open = false;
     public int gamePiece = 0;
 
@@ -27,6 +27,19 @@ public class Intake {
                 return presetClosedCone;
             }
             return presetOpen;
+        }
+    }
+
+    public void changePos(double increment) {
+        if (open) {
+            presetOpen += increment;
+        } else {
+            if (gamePiece == 0) {
+                presetClosedCube += increment;
+            }
+            if (gamePiece == 1) {
+                presetClosedCone += increment;
+            }
         }
     }
 

@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.PWM;
 
 public class Peg {
 
-    private PWM peg1, peg2;
+    public PWM peg1, peg2;
     public double in_pos, out_pos;
     public boolean actuated = false;
 
@@ -24,7 +24,7 @@ public class Peg {
 
     public void out() {
         peg1.setSpeed(out_pos);
-        peg2.setSpeed(in_pos);
+        peg2.setSpeed(out_pos);
         actuated = true;
     }
 
@@ -35,6 +35,14 @@ public class Peg {
             actuated = false;
         } else {
             actuated = true;
+        }
+    }
+
+    public void update() {
+        if (actuated) {
+            out();
+        } else {
+            in();
         }
     }
 

@@ -13,7 +13,7 @@ public class Motor {
     private TalonSRX talonMotor;
     private RelativeEncoder canEncoder;
     public double goToPos = 0;
-    public boolean usingTalon = false;
+    public boolean usingTalon;
     public double db = 0.17;
     public boolean posMode = false;
     public double maxSpeed = 1;
@@ -88,6 +88,14 @@ public class Motor {
 
     public boolean there() {
         if (posMode && Math.abs(getEnc()-goToPos) > db * ticksPerRotation()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean almost() {
+        if (Math.abs(0.27*((goToPos/ticksPerRotation())-getRotations())) >= 1) {
             return false;
         } else {
             return true;
