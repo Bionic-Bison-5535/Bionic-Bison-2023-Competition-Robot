@@ -315,7 +315,11 @@ public class Robot extends TimedRobot {
 			}
 
 		} else if (now == 1) {
-			action(collector.getGamePiece(getting), 0);
+			collector.alignToCube();
+			if (collector.stage != 1) {
+				now = 0;
+				collector.stage = 0;
+			}
 		} else if (now == 2) {
 			action(score.prepare(getting), 3);
 		} else if (now == 3) {
