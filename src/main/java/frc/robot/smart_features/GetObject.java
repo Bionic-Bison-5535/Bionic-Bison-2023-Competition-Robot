@@ -71,17 +71,14 @@ public class GetObject {
             }
         }
         if (stage == 2) {
-            claw.open();
             arm.pos(0);
             if (arm.all_there()) {
                 stage = 3;
             }
         }
         if (stage == 3) {
-            claw.close(cube0_or_cone1);
-            if (claw.closed()) {
-                stage = 4;
-            }
+            claw.take();
+            stage = 4;
         }
         if (stage == 4) {
             arm.pos(3);

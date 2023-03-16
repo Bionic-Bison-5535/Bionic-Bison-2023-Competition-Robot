@@ -124,7 +124,6 @@ public class Robot extends TimedRobot {
 		dir = 0;
 		rotation = 0;
 		arm.reset();
-		claw.reset();
 	}
 
 	void getTimeFromFMS() {
@@ -167,7 +166,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		auto.finish();
-		claw.open();
 		time = 105;
 	}
 
@@ -229,6 +227,8 @@ public class Robot extends TimedRobot {
 
 			if (secondary.stick(5) > 0.95) {
 				arm.pos(0);
+			} else if (secondary.stick(5) > 0.05) {
+				arm.pos(4);
 			} else if (secondary.stick(5) > -0.1) {
 				arm.pos(3);
 			} else if (secondary.stick(5) > -0.95) {
@@ -263,28 +263,15 @@ public class Robot extends TimedRobot {
 					score.stage = 0;
 					now = 4;
 				}*/
-				else if (primary.A.getAsBoolean()) {
-					claw.changePos(1);
-				} else if (primary.B.getAsBoolean()) {
-					claw.changePos(-1);
-				}
 
 			}
 
 			if (primary.stick(2) > 0.4) {            // Other Primary Controller Code:
-				if (collector.cubeCam.area() > collector.coneCam.area()) {
-					claw.close(0);
-					getting = 0;
-				} else {
-					claw.close(1);
-					getting = 1;
-				}
+				claw.take();
 			} else if (primary.stick(3) > 0.4) {
 				score.drop(getting);
-			} else if (primary.BACK.getAsBoolean()) {
-				claw.close(0);
-			} else if (primary.START.getAsBoolean()) {
-				claw.close(1);
+			} else {
+				claw.stop();
 			}
 			if (primary.RIGHT.getAsBoolean()) {
 				dir = 0;
@@ -346,7 +333,6 @@ public class Robot extends TimedRobot {
 		swerveCtrl.update();
 		if (armEnabled) {
 			arm.update();
-			claw.update();
 		}
 		peg.update();
 
