@@ -13,8 +13,8 @@ public class GetObject {
     private Intake claw;
     public int stage = 0; // 0 = Ready, 1 = Aligning, 2 = Arm Going Down, 3 = Intake, 4 = Done + Arm Up, 5 = Error / Cancel,
 
-    public double cubeWidthForPickUp = 135;
-    public double coneWidthForPickUp = 135;
+    public double cubeWidthForPickUp = 115;
+    public double coneWidthForPickUp = 105;
 
     public GetObject(int cubePipeline, int conePipeline, Weswerve swerveAccess, Arm armAccess, Intake intakeAccess) {
         cubeCam = new Limelight(cubePipeline);
