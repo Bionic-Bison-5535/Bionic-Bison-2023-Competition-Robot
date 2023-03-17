@@ -193,34 +193,32 @@ public class Robot extends TimedRobot {
 		}
 		if (secondary.B.getAsBoolean()) {
 			smart = false;
-		} else if (secondary.START.getAsBoolean() || secondary.A.getAsBoolean()) {
+		} else if (secondary.A.getAsBoolean()) {
 			smart = true;
 		}
 		if (secondary.stick(2) > 0.2 || secondary.stick(3) > 0.2) {
 			navx.correctYaw(secondary.stick(3)-secondary.stick(2));
 		}
 		secondary_pov = secondary.pov();
-		if (secondary_pov == -1) {
-			toHuman.off();
-		} else {
-			if (secondary_pov == 0 || secondary_pov == 45 || secondary_pov == 315) {
-				toHuman.cone();
-			} else if (secondary_pov == 180 || secondary_pov == 135 || secondary_pov == 225) {
-				toHuman.cube();
+		if (secondary_pov != -1) {
+			if (secondary_pov == 0 || secondary_pov == 45 || secondary_pov == 315) { // Up
+				armEnabled = true;
+			} else if (secondary_pov == 180 || secondary_pov == 135 || secondary_pov == 225) { // Down
+				armEnabled = false;
 			}
-			if (secondary_pov == 90 || secondary_pov == 45 || secondary_pov == 135) {
-				peg.out();
-			} else if (secondary_pov == 270 || secondary_pov == 225 || secondary_pov == 315) {
-				peg.in();
+			if (secondary_pov == 90 || secondary_pov == 45 || secondary_pov == 135) { // Right
+				// Empty Slot
+			} else if (secondary_pov == 270 || secondary_pov == 225 || secondary_pov == 315) { // Left
+				// Empty Slot
 			}
 		}
 		if (time <= 5) {
 			peg.out();
 		}
 		if (secondary.BACK.getAsBoolean()) {
-			armEnabled = false;
+			// Empty Slot
 		} else if (secondary.START.getAsBoolean()) {
-			armEnabled = true;
+			// Empty Slot
 		}
 
 		if (now == 0) {

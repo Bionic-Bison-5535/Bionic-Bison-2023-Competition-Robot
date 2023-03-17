@@ -66,7 +66,7 @@ public class Motor {
     }
 
     public double getRotations() {
-        return (getEnc() / ticksPerRotation());
+        return (getEnc() / rotationValue());
     }
 
     public void setEnc(double newEncValue) {
@@ -78,16 +78,16 @@ public class Motor {
         goToPos = newEncValue;
     }
 
-    public double ticksPerRotation() {
+    public double rotationValue() {
         if (usingTalon) {
             return 2048;
         } else {
-            return 43;
+            return 7;
         }
     }
 
     public boolean there() {
-        if (posMode && Math.abs(getEnc()-goToPos) > db * ticksPerRotation()) {
+        if (posMode && Math.abs(getEnc()-goToPos) > db * rotationValue()) {
             return false;
         } else {
             return true;
@@ -95,7 +95,7 @@ public class Motor {
     }
 
     public boolean almost() {
-        if (Math.abs(0.27*((goToPos/ticksPerRotation())-getRotations())) >= 1) {
+        if (Math.abs(0.27*((goToPos/rotationValue())-getRotations())) >= 1) {
             return false;
         } else {
             return true;
@@ -105,9 +105,9 @@ public class Motor {
     public void update() {
         if (posMode) {
             if (!there()) {
-                if (0.27*((goToPos/ticksPerRotation())-getRotations()) <= maxSpeed && 0.27*((goToPos/ticksPerRotation())-getRotations()) >= -maxSpeed) {
-                    set(0.27*((goToPos/ticksPerRotation())-getRotations()));
-                } else if (0.27*((goToPos/ticksPerRotation())-getRotations()) > 0) {
+                if (0.27*((goToPos/rotationValue())-getRotations()) <= maxSpeed && 0.27*((goToPos/rotationValue())-getRotations()) >= -maxSpeed) {
+                    set(0.27*((goToPos/rotationValue())-getRotations()));
+                } else if (0.27*((goToPos/rotationValue())-getRotations()) > 0) {
                     set(maxSpeed);
                 } else {
                     set(-maxSpeed);

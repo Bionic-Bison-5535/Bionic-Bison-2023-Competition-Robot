@@ -7,11 +7,11 @@ public class Arm {
     public double pos_0_a = 62; // Position 0 - Collect or Score in Row 1
     public double pos_0_b = 60000;
     public double pos_1_a = 0; // Position 1 -  Score in Row 2
-    public double pos_1_b = 114000;
+    public double pos_1_b = 80000;
     public double pos_2_a = -52; // Position 2 - Score in Row 3 (Most extended and most dangerous)
     public double pos_2_b = 114000;
     public double pos_3_a = 0; // Position 3 - Holding Mode
-    public double pos_3_b = 3500;
+    public double pos_3_b = 4000;
 
     public int previousPos = 3;
     public int mostRecentPos = 3;

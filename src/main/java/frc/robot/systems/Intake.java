@@ -13,7 +13,7 @@ public class Intake {
     }
 
     public void take() {
-        intakeMotor.set(-1);
+        intakeMotor.set(-0.2);
     }
 
     public void stop() {
