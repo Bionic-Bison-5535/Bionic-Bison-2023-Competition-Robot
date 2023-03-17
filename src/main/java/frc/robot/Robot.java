@@ -9,7 +9,6 @@ import frc.robot.systems.Navx;
 import frc.robot.systems.Controls;
 import frc.robot.systems.Arm;
 import frc.robot.systems.Intake;
-import frc.robot.systems.Peg;
 import frc.robot.systems.Signal;
 import frc.robot.smart_features.GetObject;
 import frc.robot.smart_features.Score;
@@ -23,7 +22,6 @@ public class Robot extends TimedRobot {
 	private final Controls secondary = new Controls(1, 0.1);
 	private final Arm arm = new Arm(50, 51);
 	private final Intake claw = new Intake(53);
-	private final Peg peg = new Peg(8, 9, -0.64, 0.15);
 	private final Signal toHuman = new Signal(4, 5);
 	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
@@ -78,7 +76,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Final Mode!", finalMode);
 		SmartDashboard.putBoolean("Arm Reached", arm.all_there());
 		SmartDashboard.putBoolean("Robot In Motion", navx.accel());
-		SmartDashboard.putBoolean("Peg Out", peg.actuated);
 		SmartDashboard.putNumber("Yaw", navx.yaw());
 		SmartDashboard.putNumber("Balance", navx.balance());
 		SmartDashboard.putNumber("Raw Balance", navx.rawBalance());
@@ -186,7 +183,6 @@ public class Robot extends TimedRobot {
 		}
 		if (secondary.RIGHT.getAsBoolean()) {
 			finalMode = false;
-			peg.in();
 		} else if (secondary.LEFT.getAsBoolean() || (time < 30 && navx.balance() > 3)) {
 			finalMode = true;
 		}
@@ -211,9 +207,6 @@ public class Robot extends TimedRobot {
 				// Empty Slot
 			}
 		}
-		if (time <= 5) {
-			peg.out();
-		}
 		if (secondary.BACK.getAsBoolean()) {
 			// Empty Slot
 		} else if (secondary.START.getAsBoolean()) {
@@ -237,10 +230,6 @@ public class Robot extends TimedRobot {
 			if (finalMode) {                         // Restrictive Final Mode Functionality:
 
 				swerveCtrl.speed = swerveCtrl.default_speed * 0.35;
-				if (primary.LEFT_STICK.getAsBoolean()) {
-					peg.out();
-				}
-				arm.pos(3);
 
 			} else {                                 // Restrictive Non-Final Mode Functionality:
 
@@ -331,14 +320,12 @@ public class Robot extends TimedRobot {
 		if (armEnabled) {
 			arm.update();
 		}
-		peg.update();
 
 	}
 
 
 	@Override
 	public void testInit() {
-		peg.in();
 		claw.intakeMotor.setEnc(0);
 		needsReset = true;
 	}
