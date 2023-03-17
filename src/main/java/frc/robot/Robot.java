@@ -30,16 +30,15 @@ public class Robot extends TimedRobot {
 	private final Autonomous auto = new Autonomous(swerveCtrl, arm, claw, navx, collector, score);
 
 	public boolean smart = true;
-    public boolean finalMode = false;
-    public double dir = 0;
-    public double rotation = 0;
-    public double dir_accuracy = 1.7;
-    public double initialAngle = 180;
-    public boolean armEnabled = true;
-    public double pwr2 = 0.15;
+	public boolean finalMode = false;
+	public double dir = 0;public double rotation = 0;
+	public double dir_accuracy = 1.7;
+	public double initialAngle = 180;
+	public boolean armEnabled = true;
+	public double pwr2 = 0.15;
 	public double time = 120;
-    public int now = 0;
-    /* now = ID of currently running dynamic periodic
+	public int now = 0;
+	/* now = ID of currently running dynamic periodic
 	 * 0 = Driving
 	 * 1 = Getting Object
 	 * 2 = Preparing to Score
