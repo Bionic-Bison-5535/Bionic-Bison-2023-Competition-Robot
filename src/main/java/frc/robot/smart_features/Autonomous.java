@@ -58,9 +58,9 @@ public class Autonomous {
             arm.pos(3);
             claw.stop();
         } else if (stage == 1) {
-            arm.pos(2);
+            arm.pos(1);
             if (arm.all_there()) {
-                stage += 1;
+                stage = 3;
                 counts = 0;
             }
             claw.stop();
@@ -79,7 +79,7 @@ public class Autonomous {
             claw.stop();
         } else if (stage == 3) {
             swerveCtrl.swerve(0, 0, 0, 0);
-            if (counts > 27) {
+            if (counts > 20) {
                 stage += 1;
                 counts = 0;
                 arm.pos(3);
@@ -93,7 +93,7 @@ public class Autonomous {
                 rotation = 0;
             }
             swerveCtrl.swerve(-0.4, 0, rotation, 0);
-            if (counts > 200) {
+            if (counts > 170) {
                 if (chargeUp) {
                     stage = 5;
                     swerveCtrl.swerve(0, 0, 0, 0);
