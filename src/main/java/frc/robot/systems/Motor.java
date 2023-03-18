@@ -14,7 +14,7 @@ public class Motor {
     private RelativeEncoder canEncoder;
     public double goToPos = 0;
     public boolean usingTalon;
-    public double db = 0.17;
+    public double db = 0.15;
     public boolean posMode = false;
     public double maxSpeed = 1;
 
@@ -82,7 +82,7 @@ public class Motor {
         if (usingTalon) {
             return 2048;
         } else {
-            return 7;
+            return 4;
         }
     }
 
