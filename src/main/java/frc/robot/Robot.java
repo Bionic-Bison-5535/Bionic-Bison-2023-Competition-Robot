@@ -9,7 +9,6 @@ import frc.robot.systems.Navx;
 import frc.robot.systems.Controls;
 import frc.robot.systems.Arm;
 import frc.robot.systems.Intake;
-import frc.robot.systems.Signal;
 import frc.robot.smart_features.GetObject;
 import frc.robot.smart_features.Score;
 import frc.robot.smart_features.Autonomous;
@@ -22,8 +21,7 @@ public class Robot extends TimedRobot {
 	private final Controls secondary = new Controls(1, 0.1);
 	private final Arm arm = new Arm(50, 51);
 	private final Intake claw = new Intake(53);
-	private final Signal toHuman = new Signal(4, 5);
-	private final GetObject collector = new GetObject(2, 1, swerveCtrl, arm, claw);
+	private final GetObject collector = new GetObject(2, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
 	private final Autonomous auto = new Autonomous(swerveCtrl, arm, claw, navx, collector, score);
 
@@ -41,11 +39,8 @@ public class Robot extends TimedRobot {
 	 * 1 = Getting Object
 	 * 2 = Preparing to Score
 	 * 3 = Scoring Mode (With Input)
-	 * 4 = Scoring in top row (part 1)
-	 * 5 = Scoring in top row (part 2)
 	*/
 
-	private int getting = 0;
 	private double newAngle;
 	private boolean needsReset;
 	private int secondary_pov;
@@ -67,7 +62,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("D offset", swerveCtrl.D_offset);
 		SmartDashboard.putNumber("Secondary Adjust", pwr2);
 		SmartDashboard.putNumber("Cube Closeness for Pickup", collector.cubeWidthForPickUp);
-		SmartDashboard.putNumber("Cone Closeness for Pickup", collector.coneWidthForPickUp);
 		SmartDashboard.putNumber("Arm Pos", arm.mostRecentPos);
 	}
 
@@ -101,7 +95,6 @@ public class Robot extends TimedRobot {
 		swerveCtrl.D_offset = SmartDashboard.getNumber("D offset", swerveCtrl.D_offset);
 		pwr2 = SmartDashboard.getNumber("Secondary Adjust", pwr2);
 		collector.cubeWidthForPickUp = SmartDashboard.getNumber("Cube Closeness for Pickup", collector.cubeWidthForPickUp);
-		collector.coneWidthForPickUp = SmartDashboard.getNumber("Cone Closeness for Pickup", collector.coneWidthForPickUp);
 	}
 
 	double cubed(double inputNumber) {
@@ -163,6 +156,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		auto.finish();
 		time = 105;
+		now = 0;
 	}
 
 
@@ -181,18 +175,13 @@ public class Robot extends TimedRobot {
 			dir = 0;
 			rotation = 0;
 		}
-		if (secondary.RIGHT.getAsBoolean()) {
+		if (secondary.B.getAsBoolean()) {
 			finalMode = false;
-		} else if (secondary.LEFT.getAsBoolean() || (time < 30 && navx.balance() > 3)) {
+		} else if (secondary.A.getAsBoolean() || (time < 7 && navx.balance() > 10)) {
 			finalMode = true;
 		}
-		if (secondary.B.getAsBoolean()) {
-			smart = false;
-		} else if (secondary.A.getAsBoolean()) {
-			smart = true;
-		}
-		if (secondary.stick(2) > 0.2 || secondary.stick(3) > 0.2) {
-			navx.correctYaw(secondary.stick(3)-secondary.stick(2));
+		if (Math.abs(secondary.stick(4)) > 0.2) {
+			navx.correctYaw(0.5 * secondary.stick(4));
 		}
 		secondary_pov = secondary.pov();
 		if (secondary_pov != -1) {
@@ -208,22 +197,20 @@ public class Robot extends TimedRobot {
 			}
 		}
 		if (secondary.BACK.getAsBoolean()) {
-			// Empty Slot
+			smart = false;
 		} else if (secondary.START.getAsBoolean()) {
-			// Empty Slot
+			smart = true;
 		}
 
 		if (now == 0) {
 
-			if (secondary.stick(5) > 0.95) {
+			if (secondary.stick(2) > 0.1) {
 				arm.pos(0);
-			} else if (secondary.stick(5) > 0.05) {
-				arm.pos(4);
-			} else if (secondary.stick(5) > -0.1) {
+			} else if (secondary.LEFT.getAsBoolean()) {
 				arm.pos(3);
-			} else if (secondary.stick(5) > -0.95) {
+			} else if (secondary.stick(3) > 0.1) {
 				arm.pos(1);
-			} else {
+			} else if (secondary.stick(3) > 0.97 || secondary.RIGHT.getAsBoolean()) {
 				arm.pos(2);
 			}
 
@@ -235,27 +222,16 @@ public class Robot extends TimedRobot {
 
 				swerveCtrl.speed = swerveCtrl.default_speed;
 				if (primary.X.getAsBoolean()) {
-					getting = 0;
 					collector.stage = 0;
 					now = 1;
-				} else if (primary.Y.getAsBoolean()) {
-					getting = 1;
-					collector.stage = 0;
-					now = 1;
-				}/* else if (primary.A.getAsBoolean()) {
-					score.stage = 0;
-					now = 2;
-				} else if (primary.B.getAsBoolean()) {
-					score.stage = 0;
-					now = 4;
-				}*/
+				}
 
 			}
 
 			if (primary.stick(2) > 0.4) {            // Other Primary Controller Code:
 				claw.take();
 			} else if (primary.stick(3) > 0.4) {
-				score.drop(getting);
+				score.drop(0);
 			} else {
 				claw.stop();
 			}
@@ -288,28 +264,15 @@ public class Robot extends TimedRobot {
 			}
 
 		} else if (now == 1) {
-			collector.alignToCube();
-			if (collector.stage != 1) {
-				now = 0;
-				collector.stage = 0;
-			}
+			action(collector.getGamePiece(), 0);
 		} else if (now == 2) {
-			action(score.prepare(getting), 3);
+			action(score.prepare(0), 3);
 		} else if (now == 3) {
 			if (primary.stick(5) == 0) { arm.pos(1); }
 			if (primary.stick(5) > 0) { arm.pos(0); }
 			if (primary.stick(5) < 0) { arm.pos(2); }
 			if (primary.RIGHT.getAsBoolean()) {
-				score.drop(getting);
-				arm.pos(3);
-				now = 0;
-			}
-		} else if (now == 4) {
-			action(collector.getGamePiece(getting), 5);
-		} else if (now == 5) {
-			arm.pos(2);
-			if (arm.all_there()) {
-				score.drop(getting);
+				score.drop(0);
 				arm.pos(3);
 				now = 0;
 			}
