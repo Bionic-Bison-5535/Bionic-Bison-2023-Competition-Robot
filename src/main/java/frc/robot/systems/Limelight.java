@@ -1,6 +1,5 @@
 package frc.robot.systems;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
@@ -9,7 +8,6 @@ public class Limelight {
     private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 	private int pipeline = 0;
 	private double invalidArea = 0.04;
-	private double pipeline_change_delay = 0.4;
 
 	public Limelight(int Pipline) {
 		if (Pipline >= 0 && Pipline < 10) {
@@ -18,10 +16,7 @@ public class Limelight {
 	}
 
 	public void setPip() {
-		if (table.getEntry("pipeline").getInteger(pipeline) != pipeline) {
-			table.getEntry("pipeline").setNumber(pipeline);
-			Timer.delay(pipeline_change_delay);
-		}
+		table.getEntry("pipeline").setNumber(pipeline);
 	}
 
 	public int getPip() {
