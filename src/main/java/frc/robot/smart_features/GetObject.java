@@ -7,87 +7,88 @@ import frc.robot.systems.Intake;
 
 public class GetObject {
 
-    public Limelight cubeCam, coneCam;
+    public Limelight cubeCam;
     private Weswerve swerveCtrl;
     private Arm arm;
     private Intake claw;
-    public int stage = 0; // 0 = Ready, 1 = Aligning, 2 = Arm Going Down, 3 = Intake, 4 = Done + Arm Up, 5 = Error / Cancel,
+    private int counts = 0;
+    public int stage = 0; // 0 = Ready, 1 = Arm Out, 2 = Arm Down, 3 = Alignment, 4 = Drive Forward, 5 = Arm Up, 6 = Arm In,
 
-    public double cubeWidthForPickUp = 115;
-    public double coneWidthForPickUp = 105;
+    public double cubeWidthForPickUp = 150;
 
-    public GetObject(int cubePipeline, int conePipeline, Weswerve swerveAccess, Arm armAccess, Intake intakeAccess) {
+    public GetObject(int cubePipeline, Weswerve swerveAccess, Arm armAccess, Intake intakeAccess) {
         cubeCam = new Limelight(cubePipeline);
-        coneCam = new Limelight(conePipeline);
         swerveCtrl = swerveAccess;
         arm = armAccess;
         claw = intakeAccess;
     }
 
-    public void alignToCube() {
-        if (stage == 0) {
-            stage = 1;
-        }
-        if (stage == 1) {
-            if (cubeCam.valid()) {
-                if (cubeCam.inRange(cubeCam.width(), cubeWidthForPickUp, 40) && cubeCam.inRange(cubeCam.X(), 0, 5)) {
-                    stage = 2;
-                    swerveCtrl.swerve(0, 0, 0, 0);
-                } else {
-                    swerveCtrl.swerve((cubeWidthForPickUp-cubeCam.width())/100, cubeCam.X()/50, 0, 0);
-                }
-            } else {
-                stage = 5;
+    public boolean alignToCube() {
+        if (cubeCam.valid()) {
+            if (cubeCam.inRange(cubeCam.width(), cubeWidthForPickUp, 30) && cubeCam.inRange(cubeCam.X(), 0, 7)) {
+                stage = 2;
                 swerveCtrl.swerve(0, 0, 0, 0);
+                return true;
+            } else {
+                swerveCtrl.swerve((cubeWidthForPickUp-cubeCam.width())/90, cubeCam.X()/50, 0, 0);
+                return false;
             }
+        } else {
+            swerveCtrl.swerve(0, 0, 0, 0);
+            return true;
         }
     }
 
-    public void alignToCone() {
+    public boolean getGamePiece() { // Returns true if done, otherwise must be run periodically
+        counts += 1;
         if (stage == 0) {
+            counts = 0;
             stage = 1;
         }
         if (stage == 1) {
-            if (coneCam.valid()) {
-                if (coneCam.inRange(coneCam.width(), coneWidthForPickUp, 40) && coneCam.inRange(coneCam.X(), 0, 5)) {
-                    stage = 2;
-                    swerveCtrl.swerve(0, 0, 0, 0);
-                } else {
-                    swerveCtrl.swerve((coneWidthForPickUp-coneCam.width())/100, coneCam.X()/50, 0, 0);
-                }
-            } else {
-                stage = 5;
-                swerveCtrl.swerve(0, 0, 0, 0);
-            }
-        }
-    }
-
-    public boolean getGamePiece(int cube0_or_cone1) { // Returns true if done, otherwise must be run periodically
-        if (stage < 2) {
-            if (cube0_or_cone1 == 0) {
-                alignToCube();
-            } else {
-                alignToCone();
+            arm.pos(4);
+            if (arm.all_there()) {
+                stage++;
             }
         }
         if (stage == 2) {
             arm.pos(0);
             if (arm.all_there()) {
-                stage = 3;
+                stage++;
+                counts = 0;
             }
         }
         if (stage == 3) {
             claw.take();
-            stage = 4;
+            if (alignToCube() || counts > 50) {
+                stage++;
+                counts = 0;
+            }
         }
         if (stage == 4) {
-            arm.pos(3);
+            claw.take();
+            swerveCtrl.swerve(0.2, 0, 0, 0);
+            if (counts > 30) {
+                stage++;
+            }
         }
-        if (stage < 4) {
-            return false;
-        } else {
+        if (stage == 5) {
+            swerveCtrl.swerve(0, 0, 0, 0);
+            claw.stop();
+            arm.pos(4);
+            if (arm.all_there()) {
+                stage++;
+            }
+        }
+        if (stage == 6) {
+            swerveCtrl.swerve(0, 0, 0, 0);
+            claw.stop();
+            arm.pos(3);
             stage = 0;
+            counts = 0;
             return true;
+        } else {
+            return false;
         }
     }
 
