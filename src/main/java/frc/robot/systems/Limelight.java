@@ -6,8 +6,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class Limelight {
     
     private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-	private int pipeline = 0;
-	private double invalidArea = 0.04;
+	private int pipeline = 1;
+	private double invalidArea = 0.1;
 
 	public Limelight(int Pipline) {
 		if (Pipline >= 0 && Pipline < 10) {
@@ -17,10 +17,6 @@ public class Limelight {
 
 	public void setPip() {
 		table.getEntry("pipeline").setNumber(pipeline);
-	}
-
-	public int getPip() {
-		return (int)table.getEntry("pipeline").getInteger(10);
 	}
 
 	public double X() {
