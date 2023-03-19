@@ -233,7 +233,7 @@ public class Robot extends TimedRobot {
 			}
 
 			if (primary.stick(2) > 0.1) {            // Other Primary Controller Code:
-				claw.take();
+				claw.variableIntake(0.3*primary.stick(2));
 			} else if (primary.stick(3) > 0.1) {
 				score.drop(0);
 			} else {

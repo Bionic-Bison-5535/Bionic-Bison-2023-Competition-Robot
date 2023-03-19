@@ -16,6 +16,10 @@ public class Intake {
         intakeMotor.set(-0.2);
     }
 
+    public void variableIntake(double intakeSpeed) {
+        intakeMotor.set(-1*intakeSpeed);
+    }
+
     public void stop() {
         intakeMotor.set(0);
     }
