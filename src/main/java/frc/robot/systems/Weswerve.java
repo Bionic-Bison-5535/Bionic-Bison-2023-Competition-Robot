@@ -1,6 +1,6 @@
 /*  WESWERVE for Trapezoid Swerve Robot with CANCoder Angle Detection and Either Talon motors or CANSparkMax motor controllers.
 	Program written by Wesley McGinn {wesleymcginn1@gmail.com} for Team 5535, but open for use by anyone.
-	Version 4.9 Prime
+	Version 7.0
 */
 
 package frc.robot.systems;
@@ -221,6 +221,11 @@ public class Weswerve {
 			backRightDrive.set(ControlMode.MusicTone, 783.99);
 			backLeftDrive.set(ControlMode.MusicTone, 1046.5);
 		}
+	}
+
+	public void lock() {
+		setAngles(45, 135, 45, 135);
+		setVelocities(0, 0, 0, 0);
 	}
 
 	public void swerve(double verticalInput, double horizontalInput, double rotationalInput, double frontAngle) { // Main function - Does all swerve math

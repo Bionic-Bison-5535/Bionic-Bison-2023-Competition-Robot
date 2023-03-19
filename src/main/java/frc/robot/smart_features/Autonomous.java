@@ -129,11 +129,11 @@ public class Autonomous {
 
     public void charge() {
         if (navx.rawBalance() < 3 && navx.rawBalance() > -3) {
-            swerveCtrl.swerve(0, 0, 0, 0);
+            swerveCtrl.lock();
         } else if (navx.rawBalance() > 0) {
-            swerveCtrl.swerve(-0.1, 0, 0, 0);
+            swerveCtrl.swerve(-0.15, 0, 0, 0);
         } else {
-            swerveCtrl.swerve(0.1, 0, 0, 0);
+            swerveCtrl.swerve(0.15, 0, 0, 0);
         }
     }
 

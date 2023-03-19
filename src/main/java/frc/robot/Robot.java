@@ -148,7 +148,11 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		getTimeFromFMS();
-		auto.update();
+		if (time < 0.5) {
+			swerveCtrl.lock();
+		} else {
+			auto.update();
+		}
 	}
 
 
@@ -257,7 +261,9 @@ public class Robot extends TimedRobot {
 				rotation = primary.stick(4);
 			}
 
-			if (smart) {                             // Actual Drive:
+			if (primary.B.getAsBoolean()) {          // Actual Drive:
+				swerveCtrl.lock();
+			} else if (smart) {
 				swerveCtrl.swerve(cubed(-primary.stickWithRamp(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stickWithRamp(0))+(pwr2*secondary.stick(0)), rotation, navx.coterminalYaw()+initialAngle);
 			} else {
 				swerveCtrl.swerve(cubed(-primary.stickWithRamp(1))+(pwr2*(-secondary.stick(1))), cubed(primary.stickWithRamp(0))+(pwr2*secondary.stick(0)), rotation, 0);
