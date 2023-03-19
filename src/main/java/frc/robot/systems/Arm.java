@@ -20,12 +20,17 @@ public class Arm {
 
     public Arm(int alpha_canID, int beta_canID) {
         alpha = new Motor(alpha_canID, false, false, 1);
-        beta = new Motor(beta_canID, true, false, 0.5);
+        beta = new Motor(beta_canID, true, false, 0.7);
         alpha.setEnc(0);
         beta.setEnc(0);
     }
 
     public void go(double alpha_encValue, double beta_encValue) {
+        if (beta.getEnc < beta_encValue) {
+            beta.maxSpeed = 0.7;
+        } else {
+            beta.maxSpeed = 0.15;
+        }
         alpha.goTo(alpha_encValue);
         beta.goTo(beta_encValue);
         alpha.db = 0.1;
