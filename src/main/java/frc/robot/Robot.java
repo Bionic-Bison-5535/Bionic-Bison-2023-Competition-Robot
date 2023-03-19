@@ -232,9 +232,9 @@ public class Robot extends TimedRobot {
 
 			}
 
-			if (primary.stick(2) > 0.4) {            // Other Primary Controller Code:
+			if (primary.stick(2) > 0.1) {            // Other Primary Controller Code:
 				claw.take();
-			} else if (primary.stick(3) > 0.4) {
+			} else if (primary.stick(3) > 0.1) {
 				score.drop(0);
 			} else {
 				claw.stop();
@@ -258,7 +258,7 @@ public class Robot extends TimedRobot {
 					rotation = 0;
 				}
 			} else {
-				rotation = primary.stick(4);
+				rotation = cubed(primary.stick(4));
 			}
 
 			if (primary.B.getAsBoolean()) {          // Actual Drive:
