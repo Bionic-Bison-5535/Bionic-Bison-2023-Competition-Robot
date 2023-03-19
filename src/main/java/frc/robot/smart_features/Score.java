@@ -15,6 +15,8 @@ public class Score {
     private Intake claw;
     private Navx navx;
     private boolean auto, tele;
+    private double time = 120;
+    private double lastScored = -1;
     public int stage = 0; // 0 = Ready, 1 = Aligning Horizontally, 2 = Pressing Up Against Grid, 3 = Adjusting Arm Position, 4 = Done + Arm Up, 5 = Error / Cancel,
 
     public int cones = 0;
@@ -75,27 +77,28 @@ public class Score {
     }
 
     public void drop(int cube0_or_cone1) {
-        auto = DriverStation.isAutonomousEnabled();
-        tele = DriverStation.isTeleopEnabled();
         claw.fire();
-        if (cube0_or_cone1 == 0) {
-            cubes += 1;
-        }
-        if (cube0_or_cone1 == 1) {
-            cones += 1;
-        }
-        if (cube0_or_cone1 == 0 || cube0_or_cone1 == 1) {
-            if (arm.mostRecentPos == 2) {
-                if (auto) { points += 6; }
-                if (tele) { points += 5; }
+        time = DriverStation.getMatchTime();
+        if (time + 3 < lastScored || time - 3 > lastScored) {
+            lastScored = time;
+            auto = DriverStation.isAutonomousEnabled();
+            tele = DriverStation.isTeleopEnabled();
+            if (cube0_or_cone1 == 0) {
+                cubes += 1;
+            } else if (cube0_or_cone1 == 1) {
+                cones += 1;
             }
-            if (arm.mostRecentPos == 1) {
-                if (auto) { points += 4; }
-                if (tele) { points += 3; }
-            }
-            if (arm.mostRecentPos == 0) {
-                if (auto) { points += 3; }
-                if (tele) { points += 2; }
+            if (cube0_or_cone1 == 0 || cube0_or_cone1 == 1) {
+                if (arm.mostRecentPos == 2) {
+                    if (auto) { points += 6; }
+                    if (tele) { points += 5; }
+                } else if (arm.mostRecentPos == 1) {
+                    if (auto) { points += 4; }
+                    if (tele) { points += 3; }
+                } else {
+                    if (auto) { points += 3; }
+                    if (tele) { points += 2; }
+                }
             }
         }
     }
