@@ -1,3 +1,0 @@
-This programming was written by Wesley McGinn {wesleymcginn1@gmail.com}.  As of Thursday, March 2nd, 2023, the code was not finished.  You can find all the instructions and details of the finished code at [https://tinyurl.com/5535-2023-plan].
-
-For more information on the current status of the code, visit [https://github.com/Bionic-Bison-5535/Bionic-Bison-2023-Competition-Robot].
