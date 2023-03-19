@@ -20,7 +20,7 @@ public class Robot extends TimedRobot {
 	private final Controls primary = new Controls(0, 0.1);
 	private final Controls secondary = new Controls(1, 0.1);
 	private final Arm arm = new Arm(50, 51);
-	private final Intake claw = new Intake(53);
+	private final Intake claw = new Intake(53, arm);
 	private final GetObject collector = new GetObject(2, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
 	private final Autonomous auto = new Autonomous(swerveCtrl, arm, claw, navx, collector, score);

@@ -1,15 +1,23 @@
 package frc.robot.systems;
 
+import frc.robot.systems.Arm;
+
 public class Intake {
 
     public Motor intakeMotor;
+    private Arm arm;
 
-    public Intake(int intake_canID) {
+    public Intake(int intake_canID, Arm armAccess) {
         intakeMotor = new Motor(intake_canID, true, true, 1);
+        arm = armAccess;
     }
 
     public void fire() {
-        intakeMotor.set(1);
+        if (arm.mostRecentPos == 1) {
+            intakeMotor.set(0.5);
+        } else {
+            intakeMotor.set(1);
+        }
     }
 
     public void take() {
