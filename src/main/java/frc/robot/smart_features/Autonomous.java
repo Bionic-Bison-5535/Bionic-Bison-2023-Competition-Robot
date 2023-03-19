@@ -56,12 +56,14 @@ public class Autonomous {
         if (stage == 0) {
             swerveCtrl.swerve(0, 0, 0, 0);
             arm.pos(3);
+            claw.stop();
         } else if (stage == 1) {
-            arm.pos(2);
+            arm.pos(1);
             if (arm.all_there()) {
-                stage += 1;
+                stage = 3;
                 counts = 0;
             }
+            claw.stop();
         } else if (stage == 2) {
             dir = 0;
             if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
@@ -74,14 +76,15 @@ public class Autonomous {
                 stage += 1;
                 counts = 0;
             }
+            claw.stop();
         } else if (stage == 3) {
             swerveCtrl.swerve(0, 0, 0, 0);
-            score.drop(0);
-            if (counts > 27) {
+            if (counts > 20) {
                 stage += 1;
                 counts = 0;
                 arm.pos(3);
             }
+            claw.fire();
         } else if (stage == 4) {
             dir = 0;
             if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
@@ -90,7 +93,7 @@ public class Autonomous {
                 rotation = 0;
             }
             swerveCtrl.swerve(-0.4, 0, rotation, 0);
-            if (counts > 200) {
+            if (counts > 170) {
                 if (chargeUp) {
                     stage = 5;
                     swerveCtrl.swerve(0, 0, 0, 0);
@@ -100,8 +103,8 @@ public class Autonomous {
                 }
                 counts = 0;
                 arm.pos(3);
-                claw.close(0);
             }
+            claw.stop();
         } else if (stage == 5) {
             dir = 0;
             if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
@@ -114,13 +117,14 @@ public class Autonomous {
                 stage += 1;
                 counts = 0;
             }
+            claw.stop();
         } else if (stage == 6) {
             charge();
+            claw.stop();
         }
 
         swerveCtrl.update();
         arm.update();
-        claw.update();
     }
 
     public void charge() {

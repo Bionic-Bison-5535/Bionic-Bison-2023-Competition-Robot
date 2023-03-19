@@ -77,7 +77,7 @@ public class Score {
     public void drop(int cube0_or_cone1) {
         auto = DriverStation.isAutonomousEnabled();
         tele = DriverStation.isTeleopEnabled();
-        claw.open();
+        claw.fire();
         if (cube0_or_cone1 == 0) {
             cubes += 1;
         }
