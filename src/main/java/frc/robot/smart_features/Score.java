@@ -31,48 +31,72 @@ public class Score {
         navx = navxAccess;
     }
 
-    public void align(int cube0_or_cone1) {
+    public boolean align() {
+        if (april.valid()) {
+            if (april.inRange(april.width(), cubeWidthForPickUp, 30) && april.inRange(april.X(), 0, 7)) {
+                stage = 2;
+                swerveCtrl.swerve(0, 0, 0, 0);
+                return true;
+            } else {
+                swerveCtrl.swerve((cubeWidthForPickUp-april.width())/90, april.X()/50, 0, 0);
+                return false;
+            }
+        } else {
+            swerveCtrl.swerve(0, 0, 0, 0);
+            return true;
+        }
+    }
+
+    public boolean getGamePiece() { // Returns true if done, otherwise must be run periodically
+        counts += 1;
         if (stage == 0) {
+            counts = 0;
             stage = 1;
         }
         if (stage == 1) {
-            if (tape.valid()) {
-                if (tape.inRange(tape.X(), 0, 3)) {
-                    stage = 2;
-                    swerveCtrl.swerve(0, 0, 0, 0);
-                } else {
-                    swerveCtrl.swerve(-0.05, tape.X()/40, 0, 0);
-                }
-            } else {
-                stage = 5;
-                swerveCtrl.swerve(0, 0, 0, 0);
+            arm.pos(4);
+            if (arm.all_there()) {
+                stage++;
             }
         }
-    }
-    
-    public boolean prepare(int cube0_or_cone1) { // Returns true if done, otherwise must be run periodically
-        if (stage < 2) {
-            align(cube0_or_cone1);
-        }
         if (stage == 2) {
-            arm.pos(1);
-            swerveCtrl.swerve(0.25, 0, 0, 0);
-            if (!navx.accel()) {
-                stage = 3;
+            arm.pos(0);
+            if (arm.all_there()) {
+                stage++;
+                counts = 0;
             }
         }
         if (stage == 3) {
-            arm.pos(1);
-            swerveCtrl.swerve(0, 0, 0, 0);
-            if (arm.all_there()) {
-                stage = 4;
+            claw.take();
+            if (alignToCube() || counts > 170) {
+                stage++;
+                counts = 0;
             }
         }
-        if (stage < 4) {
-            return false;
-        } else {
+        if (stage == 4) {
+            claw.take();
+            swerveCtrl.swerve(0.2, 0, 0, 0);
+            if (counts > 30) {
+                stage++;
+            }
+        }
+        if (stage == 5) {
+            swerveCtrl.swerve(0, 0, 0, 0);
+            claw.stop();
+            arm.pos(4);
+            if (arm.all_there()) {
+                stage++;
+            }
+        }
+        if (stage == 6) {
+            swerveCtrl.swerve(0, 0, 0, 0);
+            claw.stop();
+            arm.pos(3);
             stage = 0;
+            counts = 0;
             return true;
+        } else {
+            return false;
         }
     }
 
