@@ -9,7 +9,7 @@ import frc.robot.systems.Navx;
 
 public class Score {
 
-    public Limelight tape;
+    public Limelight april;
     private Weswerve swerveCtrl;
     private Arm arm;
     private Intake claw;
@@ -23,8 +23,8 @@ public class Score {
     public int cubes = 0;
     public int points = 0;
 
-    public Score(int reflectiveTapePipeline, Weswerve swerveAccess, Arm armAccess, Intake intakeAccess, Navx navxAccess) {
-        tape = new Limelight(reflectiveTapePipeline);
+    public Score(int aprilTagPipeline, Weswerve swerveAccess, Arm armAccess, Intake intakeAccess, Navx navxAccess) {
+        april = new Limelight(aprilTagPipeline);
         swerveCtrl = swerveAccess;
         arm = armAccess;
         claw = intakeAccess;
