@@ -21,7 +21,7 @@ public class Robot extends TimedRobot {
 	private final Controls secondary = new Controls(1, 0.1);
 	private final Arm arm = new Arm(50, 51);
 	private final Intake claw = new Intake(53, arm);
-	private final GetObject collector = new GetObject(2, swerveCtrl, arm, claw);
+	private final GetObject collector = new GetObject(1, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
 	private final Autonomous auto = new Autonomous(swerveCtrl, arm, claw, navx, collector, score);
 
@@ -69,14 +69,12 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putBoolean("Smart Mode", smart);
 		SmartDashboard.putBoolean("Final Mode!", finalMode);
 		SmartDashboard.putBoolean("Arm Reached", arm.all_there());
-		SmartDashboard.putBoolean("Robot In Motion", navx.accel());
 		SmartDashboard.putNumber("Yaw", navx.yaw());
 		SmartDashboard.putNumber("Balance", navx.balance());
 		SmartDashboard.putNumber("Raw Balance", navx.rawBalance());
 		SmartDashboard.putNumber("Dynamic Periodic", now);
 		SmartDashboard.putNumber("Points Earned", score.points);
 		SmartDashboard.putNumber("Cubes", score.cubes);
-		SmartDashboard.putNumber("Cones", score.cones);
 		SmartDashboard.putNumber("Auto Stage", (double)auto.stage);
 		SmartDashboard.putNumber("Remaining Time", time);
 		arm.pos_0_a = SmartDashboard.getNumber("Pos 0 a", arm.pos_0_a);
@@ -139,7 +137,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		resetAll();
-		Timer.delay(0.2);
 		auto.start();
 		time = 15;
 	}

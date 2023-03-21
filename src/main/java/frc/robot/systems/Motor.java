@@ -86,6 +86,12 @@ public class Motor {
         }
     }
 
+    public void ramp(double secondsToFullSpeed) {
+        if (usingTalon) {
+            talonMotor.configOpenloopRamp(secondsToFullSpeed);
+        }
+    }
+
     public boolean there() {
         if (posMode && Math.abs(getEnc()-goToPos) > db * rotationValue()) {
             return false;
@@ -95,7 +101,7 @@ public class Motor {
     }
 
     public boolean almost() {
-        if (Math.abs(0.27*((goToPos/rotationValue())-getRotations())) >= 1) {
+        if (Math.abs(0.3*((goToPos/rotationValue())-getRotations())) >= 1) {
             return false;
         } else {
             return true;
@@ -105,9 +111,9 @@ public class Motor {
     public void update() {
         if (posMode) {
             if (!there()) {
-                if (0.27*((goToPos/rotationValue())-getRotations()) <= maxSpeed && 0.27*((goToPos/rotationValue())-getRotations()) >= -maxSpeed) {
-                    set(0.27*((goToPos/rotationValue())-getRotations()));
-                } else if (0.27*((goToPos/rotationValue())-getRotations()) > 0) {
+                if (0.3*((goToPos/rotationValue())-getRotations()) <= maxSpeed && 0.3*((goToPos/rotationValue())-getRotations()) >= -maxSpeed) {
+                    set(0.3*((goToPos/rotationValue())-getRotations()));
+                } else if (0.3*((goToPos/rotationValue())-getRotations()) > 0) {
                     set(maxSpeed);
                 } else {
                     set(-maxSpeed);
