@@ -176,7 +176,7 @@ public class Robot extends TimedRobot {
 			dir = 0;
 			rotation = 0;
 		}
-		if (secondary.B.getAsBoolean()) {
+		if (secondary.B.getAsBoolean() || primary.LEFT_STICK.getAsBoolean()) {
 			finalMode = false;
 		} else if (secondary.A.getAsBoolean() || (time < 7 && navx.balance() > 10)) {
 			finalMode = true;
