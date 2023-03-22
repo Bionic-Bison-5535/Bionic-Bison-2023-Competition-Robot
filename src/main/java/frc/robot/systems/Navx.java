@@ -3,6 +3,7 @@ package frc.robot.systems;
 import java.lang.Math;
 import edu.wpi.first.wpilibj.I2C;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.Timer;
 
 public class Navx {
     
@@ -12,6 +13,8 @@ public class Navx {
     private double balance_Offset1, balance_Offset2;
 
     public Navx() {
+        NavX.reset();
+        Timer.delay(1);
         balance_Offset1 = NavX.getRoll();
         balance_Offset2 = NavX.getPitch();
     }

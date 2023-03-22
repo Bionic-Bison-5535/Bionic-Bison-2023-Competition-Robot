@@ -1,7 +1,5 @@
 package frc.robot.systems;
 
-import frc.robot.systems.Arm;
-
 public class Intake {
 
     public Motor intakeMotor;
@@ -13,6 +11,7 @@ public class Intake {
     }
 
     public void fire() {
+        intakeMotor.ramp(0);
         if (arm.mostRecentPos == 1) {
             intakeMotor.set(0.5);
         } else {
@@ -21,6 +20,7 @@ public class Intake {
     }
 
     public void take() {
+        intakeMotor.ramp(4);
         intakeMotor.set(-0.2);
     }
 

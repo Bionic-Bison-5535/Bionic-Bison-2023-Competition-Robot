@@ -4,11 +4,11 @@ public class Arm {
 
     public Motor alpha, beta;
 
-    public double pos_0_a = 57; // Position 0 - Collect or Score in Row 1
-    public double pos_0_b = 60000;
+    public double pos_0_a = 75.7; // Position 0 - Collect or Score in Row 1
+    public double pos_0_b = 70000;
     public double pos_1_a = 0; // Position 1 -  Score in Row 2
-    public double pos_1_b = 80000;
-    public double pos_2_a = -40; // Position 2 - Score in Row 3 (Most extended and most dangerous)
+    public double pos_1_b = 85000;
+    public double pos_2_a = -37; // Position 2 - Score in Row 3
     public double pos_2_b = 114000;
     public double pos_3_a = 0; // Position 3 - Holding Mode
     public double pos_3_b = 5500;
@@ -26,10 +26,10 @@ public class Arm {
     }
 
     public void go(double alpha_encValue, double beta_encValue) {
-        if (beta.getEnc < beta_encValue) {
-            beta.maxSpeed = 0.7;
+        if (beta.getEnc() < beta_encValue) {
+            beta.maxSpeed = 0.72;
         } else {
-            beta.maxSpeed = 0.15;
+            beta.maxSpeed = 0.45;
         }
         alpha.goTo(alpha_encValue);
         beta.goTo(beta_encValue);

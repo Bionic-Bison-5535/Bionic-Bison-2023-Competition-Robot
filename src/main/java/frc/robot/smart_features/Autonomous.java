@@ -58,7 +58,7 @@ public class Autonomous {
             arm.pos(3);
             claw.stop();
         } else if (stage == 1) {
-            arm.pos(1);
+            arm.pos(2);
             if (arm.all_there()) {
                 stage = 3;
                 counts = 0;
@@ -131,9 +131,9 @@ public class Autonomous {
         if (navx.rawBalance() < 3 && navx.rawBalance() > -3) {
             swerveCtrl.lock();
         } else if (navx.rawBalance() > 0) {
-            swerveCtrl.swerve(-0.15, 0, 0, 0);
+            swerveCtrl.swerve(-0.1, 0, 0, 0);
         } else {
-            swerveCtrl.swerve(0.15, 0, 0, 0);
+            swerveCtrl.swerve(0.1, 0, 0, 0);
         }
     }
 
