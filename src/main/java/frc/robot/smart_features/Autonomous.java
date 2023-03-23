@@ -20,7 +20,6 @@ public class Autonomous {
     private double dir_accuracy = 1.2;
     private double startTime = 15;
     private double time = 15;
-    public int counts = 0;
     public boolean chargeUp = true;
     public int getting = 0;
 
