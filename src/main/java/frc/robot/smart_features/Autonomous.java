@@ -17,7 +17,9 @@ public class Autonomous {
 
     private double dir = 0;
     private double rotation = 0;
-    private double dir_accuracy = 1.7;
+    private double dir_accuracy = 1.2;
+    private double startTime = 15;
+    private double time = 15;
     public int counts = 0;
     public boolean chargeUp = true;
     public int getting = 0;
@@ -26,11 +28,10 @@ public class Autonomous {
     /* Stage
      * 0 - Ready
      * 1 - Moving arm up
-     * 2 - Driving Forward
-     * 3 - Releasing cube
-     * 4 - Driving back and lowering arm
-     * 5 - Driving forward to charge station
-     * 6 - Balancing
+     * 2 - Releasing cube
+     * 3 - Driving back and lowering arm
+     * 4 - Driving forward to charge station
+     * 5 - Balancing
     */
 
     public Autonomous(Weswerve swerveAccess, Arm armAccess, Intake intakeAccess, Navx navxAccess, GetObject collectorAccess, Score scoreAccess) {
@@ -42,9 +43,26 @@ public class Autonomous {
         score = scoreAccess;
     }
 
+    private void nextStage(boolean transitionIf, double timeout) {
+        if (transitionIf || startTime - 5 > time) {
+            startTime = DriverStation.getMatchTime();
+            stage++;
+        }
+    }
+
+    public autonomousAction(double verticalThrust, double horizontalThrust, double direction, double clawSpeed, double armPos) {
+        if (Math.abs(navx.yaw()-direction) > dir_accuracy) {
+            rotation = -0.02*(navx.yaw()-direction);
+        } else {
+            rotation = 0;
+        }
+        swerveCtrl.swerve(verticalThrust, horizontalThrust, rotation, 0);
+        claw.intakeMotor.set(clawSpeed);
+        arm.pos(armPos);
+    }
+
     public void start() {
         stage = 1;
-        counts = 0;
     }
 
     public void finish() {
@@ -52,75 +70,22 @@ public class Autonomous {
     }
 
     public void update() {
-        counts += 1;
         if (stage == 0) {
-            swerveCtrl.swerve(0, 0, 0, 0);
-            arm.pos(3);
-            claw.stop();
+            autonomousAction(0, 0, 0, 0, 3);
         } else if (stage == 1) {
-            arm.pos(2);
-            if (arm.all_there()) {
-                stage = 3;
-                counts = 0;
-            }
-            claw.stop();
+            autonomousAction(0, 0, 0, 0, 2);
+            nextStage(arm.all_there(), 3);
         } else if (stage == 2) {
-            dir = 0;
-            if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
-                rotation = -0.02*(navx.yaw()-dir);
-            } else {
-                rotation = 0;
-            }
-            swerveCtrl.swerve(0.3, 0, rotation, 0);
-            if (counts > 35) {
-                stage += 1;
-                counts = 0;
-            }
-            claw.stop();
+            autonomousAction(0, 0, 0, 1, 2);
+            nextStage(false, 1);
         } else if (stage == 3) {
-            swerveCtrl.swerve(0, 0, 0, 0);
-            if (counts > 20) {
-                stage += 1;
-                counts = 0;
-                arm.pos(3);
-            }
-            claw.fire();
+            autonomousAction(-0.4, 0, 1, 3);
+            nextStage(false, 5);
         } else if (stage == 4) {
-            dir = 0;
-            if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
-                rotation = -0.02*(navx.yaw()-dir);
-            } else {
-                rotation = 0;
-            }
-            swerveCtrl.swerve(-0.4, 0, rotation, 0);
-            if (counts > 170) {
-                if (chargeUp) {
-                    stage = 5;
-                    swerveCtrl.swerve(0, 0, 0, 0);
-                    Timer.delay(1);
-                } else {
-                    stage = 0;
-                }
-                counts = 0;
-                arm.pos(3);
-            }
-            claw.stop();
+            autonomousAction(0.4, 0, 0, 3);
+            nextStage(false, 2);
         } else if (stage == 5) {
-            dir = 0;
-            if (Math.abs(navx.yaw()-dir) > dir_accuracy) {
-                rotation = -0.02*(navx.yaw()-dir);
-            } else {
-                rotation = 0;
-            }
-            swerveCtrl.swerve(0.3, 0, rotation, 0);
-            if (counts > 190) {
-                stage += 1;
-                counts = 0;
-            }
-            claw.stop();
-        } else if (stage == 6) {
             charge();
-            claw.stop();
         }
 
         swerveCtrl.update();
