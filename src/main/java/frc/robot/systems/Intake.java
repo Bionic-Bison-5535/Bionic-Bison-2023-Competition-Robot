@@ -13,7 +13,7 @@ public class Intake {
     public void fire() {
         intakeMotor.ramp(0);
         if (arm.mostRecentPos == 1) {
-            intakeMotor.set(0.5);
+            intakeMotor.set(0.4);
         } else {
             intakeMotor.set(1);
         }
