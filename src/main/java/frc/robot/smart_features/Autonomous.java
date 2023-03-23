@@ -1,6 +1,6 @@
 package frc.robot.smart_features;
 
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.systems.Weswerve;
 import frc.robot.systems.Arm;
 import frc.robot.systems.Intake;
@@ -14,8 +14,7 @@ public class Autonomous {
     private Navx navx;
     private GetObject collector;
     private Score score;
-
-    private double dir = 0;
+    
     private double rotation = 0;
     private double dir_accuracy = 1.2;
     private double startTime = 15;
@@ -49,7 +48,7 @@ public class Autonomous {
         }
     }
 
-    public autonomousAction(double verticalThrust, double horizontalThrust, double direction, double clawSpeed, double armPos) {
+    public void autonomousAction(double verticalThrust, double horizontalThrust, double direction, double clawSpeed, int armPos) {
         if (Math.abs(navx.yaw()-direction) > dir_accuracy) {
             rotation = -0.02*(navx.yaw()-direction);
         } else {
@@ -78,10 +77,10 @@ public class Autonomous {
             autonomousAction(0, 0, 0, 1, 2);
             nextStage(false, 1);
         } else if (stage == 3) {
-            autonomousAction(-0.4, 0, 1, 3);
+            autonomousAction(-0.4, 0, 0, 1, 3);
             nextStage(false, 5);
         } else if (stage == 4) {
-            autonomousAction(0.4, 0, 0, 3);
+            autonomousAction(0.4, 0, 0, 0, 3);
             nextStage(false, 2);
         } else if (stage == 5) {
             charge();

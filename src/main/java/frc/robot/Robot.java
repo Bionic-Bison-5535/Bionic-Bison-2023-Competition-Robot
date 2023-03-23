@@ -277,7 +277,7 @@ public class Robot extends TimedRobot {
 		} else if (now == 1) {
 			action(collector.getGamePiece(), 0);
 		} else if (now == 2) {
-			action(score.prepare(0), 3);
+			action(score.run(), 3);
 		} else if (now == 3) {
 			if (primary.stick(5) == 0) { arm.pos(1); }
 			if (primary.stick(5) < 0) { arm.pos(2); }

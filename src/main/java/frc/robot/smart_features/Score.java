@@ -17,6 +17,7 @@ public class Score {
     private boolean auto, tele;
     private double time = 120;
     private double lastScored = 200;
+    public double setHeight = 15;
     public int stage = 0; // 0 = Ready, 1 = Aligning Horizontally, 2 = Pressing Up Against Grid, 3 = Done + Arm Up
 
     public int cones = 0;
@@ -58,7 +59,7 @@ public class Score {
                 swerveCtrl.lock();
                 return true;
             } else {
-                swerveCtrl.swerve(0.15, -0.02*navx.yaw(), 0);
+                swerveCtrl.swerve(0.15, 0, -0.02*navx.yaw(), 0);
                 return false;
             }
         } else {
