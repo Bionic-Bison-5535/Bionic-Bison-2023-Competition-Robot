@@ -42,7 +42,7 @@ public class Autonomous {
     }
 
     private void nextStage(boolean transitionIf, double timeout) {
-        if (transitionIf || startTime - 5 > time) {
+        if (transitionIf || startTime - timeout > time) {
             startTime = DriverStation.getMatchTime();
             stage++;
         }
@@ -68,6 +68,7 @@ public class Autonomous {
     }
 
     public void update() {
+        time = DriverStation.getMatchTime();
         if (stage == 0) {
             autonomousAction(0, 0, 0, 0, 3);
         } else if (stage == 1) {
@@ -77,12 +78,12 @@ public class Autonomous {
             autonomousAction(0, 0, 0, 1, 2);
             nextStage(false, 1);
         } else if (stage == 3) {
-            autonomousAction(-0.4, 0, 0, 1, 3);
-            nextStage(false, 5);
+            autonomousAction(-0.5, 0, 0, 1, 3);
+            nextStage(false, 2.7);
         } else if (stage == 4) {
             autonomousAction(0.4, 0, 0, 0, 3);
-            nextStage(false, 2);
-        } else if (stage == 5) {
+            nextStage(false, 1.87);
+        } else if (stage >= 5) {
             charge();
         }
 
