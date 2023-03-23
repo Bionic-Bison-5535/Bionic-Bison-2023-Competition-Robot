@@ -44,7 +44,7 @@ public class Score {
                 swerveCtrl.lock();
                 return true;
             } else {
-                swerveCtrl.swerve(0, april.X()/40, -0.02*navx.yaw(), 0);
+                swerveCtrl.swerve(0, -april.X()/50, -0.02*navx.yaw(), 0);
                 return false;
             }
         } else {
@@ -55,13 +55,8 @@ public class Score {
 
     public boolean alignVertical() {
         if (april.valid()) {
-            if (april.Y() >= setHeight) {
-                swerveCtrl.lock();
-                return true;
-            } else {
-                swerveCtrl.swerve(0.15, 0, -0.02*navx.yaw(), 0);
-                return false;
-            }
+            swerveCtrl.swerve(0.15, 0, -0.02*navx.yaw(), 0);
+            return false;
         } else {
             swerveCtrl.lock();
             return true;
@@ -80,7 +75,6 @@ public class Score {
         }
         if (stage >= 3) {
             swerveCtrl.lock();
-            arm.pos(1);
             stage = 0;
             return true;
         } else {
