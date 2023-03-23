@@ -64,8 +64,12 @@ public class GetObject {
             nextStage(true);
         }
         if (stage == 1) {
-            arm.pos(4);
-            nextStage(arm.all_there());
+            if (arm.mostRecentPos == 3 || arm.mostRecentPos == 4) {
+                arm.pos(4);
+                nextStage(arm.all_there());
+            } else {
+                nextStage(true);
+            }
         }
         if (stage == 2) {
             arm.pos(0);
