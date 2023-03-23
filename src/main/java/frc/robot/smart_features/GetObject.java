@@ -46,7 +46,6 @@ public class GetObject {
     public boolean alignToCube() {
         if (cubeCam.valid()) {
             if (cubeCam.area() > 30) {
-                stage = 2;
                 swerveCtrl.swerve(0, 0, 0, 0);
                 return true;
             } else {
@@ -55,7 +54,6 @@ public class GetObject {
             }
         } else {
             swerveCtrl.swerve(0, 0, 0, 0);
-            stage = 6;
             return true;
         }
     }
