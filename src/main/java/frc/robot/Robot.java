@@ -225,12 +225,16 @@ public class Robot extends TimedRobot {
 					swerveCtrl.speed = 7;
 				} else {
 					swerveCtrl.speed = swerveCtrl.default_speed;
-				}
-				if (primary.X.getAsBoolean()) {
-					collector.stage = 0;
-					now = 1;
-				}
+					if (primary.X.getAsBoolean()) {
+						collector.stage = 0;
+						now = 1;
+					} else if (primary.A.getAsBoolean()) {
+						score.stage = 0;
+						now = 2;
+					}
 
+				}
+				
 			}
 
 			if (primary.stick(2) > 0.1) {            // Other Primary Controller Code:
@@ -276,9 +280,9 @@ public class Robot extends TimedRobot {
 			action(score.prepare(0), 3);
 		} else if (now == 3) {
 			if (primary.stick(5) == 0) { arm.pos(1); }
-			if (primary.stick(5) > 0) { arm.pos(0); }
 			if (primary.stick(5) < 0) { arm.pos(2); }
-			if (primary.RIGHT.getAsBoolean()) {
+			if (primary.stick(5) > 0) { arm.pos(3); }
+			if (primary.RIGHT.getAsBoolean() || primary.stick(3) > 0.1) {
 				score.drop(0);
 				arm.pos(3);
 				now = 0;
