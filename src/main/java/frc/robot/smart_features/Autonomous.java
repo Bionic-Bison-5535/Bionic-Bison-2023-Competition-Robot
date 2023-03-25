@@ -78,12 +78,20 @@ public class Autonomous {
             autonomousAction(0, 0, 0, 1, 2);
             nextStage(false, 1);
         } else if (stage == 3) {
-            autonomousAction(-0.5, 0, 0, 1, 3);
-            nextStage(false, 2.7);
+            autonomousAction(-0.5, 0.05, 0, 1, 3);
+            nextStage(false, 2.2);
         } else if (stage == 4) {
+            autonomousAction(0, 0, 180, 0, 3);
+            nextStage(false, 2);
+        } else if (stage == 5) {
+            nextStage(collector.getGamePiece(), 5);
+        } else if (stage == 6) {
+            autonomousAction(0, 0, 0, 0, 3);
+            nextStage(false, 2);
+        } else if (stage == 7) {
             autonomousAction(0.4, 0, 0, 0, 3);
             nextStage(false, 1.87);
-        } else if (stage >= 5) {
+        } else if (stage >= 8) {
             charge();
         }
 
