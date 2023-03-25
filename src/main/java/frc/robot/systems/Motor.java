@@ -1,10 +1,12 @@
 package frc.robot.systems;
 
 import java.lang.Math;
+import edu.wpi.first.wpilibj.Timer;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import com.revrobotics.RelativeEncoder;
 
 public class Motor {
@@ -20,6 +22,7 @@ public class Motor {
 
     public Motor(int canID, boolean isTalon, boolean invert, double maximum_speed) {
         usingTalon = isTalon;
+        Timer.delay(0.2);
         if (usingTalon) {
             talonMotor = new TalonSRX(canID);
             talonMotor.configOpenloopRamp(0);
