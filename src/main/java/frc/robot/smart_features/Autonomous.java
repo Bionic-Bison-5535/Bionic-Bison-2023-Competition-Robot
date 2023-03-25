@@ -68,21 +68,25 @@ public class Autonomous {
             autonomousAction(0, 0, 0, 1, 2);
             nextStage(false, 1);
         } else if (stage == 3) {
-            autonomousAction(-0.5, 0.05, 0, 1, 3);
+            autonomousAction(-0.5, 0.02, 0, 1, 3);
             nextStage(false, 2.2);
         } else if (stage == 4) {
+            collector.cubeCam.setPip();
             autonomousAction(0, 0, 180, 0, 3);
-            nextStage(false, 2);
+            nextStage(false, 1.7);
         } else if (stage == 5) {
             nextStage(collector.getGamePiece(), 5);
         } else if (stage == 6) {
-            autonomousAction(0, 0, 0, 0, 3);
-            nextStage(false, 2);
+            autonomousAction(0, 0, 180, 0, 3);
+            nextStage(false, 1.2);
         } else if (stage == 7) {
-            autonomousAction(0.4, 0, 0, 0, 3);
-            nextStage(false, 1.87);
-        } else if (stage >= 8) {
-            charge();
+            autonomousAction(0, 0, 0, 0, 3);
+            nextStage(false, 1.7);
+        } else if (stage == 8) {
+            autonomousAction(0.6, score.getAlignment(), 0, 0, 3);
+            nextStage(false, 3);
+        } else if (stage >= 9) {
+            stage = 0;
         }
 
         swerveCtrl.update();
