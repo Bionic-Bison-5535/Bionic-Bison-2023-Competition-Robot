@@ -16,7 +16,7 @@ public class GetObject {
     private double startTime = 0;
     public int stage = 0; // 0 = Ready, 1 = Arm Out, 2 = Arm Down, 3 = Alignment, 4 = Arm Up, 5 = Arm In,
 
-    public double cubeWidthForPickUp = 150;
+    public double cubeWidthForPickUp = 170;
 
     public GetObject(int cubePipeline, Weswerve swerveAccess, Arm armAccess, Intake intakeAccess) {
         cubeCam = new Limelight(cubePipeline);
@@ -45,7 +45,7 @@ public class GetObject {
 
     public boolean alignToCube() {
         if (cubeCam.valid()) {
-            if (cubeCam.area() > 30) {
+            if (cubeCam.area() > 27) {
                 swerveCtrl.swerve(0, 0, 0, 0);
                 return true;
             } else {
