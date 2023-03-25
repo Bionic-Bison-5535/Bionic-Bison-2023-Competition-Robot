@@ -49,7 +49,7 @@ public class GetObject {
                 swerveCtrl.swerve(0, 0, 0, 0);
                 return true;
             } else {
-                swerveCtrl.swerve(positive(cubeWidthForPickUp-cubeCam.width())/85, cubeCam.X()/40, 0, 0);
+                swerveCtrl.swerve(positive(cubeWidthForPickUp-cubeCam.width())/85, cubeCam.X()/50, 0, 0);
                 return false;
             }
         } else {
