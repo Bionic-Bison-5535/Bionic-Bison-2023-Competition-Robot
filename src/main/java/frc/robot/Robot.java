@@ -158,6 +158,7 @@ public class Robot extends TimedRobot {
 		auto.finish();
 		time = 105;
 		now = 0;
+		dir = navx.yaw();
 	}
 
 
