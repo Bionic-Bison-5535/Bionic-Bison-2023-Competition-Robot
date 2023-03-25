@@ -147,8 +147,10 @@ public class Robot extends TimedRobot {
 		getTimeFromFMS();
 		if (time < 0.5) {
 			swerveCtrl.lock();
+			claw.fire();
 		} else {
 			auto.update();
+			
 		}
 	}
 
