@@ -20,17 +20,7 @@ public class Autonomous {
     private double startTime = 15;
     private double time = 15;
     public boolean chargeUp = true;
-    public int getting = 0;
-
     public int stage = 0;
-    /* Stage
-     * 0 - Ready
-     * 1 - Moving arm up
-     * 2 - Releasing cube
-     * 3 - Driving back and lowering arm
-     * 4 - Driving forward to charge station
-     * 5 - Balancing
-    */
 
     public Autonomous(Weswerve swerveAccess, Arm armAccess, Intake intakeAccess, Navx navxAccess, GetObject collectorAccess, Score scoreAccess) {
         swerveCtrl = swerveAccess;
