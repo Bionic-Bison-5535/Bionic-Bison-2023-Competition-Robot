@@ -53,6 +53,13 @@ public class Score {
         }
     }
 
+    public double getAlignment() {
+        if (april.valid()) {
+            return (april.X()+10)/50;
+        }
+        return 0;
+    }
+
     public boolean alignVertical() {
         if (april.valid()) {
             swerveCtrl.swerve(0.15, 0, -0.02*navx.yaw(), 0);
