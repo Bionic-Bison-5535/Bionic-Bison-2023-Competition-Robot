@@ -229,7 +229,15 @@ public class Robot extends TimedRobot {
 			smart = true;
 		}
 
-		if (now == 0) {
+		if (finalMode && time <= 1) {
+			swerveCtrl.lock();
+			if (auto.balanced()) {
+				score.points += 10;
+			} else {
+				score.points += 8;
+			}
+			Timer.delay(0.3);
+		} else if (now == 0) {
 
 			if (secondary.stick(2) > 0.1) {
 				arm.pos(0);
