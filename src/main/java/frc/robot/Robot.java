@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.systems.Weswerve;
 import frc.robot.systems.Navx;
@@ -27,12 +28,13 @@ public class Robot extends TimedRobot {
 
 	public boolean smart = true;
 	public boolean finalMode = false;
-	public double dir = 0;public double rotation = 0;
+	public double dir = 0;
+	public double rotation = 0;
 	public double dir_accuracy = 1.7;
 	public double initialAngle = 180;
 	public boolean armEnabled = true;
 	public double pwr2 = 0.15;
-	public double time = 120;
+	public double time = 135;
 	public int now = 0;
 	/* now = ID of currently running dynamic periodic
 	 * 0 = Driving
@@ -40,6 +42,8 @@ public class Robot extends TimedRobot {
 	 * 2 = Preparing to Score
 	 * 3 = Scoring Mode (With Input)
 	*/
+	private String selection1;
+	private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
 	private double newAngle;
 	private boolean needsReset;
@@ -68,7 +72,6 @@ public class Robot extends TimedRobot {
 	public void dash() {
 		SmartDashboard.putBoolean("Smart Mode", smart);
 		SmartDashboard.putBoolean("Final Mode!", finalMode);
-		SmartDashboard.putBoolean("Arm Reached", arm.all_there());
 		SmartDashboard.putNumber("Yaw", navx.yaw());
 		SmartDashboard.putNumber("Balance", navx.balance());
 		SmartDashboard.putNumber("Raw Balance", navx.rawBalance());
@@ -116,7 +119,7 @@ public class Robot extends TimedRobot {
 	void getTimeFromFMS() {
 		time = DriverStation.getMatchTime();
 		if (time == -1) { // FMS not connected
-			time = 120;
+			time = 135;
 		}
 	}
 
@@ -125,6 +128,10 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		dashInit();
 		resetAll();
+		m_chooser.setDefaultOption("YES", "CHARGE");
+    	m_chooser.addOption("NO", "DON'T CHARGE");
+		m_chooser.addOption("o/", "USELESS");
+    	SmartDashboard.putData("CHARGE UP", m_chooser);
 	}
 
 
@@ -139,6 +146,7 @@ public class Robot extends TimedRobot {
 		resetAll();
 		auto.start();
 		time = 15;
+		selection1 = m_chooser.getSelected();
 	}
 
 
@@ -147,17 +155,32 @@ public class Robot extends TimedRobot {
 		getTimeFromFMS();
 		if (time < 0.5) {
 			swerveCtrl.lock();
-			claw.fire();
+			if (selection1 != "USELESS") {
+				claw.fire();
+			}
 		} else {
-			auto.update();
-			
+			if (selection1 == "CHARGE") {
+				auto.chargeAuto();
+			} else if (selection1 == "DON'T CHARGE") {
+				auto.noChargeAuto();
+			} else {
+				auto.absolutelyNoChargeAuto();
+			}
 		}
 	}
 
 
 	@Override
 	public void teleopInit() {
-		auto.finish();
+		if (auto.stage != 0) {
+			auto.finish();
+			if (auto.balanced() && selection1 == "CHARGE") {
+				score.points += 12;
+			} else {
+				score.points += 8;
+			}
+		}
+		
 		time = 105;
 		now = 0;
 		dir = navx.yaw();
