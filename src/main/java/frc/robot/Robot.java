@@ -204,7 +204,7 @@ public class Robot extends TimedRobot {
 		}
 		if (secondary.B.getAsBoolean() || primary.LEFT_STICK.getAsBoolean()) {
 			finalMode = false;
-		} else if (secondary.A.getAsBoolean() || primary.RIGHT_STICK.getAsBoolean() || (time < 7 && navx.balance() > 10)) {
+		} else if (secondary.A.getAsBoolean() || primary.RIGHT_STICK.getAsBoolean() || (time < 20 && Math.abs(navx.rawBalance()) > 10)) {
 			finalMode = true;
 		}
 		if (Math.abs(secondary.stick(4)) > 0.2) {
