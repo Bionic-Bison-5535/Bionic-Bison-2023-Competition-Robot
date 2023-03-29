@@ -14,6 +14,7 @@ public class Motor {
     private CANSparkMax maxMotor;
     private TalonSRX talonMotor;
     private RelativeEncoder canEncoder;
+    private boolean invertThisMotor = false;
     public double goToPos = 0;
     public boolean usingTalon;
     public double db = 0.15;
@@ -22,14 +23,15 @@ public class Motor {
 
     public Motor(int canID, boolean isTalon, boolean invert, double maximum_speed) {
         usingTalon = isTalon;
+        invertThisMotor = invert;
         Timer.delay(0.2);
         if (usingTalon) {
             talonMotor = new TalonSRX(canID);
             talonMotor.configOpenloopRamp(0);
-            talonMotor.setInverted(invert);
+            talonMotor.setInverted(invertThisMotor);
         } else {
             maxMotor = new CANSparkMax(canID, MotorType.kBrushless);
-            maxMotor.setInverted(!invert);
+            maxMotor.setInverted(!invertThisMotor);
             canEncoder = maxMotor.getEncoder();
         }
         maxSpeed = maximum_speed;
@@ -47,6 +49,11 @@ public class Motor {
     }
 
     public void set(double power) {
+        if (usingTalon) {
+            talonMotor.setInverted(invertThisMotor);
+        } else {
+            maxMotor.setInverted(!invertThisMotor);
+        }
         if (usingTalon) {
             talonMotor.set(ControlMode.PercentOutput, power);
         } else {
