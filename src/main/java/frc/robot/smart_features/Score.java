@@ -53,11 +53,15 @@ public class Score {
         }
     }
 
-    public double getAlignment() {
+    public double getAlignment(double xPos) {
         if (april.valid()) {
-            return (april.X()+10)/50;
+            return (april.X()-xPos)/50;
         }
         return 0;
+    }
+
+    public boolean closeEnough() {
+        return (april.Y() > 17);
     }
 
     public boolean alignVertical() {
