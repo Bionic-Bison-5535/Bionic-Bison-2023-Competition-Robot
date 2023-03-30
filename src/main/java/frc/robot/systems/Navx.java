@@ -32,7 +32,7 @@ public class Navx {
     }
 
     public double rawBalance() {
-        return (NavX.getRoll()-balance_Offset1);
+        return (NavX.getPitch()-balance_Offset1);
     }
 
     public boolean accel() {

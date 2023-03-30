@@ -16,7 +16,7 @@ public class GetObject {
     private double startTime = 0;
     public int stage = 0; // 0 = Ready, 1 = Arm Out, 2 = Arm Down, 3 = Alignment, 4 = Arm Up, 5 = Arm In,
 
-    public double cubeWidthForPickUp = 150;
+    public double cubeWidthForPickUp = 170;
 
     public GetObject(int cubePipeline, Weswerve swerveAccess, Arm armAccess, Intake intakeAccess) {
         cubeCam = new Limelight(cubePipeline);
@@ -45,17 +45,15 @@ public class GetObject {
 
     public boolean alignToCube() {
         if (cubeCam.valid()) {
-            if (cubeCam.area() > 30) {
-                stage = 2;
+            if (cubeCam.area() > 25 || (cubeCam.area() > 19 && cubeCam.X() < -15)) {
                 swerveCtrl.swerve(0, 0, 0, 0);
                 return true;
             } else {
-                swerveCtrl.swerve(positive(cubeWidthForPickUp-cubeCam.width())/85, cubeCam.X()/40, 0, 0);
+                swerveCtrl.swerve(positive(cubeWidthForPickUp-cubeCam.width())/85, cubeCam.X()/50, 0, 0);
                 return false;
             }
         } else {
             swerveCtrl.swerve(0, 0, 0, 0);
-            stage = 6;
             return true;
         }
     }
@@ -66,8 +64,12 @@ public class GetObject {
             nextStage(true);
         }
         if (stage == 1) {
-            arm.pos(4);
-            nextStage(arm.all_there());
+            if (arm.mostRecentPos == 3 || arm.mostRecentPos == 4) {
+                arm.pos(4);
+                nextStage(arm.all_there());
+            } else {
+                nextStage(true);
+            }
         }
         if (stage == 2) {
             arm.pos(0);
@@ -75,7 +77,7 @@ public class GetObject {
         }
         if (stage == 3) {
             claw.take();
-            nextStage(alignToCube());
+            nextStage(alignToCube() || startTime - 5 > time);
         }
         if (stage == 4) {
             claw.stop();
