@@ -45,7 +45,7 @@ public class GetObject {
 
     public boolean alignToCube() {
         if (cubeCam.valid()) {
-            if (cubeCam.area() > 27) {
+            if (cubeCam.area() > 25 || (cubeCam.area() > 19 && cubeCam.X() < -15)) {
                 swerveCtrl.swerve(0, 0, 0, 0);
                 return true;
             } else {
