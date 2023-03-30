@@ -14,7 +14,7 @@ public class Score {
     private Arm arm;
     private Intake claw;
     private Navx navx;
-    private boolean auto, tele;
+    private boolean tele;
     private double time = 120;
     private double lastScored = 200;
     public double setHeight = 15;
@@ -92,26 +92,20 @@ public class Score {
     public void drop(int cube0_or_cone1) {
         claw.fire();
         time = DriverStation.getMatchTime();
-        if (time + 3 < lastScored || time - 3 > lastScored) {
+        if (time + 2 < lastScored || time - 2 > lastScored) {
             lastScored = time;
-            auto = DriverStation.isAutonomousEnabled();
-            tele = DriverStation.isTeleopEnabled();
+            tele = DriverStation.isTeleop();
             if (cube0_or_cone1 == 0) {
                 cubes += 1;
             } else if (cube0_or_cone1 == 1) {
                 cones += 1;
             }
-            if (cube0_or_cone1 == 0 || cube0_or_cone1 == 1) {
-                if (arm.mostRecentPos == 2) {
-                    if (auto) { points += 6; }
-                    if (tele) { points += 5; }
-                } else if (arm.mostRecentPos == 1) {
-                    if (auto) { points += 4; }
-                    if (tele) { points += 3; }
-                } else {
-                    if (auto) { points += 3; }
-                    if (tele) { points += 2; }
-                }
+            if (arm.mostRecentPos == 2) {
+                if (tele) { points += 5; } else { points += 6; }
+            } else if (arm.mostRecentPos == 1) {
+                if (tele) { points += 3; } else { points += 4; }
+            } else {
+                if (tele) { points += 2; } else { points += 3; }
             }
         }
     }
