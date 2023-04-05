@@ -10,6 +10,7 @@ import frc.robot.systems.Navx;
 import frc.robot.systems.Controls;
 import frc.robot.systems.Arm;
 import frc.robot.systems.Intake;
+import frc.robot.systems.Lights;
 import frc.robot.smart_features.GetObject;
 import frc.robot.smart_features.Score;
 import frc.robot.smart_features.Autonomous;
@@ -22,6 +23,7 @@ public class Robot extends TimedRobot {
 	private final Controls secondary = new Controls(1, 0.1);
 	private final Arm arm = new Arm(50, 51);
 	private final Intake claw = new Intake(53, arm);
+	private final Lights colors = new Lights(17);
 	private final GetObject collector = new GetObject(1, swerveCtrl, arm, claw);
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
 	private final Autonomous auto = new Autonomous(swerveCtrl, arm, claw, navx, collector, score);
@@ -144,6 +146,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		resetAll();
+		colors.checkAlliance();
+		colors.allianceColor();
 		auto.start();
 		time = 15;
 		selection1 = m_chooser.getSelected();

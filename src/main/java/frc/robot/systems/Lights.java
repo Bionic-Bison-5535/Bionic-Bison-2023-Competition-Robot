@@ -3,10 +3,12 @@ package frc.robot.systems;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class Lights {
 
     public CANdle leds;
+    public boolean blueAlliance;
 
     public Lights(int canID) {
         leds = new CANdle(canID);
@@ -14,13 +16,17 @@ public class Lights {
         ledConfig.stripType = LEDStripType.RGB;
         ledConfig.brightnessScalar = 1;
         leds.configAllSettings(ledConfig);
+        checkAlliance();
     }
-    
+
     public void setBrightness(double brightnessLevel) {
-        CANdleConfiguration ledConfig = new CANdleConfiguration();
-        ledConfig.stripType = LEDStripType.RGB;
-        ledConfig.brightnessScalar = brightnessLevel;
-        leds.configAllSettings(ledConfig);
+        if (brightnessLevel >= 1) {
+            leds.configBrightnessScalar(1);
+        } else if (brightnessLevel <= 0) {
+            leds.configBrightnessScalar(0);
+        } else {
+            leds.configBrightnessScalar(brightnessLevel);
+        }
     }
 
     public void blue() {
@@ -55,8 +61,20 @@ public class Lights {
         leds.setLEDs(0, 0, 0);
     }
 
-    public void black() {
-        leds.setLEDs(0, 0, 0);
+    public void allianceColor() {
+        if (blueAlliance) {
+            blue();
+        } else {
+            red();
+        }
+    }
+
+    public void checkAlliance() {
+        if (DriverStation.getAlliance() == DriverStation.Alliance.Blue) {
+            blueAlliance = true;
+        } else {
+            blueAlliance = false;
+        }
     }
 
 }
