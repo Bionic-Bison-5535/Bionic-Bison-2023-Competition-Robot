@@ -5,6 +5,7 @@ import frc.robot.systems.Weswerve;
 import frc.robot.systems.Arm;
 import frc.robot.systems.Intake;
 import frc.robot.systems.Navx;
+import frc.robot.systems.Lights;
 
 public class Autonomous {
 
@@ -14,6 +15,7 @@ public class Autonomous {
     private Navx navx;
     private GetObject collector;
     private Score score;
+    private Lights colors;
     
     private double rotation = 0;
     private double dir_accuracy = 1.2;
@@ -21,13 +23,14 @@ public class Autonomous {
     private double time = 15;
     public int stage = 0;
 
-    public Autonomous(Weswerve swerveAccess, Arm armAccess, Intake intakeAccess, Navx navxAccess, GetObject collectorAccess, Score scoreAccess) {
+    public Autonomous(Weswerve swerveAccess, Arm armAccess, Intake intakeAccess, Navx navxAccess, GetObject collectorAccess, Score scoreAccess, Lights colorAccess) {
         swerveCtrl = swerveAccess;
         arm = armAccess;
         claw = intakeAccess;
         navx = navxAccess;
         collector = collectorAccess;
         score = scoreAccess;
+        colors = colorAccess;
     }
 
     private void nextStage(boolean transitionIf, double timeout) {
@@ -69,13 +72,16 @@ public class Autonomous {
         } else if (stage == 3) {
             autonomousAction(-0.5, score.getAlignment(-7), 0, 1, 3);
             nextStage(false, 2);
+            colors.orange();
         } else if (stage == 4) {
             collector.cubeCam.setPip();
             autonomousAction(0, 0, 180, 0, 3);
             nextStage(false, 1.7);
         } else if (stage == 5) {
             nextStage(collector.getGamePiece(), 3.5);
+            colors.yellow();
         } else if (stage == 6) {
+            colors.turquoise();
             autonomousAction(0, 0, 180, 0, 3);
             nextStage(false, 1.2);
         } else if (stage == 7) {
@@ -83,9 +89,11 @@ public class Autonomous {
             nextStage(false, 1.7);
         } else if (stage == 8) {
             autonomousAction(0.7, score.getAlignment(-10), 0, 0, 3);
+            colors.blue();
             nextStage(score.closeEnough(), 3);
         } else if (stage >= 9) {
-            autonomousAction(0, 0, 0, 0, 3);
+            colors.white();
+            autonomousAction(0, 0, 0, 0, 1);
         }
 
         swerveCtrl.update();
@@ -103,9 +111,11 @@ public class Autonomous {
             autonomousAction(0, 0, 0, 1, 2);
             nextStage(false, 1);
         } else if (stage == 3) {
+            colors.orange();
             autonomousAction(-0.5, 0, 0, 1, 3);
             nextStage(false, 2.7);
         } else if (stage == 4) {
+            colors.yellow();
             autonomousAction(0.4, 0, 0, 0, 3);
             nextStage(false, 1.87);
         } else if (stage >= 5) {
@@ -141,10 +151,13 @@ public class Autonomous {
     public void charge() {
         if (navx.rawBalance() < 3 && navx.rawBalance() > -3) {
             swerveCtrl.lock();
+            colors.turquoise();
         } else if (navx.rawBalance() > 0) {
             swerveCtrl.swerve(-0.1, 0, 0, 0);
+            colors.red();
         } else {
             swerveCtrl.swerve(0.1, 0, 0, 0);
+            colors.red();
         }
     }
 

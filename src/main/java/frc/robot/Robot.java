@@ -24,8 +24,8 @@ public class Robot extends TimedRobot {
 	private final Intake claw = new Intake(53, arm);
 	private final Lights colors = new Lights(17);
 	private final GetObject collector = new GetObject(1, swerveCtrl, arm, claw);
-	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
-	private final Autonomous auto = new Autonomous(swerveCtrl, arm, claw, navx, collector, score);
+	private final Score score = new Score(0, arm, claw);
+	private final Autonomous auto = new Autonomous(swerveCtrl, arm, claw, navx, collector, score, colors);
 
 	private boolean smart = true;
 	private boolean finalMode = false;
