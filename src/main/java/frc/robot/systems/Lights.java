@@ -41,8 +41,12 @@ public class Lights {
         leds.setLEDs(0, 255, 0);
     }
 
-    public void cyan() {
-        leds.setLEDs(0, 255, 255);
+    public void orange() {
+        leds.setLEDs(255, 100, 0);
+    }
+
+    public void turquoise() {
+        leds.setLEDs(0, 255, 170);
     }
 
     public void magenta() {
