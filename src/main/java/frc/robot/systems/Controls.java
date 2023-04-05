@@ -55,10 +55,6 @@ public class Controls {
         return in.getPOV();
     }
 
-    public boolean active() {
-        return (stick(0) != 0 || stick(1) != 0);
-    }
-
     public double shift0() {
         add0 = 0;
         for (int i = 0; i < rr0.length - 1; i++) {

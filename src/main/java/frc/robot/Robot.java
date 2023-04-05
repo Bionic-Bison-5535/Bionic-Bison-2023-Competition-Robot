@@ -2,7 +2,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.systems.Weswerve;
@@ -28,16 +27,19 @@ public class Robot extends TimedRobot {
 	private final Score score = new Score(0, swerveCtrl, arm, claw, navx);
 	private final Autonomous auto = new Autonomous(swerveCtrl, arm, claw, navx, collector, score);
 
-	public boolean smart = true;
-	public boolean finalMode = false;
-	public double dir = 0;
-	public double rotation = 0;
-	public double dir_accuracy = 1.7;
-	public double initialAngle = 180;
-	public boolean armEnabled = true;
-	public double pwr2 = 0.15;
-	public double time = 135;
-	public int now = 0;
+	private boolean smart = true;
+	private boolean finalMode = false;
+	private boolean conscious = false;
+	private double dir = 0;
+	private double rotation = 0;
+	private double vert = 0;
+	private double hor = 0;
+	private double dir_accuracy = 1.7;
+	private double initialAngle = 180;
+	private boolean armEnabled = true;
+	private double pwr2 = 0.15;
+	private double time = 135;
+	private int now = 0;
 	/* now = ID of currently running dynamic periodic
 	 * 0 = Driving
 	 * 1 = Getting Object
@@ -46,12 +48,10 @@ public class Robot extends TimedRobot {
 	*/
 	private String selection1;
 	private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
 	private double newAngle;
-	private boolean needsReset;
 	private int secondary_pov;
 
-	public void dashInit() {
+	private void dashInit() {
 		SmartDashboard.putNumber("Pos 0 a", arm.pos_0_a);
 		SmartDashboard.putNumber("Pos 0 b", arm.pos_0_b);
 		SmartDashboard.putNumber("Pos 1 a", arm.pos_1_a);
@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Arm Pos", arm.mostRecentPos);
 	}
 
-	public void dash() {
+	private void dash() {
 		SmartDashboard.putBoolean("Smart Mode", smart);
 		SmartDashboard.putBoolean("Final Mode!", finalMode);
 		SmartDashboard.putNumber("Yaw", navx.yaw());
@@ -104,13 +104,7 @@ public class Robot extends TimedRobot {
 		return inputNumber * inputNumber * inputNumber;
 	}
 
-	void action(boolean dynamicPeriodicFunction, int defaultNowTo) {
-		if (dynamicPeriodicFunction == true) {
-			now = defaultNowTo;
-		}
-	}
-
-	void resetAll() {
+	private void resetAll() {
 		navx.fullReset();
 		now = 0;
 		dir = 0;
@@ -118,7 +112,7 @@ public class Robot extends TimedRobot {
 		arm.reset();
 	}
 
-	void getTimeFromFMS() {
+	private void getTimeFromFMS() {
 		time = DriverStation.getMatchTime();
 		if (time == -1) { // FMS not connected
 			time = 135;
@@ -233,15 +227,7 @@ public class Robot extends TimedRobot {
 			smart = true;
 		}
 
-		if (finalMode && time <= 1) {
-			swerveCtrl.lock();
-			if (auto.balanced()) {
-				score.points += 10;
-			} else {
-				score.points += 8;
-			}
-			Timer.delay(0.3);
-		} else if (now == 0) {
+		if (now == 0) {
 
 			if (secondary.stick(2) > 0.1) {
 				arm.pos(0);
@@ -259,18 +245,9 @@ public class Robot extends TimedRobot {
 
 			} else {                                 // Restrictive Non-Final Mode Functionality:
 
-				if (primary.Y.getAsBoolean()) {
-					swerveCtrl.speed = 7;
-				} else {
-					swerveCtrl.speed = swerveCtrl.default_speed;
-					if (primary.X.getAsBoolean()) {
-						collector.stage = 0;
-						now = 1;
-					} else if (primary.A.getAsBoolean()) {
-						score.stage = 0;
-						now = 2;
-					}
-
+				swerveCtrl.speed = swerveCtrl.default_speed;
+				if (primary.X.getAsBoolean()) {
+					now = 1;
 				}
 				
 			}
@@ -313,17 +290,9 @@ public class Robot extends TimedRobot {
 			}
 
 		} else if (now == 1) {
-			action(collector.getGamePiece(), 0);
-		} else if (now == 2) {
-			action(score.run(), 3);
-		} else if (now == 3) {
-			if (primary.stick(5) == 0) { arm.pos(1); }
-			if (primary.stick(5) < 0) { arm.pos(2); }
-			if (primary.stick(5) > 0) { arm.pos(3); }
-			if (primary.RIGHT.getAsBoolean() || primary.stick(3) > 0.1) {
-				score.drop(0);
-				arm.pos(3);
+			if (collector.getGamePiece()) {
 				now = 0;
+				collector.stage = 0;
 			}
 		}
 
@@ -345,17 +314,13 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void testPeriodic() {
-		if (needsReset) {
-			if (swerveCtrl.resetMotors()) {
-				swerveCtrl.tone();
-				Timer.delay(1);
-				swerveCtrl.swerve(0, 0, 0, 0);
-				needsReset = false;
-			}
-		} else {
-			arm.pos((int)(SmartDashboard.getNumber("Arm Pos", arm.mostRecentPos)));
-			arm.update();
-		}
+		colors.yellow();
+		arm.beta.set(0.07);
+	}
+
+	@Override
+	public void disabledInit() {
+		colors.green();
 	}
 
 }

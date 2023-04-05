@@ -36,13 +36,6 @@ public class GetObject {
         time = DriverStation.getMatchTime();
     }
 
-    private double positive(double inputValue) {
-        if (inputValue < 0) {
-            return 0;
-        }
-        return inputValue;
-    }
-
     public boolean alignToCube() {
         if (cubeCam.valid()) {
             if (cubeCam.area() > 25 || (cubeCam.area() > 19 && cubeCam.X() < -15)) {
