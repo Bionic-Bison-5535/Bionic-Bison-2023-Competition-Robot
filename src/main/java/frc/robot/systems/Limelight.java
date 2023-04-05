@@ -7,7 +7,7 @@ public class Limelight {
     
     private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 	private int pipeline = 1;
-	private double invalidArea = 0.1;
+	private double invalidArea = 0.4;
 
 	public Limelight(int Pipline) {
 		if (Pipline >= 0 && Pipline < 10) {
