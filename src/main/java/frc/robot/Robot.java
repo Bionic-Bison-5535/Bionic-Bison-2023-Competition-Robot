@@ -139,7 +139,9 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
+		score.april.setPip();
 		resetAll();
+		colors.setBrightness(0.5);
 		colors.checkAlliance();
 		colors.allianceColor();
 		auto.start();
@@ -162,7 +164,7 @@ public class Robot extends TimedRobot {
 			} else if (selection1 == "DON'T CHARGE") {
 				auto.noChargeAuto();
 			} else {
-				auto.absolutelyNoChargeAuto();
+				auto.snailAuto();
 			}
 		}
 	}
@@ -170,18 +172,28 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+
+		if (arm.mostRecentPos == 0) {
+			colors.setBrightness(0.1);
+		} else {
+			colors.setBrightness(1);
+		}
+		colors.allianceColor();
+		arm.pos(3);
+		collector.cubeCam.setPip();
+		time = 135;
+		now = 0;
+		dir = navx.yaw();
+
 		if (auto.stage != 0) {
 			auto.finish();
 			if (auto.balanced() && selection1 == "CHARGE") {
 				score.points += 12;
-			} else {
+			} else if (selection1 == "CHARGE") {
 				score.points += 8;
 			}
 		}
-		
-		time = 105;
-		now = 0;
-		dir = navx.yaw();
+
 	}
 
 

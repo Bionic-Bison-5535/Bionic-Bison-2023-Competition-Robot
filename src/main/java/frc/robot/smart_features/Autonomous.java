@@ -70,16 +70,16 @@ public class Autonomous {
             autonomousAction(0, 0, 0, 1, 2);
             nextStage(false, 1);
         } else if (stage == 3) {
-            autonomousAction(-0.5, score.getAlignment(-7), 0, 1, 3);
-            nextStage(false, 2);
             colors.orange();
+            autonomousAction(-0.7, score.getAlignment(-10), 0, 1, 3);
+            nextStage(false, 1.7);
         } else if (stage == 4) {
             collector.cubeCam.setPip();
             autonomousAction(0, 0, 180, 0, 3);
-            nextStage(false, 1.7);
+            nextStage(false, 1.5);
         } else if (stage == 5) {
-            nextStage(collector.getGamePiece(), 3.5);
             colors.yellow();
+            nextStage(collector.getGamePiece(), 4);
         } else if (stage == 6) {
             colors.turquoise();
             autonomousAction(0, 0, 180, 0, 3);
@@ -88,8 +88,8 @@ public class Autonomous {
             autonomousAction(0, 0, 0, 0, 3);
             nextStage(false, 1.7);
         } else if (stage == 8) {
-            autonomousAction(0.7, score.getAlignment(-10), 0, 0, 3);
             colors.blue();
+            autonomousAction(0.7, score.getAlignment(-7), 0, 0, 1);
             nextStage(score.closeEnough(), 3);
         } else if (stage >= 9) {
             colors.white();
@@ -113,7 +113,7 @@ public class Autonomous {
         } else if (stage == 3) {
             colors.orange();
             autonomousAction(-0.5, 0, 0, 1, 3);
-            nextStage(false, 2.7);
+            nextStage(false, 2.6);
         } else if (stage == 4) {
             colors.yellow();
             autonomousAction(0.4, 0, 0, 0, 3);
@@ -126,7 +126,7 @@ public class Autonomous {
         arm.update();
     }
     
-    public void absolutelyNoChargeAuto() {
+    public void snailAuto() {
         time = DriverStation.getMatchTime();
         if (stage == 0) {
             autonomousAction(0, 0, 0, 0, 3);
@@ -149,7 +149,7 @@ public class Autonomous {
     }
 
     public void charge() {
-        if (navx.rawBalance() < 3 && navx.rawBalance() > -3) {
+        if (balanced()) {
             swerveCtrl.lock();
             colors.turquoise();
         } else if (navx.rawBalance() > 0) {
