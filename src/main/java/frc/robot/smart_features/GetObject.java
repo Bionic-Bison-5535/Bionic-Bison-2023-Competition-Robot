@@ -14,7 +14,7 @@ public class GetObject {
     private Intake claw;
     private double time = 0;
     private double startTime = 0;
-    public int stage = 0; // 0 = Ready, 1 = Arm Out, 2 = Arm Down, 3 = Alignment, 4 = Arm Up, 5 = Arm In,
+    public int stage = 0; // 0 = Ready, 1 = Arm Out, 2 = Arm Down, 3 = Alignment, 4 = Go Forward, 5 = Arm Up, 6 = Arm In,
 
     public double cubeWidthForPickUp = 170;
 
@@ -38,16 +38,16 @@ public class GetObject {
 
     public boolean alignToCube() {
         if (cubeCam.valid()) {
-            if (cubeCam.area() > 25 || (cubeCam.area() > 19 && cubeCam.X() < -15)) {
+            if (cubeCam.inRange(cubeCam.X(), 0, 5)) {
                 swerveCtrl.swerve(0, 0, 0, 0);
                 return true;
             } else {
-                swerveCtrl.swerve(positive(cubeWidthForPickUp-cubeCam.width())/85, cubeCam.X()/50, 0, 0);
+                swerveCtrl.swerve(0, -cubeCam.X()/70, 0, 0);
                 return false;
             }
         } else {
-            swerveCtrl.swerve(0, 0, 0, 0);
-            return true;
+            swerveCtrl.swerve(0, -0.05, 0, 0);
+            return false;
         }
     }
 
@@ -69,16 +69,21 @@ public class GetObject {
             nextStage(arm.all_there());
         }
         if (stage == 3) {
+            arm.pos(0);
             claw.take();
-            nextStage(alignToCube() || startTime - 5 > time);
+            nextStage(alignToCube());
         }
         if (stage == 4) {
+            swerveCtrl.swerve(0.2, 0, 0, 0);
+            nextStage(cubeCam.area() > 25 || startTime - 2 > time);
+        }
+        if (stage == 5) {
             claw.stop();
             swerveCtrl.swerve(0, 0, 0, 0);
             arm.pos(4);
             nextStage(arm.all_there());
         }
-        if (stage >= 5) {
+        if (stage >= 6) {
             swerveCtrl.swerve(0, 0, 0, 0);
             claw.stop();
             arm.pos(3);
@@ -87,6 +92,17 @@ public class GetObject {
         } else {
             return false;
         }
+    }
+
+    public double getAlignment(double xPos) {
+        if (cubeCam.valid()) {
+            return (cubeCam.X()-xPos)/35;
+        }
+        return 0;
+    }
+
+    public boolean in() {
+        return (cubeCam.area() > 24 && cubeCam.inRange(cubeCam.X(), 0, 10)) || (cubeCam.area() > 17 && Math.abs(cubeCam.X()) > 12);
     }
 
 }
