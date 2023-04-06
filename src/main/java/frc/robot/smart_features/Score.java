@@ -26,7 +26,7 @@ public class Score {
 
     public double getAlignment(double xPos) {
         if (april.valid()) {
-            return (april.X()-xPos)/50;
+            return (april.X()-xPos)/35;
         }
         return 0;
     }
