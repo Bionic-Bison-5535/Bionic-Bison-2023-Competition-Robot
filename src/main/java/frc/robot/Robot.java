@@ -203,6 +203,16 @@ public class Robot extends TimedRobot {
 
 		getTimeFromFMS();
 
+		if (arm.mostRecentPos == 0) {
+			colors.orange();
+		} else if (arm.mostRecentPos != 3) {
+			colors.turquoise();
+		} else if (time < 30 || finalMode) {
+			colors.white();
+		} else {
+			colors.allianceColor();
+		}
+
 		if (secondary.Y.getAsBoolean()) {            // Secondary Controller Input:
 			now = 0;
 			collector.stage = 0;
