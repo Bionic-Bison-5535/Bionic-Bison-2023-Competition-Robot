@@ -113,7 +113,7 @@ public class Autonomous {
         } else if (stage == 3) {
             colors.orange();
             autonomousAction(-0.5, 0, 0, 1, 3);
-            nextStage(false, 2.6);
+            nextStage(false, 2.45);
         } else if (stage == 4) {
             colors.yellow();
             autonomousAction(0.4, 0, 0, 0, 3);
@@ -153,10 +153,10 @@ public class Autonomous {
             swerveCtrl.lock();
             colors.turquoise();
         } else if (navx.rawBalance() > 0) {
-            swerveCtrl.swerve(-0.1, 0, 0, 0);
+            swerveCtrl.swerve(-0.077, 0, 0, 0);
             colors.red();
         } else {
-            swerveCtrl.swerve(0.1, 0, 0, 0);
+            swerveCtrl.swerve(0.077, 0, 0, 0);
             colors.red();
         }
     }
