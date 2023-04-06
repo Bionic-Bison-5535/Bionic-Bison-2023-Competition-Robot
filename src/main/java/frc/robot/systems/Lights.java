@@ -42,7 +42,7 @@ public class Lights {
     }
 
     public void orange() {
-        leds.setLEDs(255, 100, 0);
+        leds.setLEDs(255, 70, 0);
     }
 
     public void turquoise() {
