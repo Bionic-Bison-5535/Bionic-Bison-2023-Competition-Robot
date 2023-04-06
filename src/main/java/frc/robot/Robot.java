@@ -268,7 +268,7 @@ public class Robot extends TimedRobot {
 
 			} else {                                 // Restrictive Non-Final Mode Functionality:
 
-				swerveCtrl.speed = swerveCtrl.default_speed;
+				swerveCtrl.speed = swerveCtrl.default_speed * 1.5;
 				if (primary.X.getAsBoolean()) {
 					now = 1;
 				}
