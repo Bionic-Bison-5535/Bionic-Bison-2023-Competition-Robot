@@ -235,13 +235,13 @@ public class Robot extends TimedRobot {
 		if (secondary_pov != -1) {
 			if (secondary_pov == 0 || secondary_pov == 45 || secondary_pov == 315) { // Up
 				armEnabled = true;
-			} else if (secondary_pov == 180 || secondary_pov == 135 || secondary_pov == 225) { // Down
+			} else if (secondary_pov >= 135 && secondary_pov <= 225) { // Down
 				armEnabled = false;
 			}
-			if (secondary_pov == 90 || secondary_pov == 45 || secondary_pov == 135) { // Right
-				// Empty Slot
-			} else if (secondary_pov == 270 || secondary_pov == 225 || secondary_pov == 315) { // Left
-				// Empty Slot
+			if (secondary_pov >= 45 && secondary_pov <= 135) { // Right
+				conscious = true;
+			} else if (secondary_pov >= 225 && secondary_pov <= 315) { // Left
+				conscious = false;
 			}
 		}
 		if (secondary.BACK.getAsBoolean()) {
@@ -272,7 +272,7 @@ public class Robot extends TimedRobot {
 				if (primary.X.getAsBoolean()) {
 					now = 1;
 				}
-				
+
 			}
 
 			if (primary.stick(2) > 0.1) {            // Other Primary Controller Code:
