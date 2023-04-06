@@ -216,7 +216,6 @@ public class Robot extends TimedRobot {
 		if (secondary.Y.getAsBoolean()) {            // Secondary Controller Input:
 			now = 0;
 			collector.stage = 0;
-			score.stage = 0;
 		}
 		if (secondary.X.getAsBoolean()) {
 			navx.fullReset();
@@ -336,10 +335,7 @@ public class Robot extends TimedRobot {
 
 
 	@Override
-	public void testInit() {
-		claw.intakeMotor.setEnc(0);
-		needsReset = true;
-	}
+	public void testInit() {}
 
 
 	@Override
