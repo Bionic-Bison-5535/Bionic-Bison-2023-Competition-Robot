@@ -178,6 +178,7 @@ public class Robot extends TimedRobot {
 		} else {
 			colors.setBrightness(1);
 		}
+		colors.checkAlliance();
 		colors.allianceColor();
 		arm.pos(3);
 		collector.cubeCam.setPip();
